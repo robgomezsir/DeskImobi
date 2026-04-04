@@ -5,7 +5,6 @@ import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
-import authRoutes from './src/routes/auth.routes.js';
 import clientRoutes from './src/routes/client.routes.js';
 import messageRoutes from './src/routes/message.routes.js';
 
@@ -21,7 +20,6 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ImobiFlow AI Backend is running' });
 });
 
-app.use('/api/auth', authRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/messages', messageRoutes);
 
