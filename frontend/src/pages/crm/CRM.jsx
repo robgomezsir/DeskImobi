@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
@@ -138,53 +139,62 @@ export default function CRM() {
                   </td>
                 </tr>
               ) : (
-                clients.map((client) => (
-                  <tr key={client.id} className="hover:bg-white/5 transition-colors group">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-primary-600/20 text-primary-400 flex items-center justify-center font-bold font-display">
-                          {client.name[0].toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-100">{client.name}</p>
-                          <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
-                            <span className="flex items-center gap-1"><Mail size={10} /> {client.email || 'N/A'}</span>
-                            <span className="flex items-center gap-1"><Phone size={10} /> {client.phone}</span>
+                <AnimatePresence>
+                  {clients.map((client, i) => (
+                    <motion.tr 
+                      key={client.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="hover:bg-white/5 transition-colors group"
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-primary-600/20 text-primary-400 flex items-center justify-center font-bold font-display">
+                            {client.name[0].toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-100">{client.name}</p>
+                            <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                              <span className="flex items-center gap-1"><Mail size={10} /> {client.email || 'N/A'}</span>
+                              <span className="flex items-center gap-1"><Phone size={10} /> {client.phone}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(client.status)}`}>
-                        {client.status.toUpperCase()}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm">
-                        <p className="font-medium text-gray-300">{client.property_type || 'Qualquer'}</p>
-                        <p className="text-gray-500 text-xs">{client.location || 'Sem localização'}</p>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button 
-                          onClick={() => handleClassify(client.id)}
-                          disabled={classifyingId === client.id}
-                          className="w-8 h-8 rounded-lg bg-primary-600/20 hover:bg-primary-600/30 flex items-center justify-center text-primary-400 transition-all"
-                          title="Classificar com IA"
-                        >
-                          {classifyingId === client.id ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
-                        </button>
-                        <button className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all">
-                          <MessageSquare size={16} />
-                        </button>
-                        <button className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all">
-                          <MoreHorizontal size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(client.status)}`}>
+                          {client.status.toUpperCase()}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm">
+                          <p className="font-medium text-gray-300">{client.property_type || 'Qualquer'}</p>
+                          <p className="text-gray-500 text-xs">{client.location || 'Sem localização'}</p>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button 
+                            onClick={() => handleClassify(client.id)}
+                            disabled={classifyingId === client.id}
+                            className="w-8 h-8 rounded-lg bg-primary-600/20 hover:bg-primary-600/30 flex items-center justify-center text-primary-400 transition-all"
+                            title="Classificar com IA"
+                          >
+                            {classifyingId === client.id ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
+                          </button>
+                          <button className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all">
+                            <MessageSquare size={16} />
+                          </button>
+                          <button className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all">
+                            <MoreHorizontal size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
               )}
             </tbody>
           </table>

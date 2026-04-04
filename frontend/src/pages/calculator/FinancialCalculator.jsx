@@ -7,9 +7,11 @@ import {
   ArrowRight,
   PieChart as PieIcon,
   Download,
-  Info
+  Info,
+  Sparkles
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { generateLeadProposalPDF } from '../../services/pdf.service';
 
 export default function FinancialCalculator() {
   const [formData, setFormData] = useState({
@@ -46,6 +48,21 @@ export default function FinancialCalculator() {
     toast.success('Simulação concluída!');
   };
 
+  const handleExportPDF = async () => {
+    if (!results) {
+      toast.error('Realize uma simulação antes de exportar.');
+      return;
+    }
+    
+    try {
+      toast.loading('Gerando PDF...', { id: 'pdf' });
+      await generateLeadProposalPDF({}, { ...formData, ...results });
+      toast.success('Proposta exportada com sucesso!', { id: 'pdf' });
+    } catch (error) {
+      toast.error('Erro ao gerar PDF: ' + error.message, { id: 'pdf' });
+    }
+  };
+
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -60,7 +77,10 @@ export default function FinancialCalculator() {
           <h1 className="text-4xl font-display font-bold tracking-tight">Calculadora de Fluxo</h1>
           <p className="text-gray-400">Simule financiamentos e fluxos de pagamento para seus clientes</p>
         </div>
-        <button className="btn btn-outline h-12 gap-2">
+        <button 
+          onClick={handleExportPDF}
+          className="btn btn-outline h-12 gap-2"
+        >
           <Download size={18} />
           Exportar PDF
         </button>

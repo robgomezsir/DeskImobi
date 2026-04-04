@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { 
@@ -95,7 +96,13 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card, i) => (
-          <div key={i} className="glass p-6 rounded-3xl group hover:border-primary-500/30 transition-all hover:-translate-y-1">
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="glass p-6 rounded-3xl group hover:border-primary-500/30 transition-all hover:-translate-y-1"
+          >
             <div className="flex justify-between items-start mb-4">
               <div className={`p-3 rounded-2xl ${card.bg} ${card.color}`}>
                 <card.icon size={24} />
@@ -106,12 +113,18 @@ export default function Dashboard() {
             </div>
             <p className="text-gray-400 text-sm font-medium">{card.title}</p>
             <p className="text-4xl font-display font-bold mt-1">{card.value}</p>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 glass p-8 rounded-3xl h-[400px] flex flex-col">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4 }}
+          className="lg:col-span-2 glass p-8 rounded-3xl h-[400px] flex flex-col"
+        >
+          {/* ... Chart Content ... */}
           <div className="flex justify-between items-center mb-8">
             <div>
               <h3 className="text-xl font-display font-bold">Desempenho de Vendas</h3>
@@ -143,9 +156,14 @@ export default function Dashboard() {
               </AreaChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="glass p-8 rounded-3xl flex flex-col">
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+          className="glass p-8 rounded-3xl flex flex-col"
+        >
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 bg-primary-600/10 text-primary-400 rounded-xl">
               <TrendingUp size={20} />
@@ -158,7 +176,7 @@ export default function Dashboard() {
               <p className="text-sm leading-relaxed">
                 Você tem <span className="text-orange-400 font-bold">3 clientes</span> parados há mais de 10 dias no estágio de negociação.
               </p>
-              <button className="btn btn-primary w-full py-2 h-10 text-xs">
+              <button className="btn btn-primary w-full py-2 h-10 text-xs text-white">
                 Gerar Mensagem de Reativação
               </button>
             </div>
@@ -176,7 +194,7 @@ export default function Dashboard() {
               <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
