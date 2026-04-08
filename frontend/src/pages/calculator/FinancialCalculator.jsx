@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTheme } from '../../contexts/ThemeContext';
 import { Calculator, Download, Home, Layers } from 'lucide-react';
 import { toast } from 'sonner';
 import { generateFlowPaymentPDF } from '../../services/pdf.service';
@@ -38,11 +39,15 @@ function FlowPhaseCard({
   valorParcela,
   valorTotalOk,
   pctOk,
+  glassBackdropStyle,
 }) {
   return (
-    <div className="flex h-full min-h-0 flex-col space-y-4 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
+    <div
+      className="glass bv-card-hover flex h-full min-h-0 flex-col space-y-4 rounded-3xl p-5 sm:p-6"
+      style={glassBackdropStyle}
+    >
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-base font-bold uppercase tracking-[0.06em] text-bv-text">{title}</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">{title}</h3>
         <span className="text-lg font-bold tabular-nums text-bv-text">{pct}%</span>
       </div>
       <input
@@ -80,6 +85,27 @@ function FlowPhaseCard({
 }
 
 export default function FinancialCalculator() {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+
+  const glassBackdropStyle = useMemo(
+    () =>
+      isLight
+        ? {
+            backdropFilter:
+              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02)',
+            WebkitBackdropFilter:
+              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02)',
+          }
+        : {
+            backdropFilter:
+              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03)',
+            WebkitBackdropFilter:
+              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03)',
+          },
+    [isLight]
+  );
+
   const [projectName, setProjectName] = useState('');
   const [unit, setUnit] = useState('');
   const [valorTotal, setValorTotal] = useState(0);
@@ -231,21 +257,28 @@ export default function FinancialCalculator() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-700">
-      <div className="flex items-center gap-2 text-bv-muted">
+    <div
+      className="relative -mx-4 min-w-0 sm:-mx-6 lg:-mx-8"
+      data-bv-dashboard-canvas
+    >
+      <div className="relative z-10 mx-auto w-full max-w-7xl space-y-6 px-4 pb-1 animate-in fade-in slide-in-from-bottom-4 duration-700 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 text-bv-muted">
         <Layers className="h-5 w-5 shrink-0 text-bv-green" aria-hidden />
         <p className="text-xs font-medium uppercase tracking-[0.12em]">Simulação de obra / lançamento</p>
-      </div>
+        </div>
 
-      <form
-        onSubmit={handleGerarFluxo}
-        className="flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:items-stretch lg:gap-x-8 lg:gap-y-6"
-      >
+        <form
+          onSubmit={handleGerarFluxo}
+          className="flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:items-stretch lg:gap-x-8 lg:gap-y-6"
+        >
         <div className="space-y-4 lg:col-span-4 lg:row-start-1 lg:self-start">
           <div className="space-y-4 lg:sticky lg:top-24 lg:space-y-4">
-            <div className="space-y-4 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
-              <h2 className="flex items-center gap-2 text-lg font-bold text-bv-text">
-                <Home className="h-5 w-5 text-bv-green" aria-hidden />
+            <div
+              className="glass bv-card-hover space-y-4 rounded-3xl p-5 sm:p-6"
+              style={glassBackdropStyle}
+            >
+              <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">
+                <Home className="h-5 w-5 shrink-0 text-bv-text" aria-hidden />
                 Dados do imóvel
               </h2>
               <div className="space-y-2">
@@ -293,11 +326,10 @@ export default function FinancialCalculator() {
             </div>
 
             <div
-              className={`rounded-xl border px-4 py-3 text-center text-sm font-medium ${
-                pctOk
-                  ? 'border-bv-green/30 bg-bv-green/5 text-bv-green'
-                  : 'border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-200'
+              className={`glass bv-card-hover rounded-2xl px-4 py-3 text-center text-sm font-medium ${
+                pctOk ? 'text-bv-green' : 'text-amber-700 dark:text-amber-200'
               }`}
+              style={glassBackdropStyle}
               role="status"
             >
               Soma das percentagens:{' '}
@@ -307,7 +339,7 @@ export default function FinancialCalculator() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:col-span-8 lg:row-span-2 lg:row-start-1 lg:gap-5 xl:gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:col-span-8 lg:row-span-2 lg:row-start-1 xl:gap-6">
           {FLOW_SECTIONS.map(({ key, label }) => (
             <FlowPhaseCard
               key={key}
@@ -319,6 +351,7 @@ export default function FinancialCalculator() {
               valorParcela={phaseProps[key].valorParcela}
               valorTotalOk={valorTotalOk}
               pctOk={pctOk}
+              glassBackdropStyle={glassBackdropStyle}
             />
           ))}
         </div>
@@ -329,47 +362,51 @@ export default function FinancialCalculator() {
             Gerar fluxo de pagamento
           </button>
         </div>
-      </form>
+        </form>
 
-      {flowConfirmed && buckets ? (
-        <div className="rounded-2xl border border-bv-green/25 bg-bv-green/5 p-4 text-sm text-bv-muted sm:p-5 lg:p-6">
-          <p className="mb-4 font-semibold text-bv-text">Resumo</p>
-          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-            <li className="list-none rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/25 px-3 py-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Entrada</span>
-              <p className="mt-1 text-bv-text">
-                {flow.parcelasEntrada} × {formatCurrency(buckets.entrada.valorParcela)}
-              </p>
-              <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.entrada.totalFase)}</p>
-            </li>
-            <li className="list-none rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/25 px-3 py-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Mensais</span>
-              <p className="mt-1 text-bv-text">
-                {flow.parcelasMensais} × {formatCurrency(buckets.mensais.valorParcela)}
-              </p>
-              <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.mensais.totalFase)}</p>
-            </li>
-            <li className="list-none rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/25 px-3 py-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Intercaladas</span>
-              <p className="mt-1 text-bv-text">
-                {flow.parcelasIntercaladas} × {formatCurrency(buckets.intercaladas.valorParcela)}
-              </p>
-              <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.intercaladas.totalFase)}</p>
-            </li>
-            <li className="list-none rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/25 px-3 py-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Chaves</span>
-              <p className="mt-1 text-bv-text">
-                {flow.parcelasChaves} × {formatCurrency(buckets.chaves.valorParcela)}
-              </p>
-              <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.chaves.totalFase)}</p>
-            </li>
-          </ul>
-        </div>
-      ) : null}
+        {flowConfirmed && buckets ? (
+          <div
+            className="glass bv-card-hover rounded-3xl p-4 text-sm text-bv-muted sm:p-5 lg:p-6"
+            style={glassBackdropStyle}
+          >
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">Resumo</p>
+            <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+              <li className="list-none rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Entrada</span>
+                <p className="mt-1 text-bv-text">
+                  {flow.parcelasEntrada} × {formatCurrency(buckets.entrada.valorParcela)}
+                </p>
+                <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.entrada.totalFase)}</p>
+              </li>
+              <li className="list-none rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Mensais</span>
+                <p className="mt-1 text-bv-text">
+                  {flow.parcelasMensais} × {formatCurrency(buckets.mensais.valorParcela)}
+                </p>
+                <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.mensais.totalFase)}</p>
+              </li>
+              <li className="list-none rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Intercaladas</span>
+                <p className="mt-1 text-bv-text">
+                  {flow.parcelasIntercaladas} × {formatCurrency(buckets.intercaladas.valorParcela)}
+                </p>
+                <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.intercaladas.totalFase)}</p>
+              </li>
+              <li className="list-none rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Chaves</span>
+                <p className="mt-1 text-bv-text">
+                  {flow.parcelasChaves} × {formatCurrency(buckets.chaves.valorParcela)}
+                </p>
+                <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.chaves.totalFase)}</p>
+              </li>
+            </ul>
+          </div>
+        ) : null}
 
-      <p className="pb-8 text-center text-[10px] text-bv-muted">
-        © {new Date().getFullYear()} BrokerVision. Todos os direitos reservados.
-      </p>
+        <p className="pb-8 text-center text-[10px] text-bv-muted">
+          © {new Date().getFullYear()} BrokerVision. Todos os direitos reservados.
+        </p>
+      </div>
     </div>
   );
 }
