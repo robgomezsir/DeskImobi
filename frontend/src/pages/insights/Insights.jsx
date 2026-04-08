@@ -21,6 +21,7 @@ import {
 } from 'recharts';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { PageToolbar } from '../../components/layout/PageToolbar';
 
 const insights = BV_MODULES.insights;
 
@@ -36,24 +37,28 @@ const marketData = [
 export default function Insights() {
   useRegisterAppToolbar(
     () => (
-      <div className="flex w-full min-w-0 flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div className="min-w-0">
-          <div className="mb-1 flex items-center gap-2">
+      <PageToolbar
+        stackBreakpoint="lg"
+        rowAlign="end"
+        title={insights.officialName}
+        subtitle={insights.tagline}
+        kicker={
+          <div className="flex items-center gap-2">
             <Sparkles size={18} className="text-bv-green shadow-glow" />
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-bv-green">IA Ativa • Sovereign Analyst</span>
           </div>
-          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{insights.officialName}</h1>
-          <p className="truncate text-sm text-bv-muted">{insights.tagline}</p>
-        </div>
-        <div className="relative w-full shrink-0 lg:max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-bv-muted" size={18} />
-          <input
-            type="text"
-            placeholder="Analisar bairro ou região..."
-            className="h-11 w-full rounded-xl border border-[var(--line)] bg-bv-surface-muted pl-10 pr-4 text-sm text-bv-text outline-none transition-all placeholder:text-bv-muted focus:border-bv-green/50"
-          />
-        </div>
-      </div>
+        }
+        actions={
+          <div className="relative w-full shrink-0 lg:max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-bv-muted" size={18} />
+            <input
+              type="text"
+              placeholder="Analisar bairro ou região..."
+              className="h-11 w-full rounded-xl border border-[var(--line)] bg-bv-surface-muted pl-10 pr-4 text-sm text-bv-text outline-none transition-all placeholder:text-bv-muted focus:border-bv-green/50"
+            />
+          </div>
+        }
+      />
     ),
     []
   );

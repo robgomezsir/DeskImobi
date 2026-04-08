@@ -24,6 +24,7 @@ import {
 } from 'recharts';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { PageToolbar } from '../../components/layout/PageToolbar';
 
 const dashboard = BV_MODULES.dashboard;
 const flowModule = BV_MODULES.flow;
@@ -79,18 +80,18 @@ export default function Dashboard() {
 
   useRegisterAppToolbar(
     () => (
-      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{dashboard.officialName}</h1>
-          <p className="truncate text-sm text-bv-muted">{dashboard.tagline}</p>
-        </div>
-        <div className="hidden shrink-0 gap-2 sm:flex">
-          <div className="glass flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-bv-muted">
-            <Activity size={16} className="text-bv-green" />
-            Tempo Real: Ativo
+      <PageToolbar
+        title={dashboard.officialName}
+        subtitle={dashboard.tagline}
+        actions={
+          <div className="hidden shrink-0 gap-2 sm:flex">
+            <div className="glass flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-bv-muted">
+              <Activity size={16} className="text-bv-green" />
+              Tempo Real: Ativo
+            </div>
           </div>
-        </div>
-      </div>
+        }
+      />
     ),
     []
   );

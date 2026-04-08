@@ -14,6 +14,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { PageToolbar } from '../../components/layout/PageToolbar';
 
 const flow = BV_MODULES.flow;
 
@@ -52,12 +53,7 @@ export default function MessageGenerator() {
   };
 
   useRegisterAppToolbar(
-    () => (
-      <div className="mx-auto w-full max-w-6xl min-w-0">
-        <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{flow.officialName}</h1>
-        <p className="truncate text-sm text-bv-muted">{flow.tagline}</p>
-      </div>
-    ),
+    () => <PageToolbar constrainWidth title={flow.officialName} subtitle={flow.tagline} />,
     []
   );
 

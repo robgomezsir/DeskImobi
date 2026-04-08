@@ -20,6 +20,7 @@ import AddClientModal from './AddClientModal';
 import axios from 'axios'; // For backend AI call
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { PageToolbar } from '../../components/layout/PageToolbar';
 
 const crm = BV_MODULES.crm;
 
@@ -84,16 +85,16 @@ export default function CRM() {
 
   useRegisterAppToolbar(
     () => (
-      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{crm.officialName}</h1>
-          <p className="truncate text-sm text-bv-muted">{crm.tagline}</p>
-        </div>
-        <button type="button" onClick={() => setIsModalOpen(true)} className="btn btn-primary h-11 shrink-0 px-5">
-          <Plus size={20} />
-          Novo Cliente
-        </button>
-      </div>
+      <PageToolbar
+        title={crm.officialName}
+        subtitle={crm.tagline}
+        actions={
+          <button type="button" onClick={() => setIsModalOpen(true)} className="btn btn-primary h-11 shrink-0 px-5">
+            <Plus size={20} />
+            Novo Cliente
+          </button>
+        }
+      />
     ),
     []
   );

@@ -20,6 +20,7 @@ import {
 } from 'recharts';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { PageToolbar } from '../../components/layout/PageToolbar';
 
 const finance = BV_MODULES.finance;
 
@@ -43,15 +44,16 @@ const commissions = [
 export default function Finance() {
   useRegisterAppToolbar(
     () => (
-      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{finance.officialName}</h1>
-          <p className="truncate text-sm text-bv-muted">{finance.tagline}</p>
-        </div>
-        <button type="button" className="btn btn-primary h-11 px-5 font-bold text-black sm:shrink-0">
-          Novo Lançamento
-        </button>
-      </div>
+      <PageToolbar
+        title={finance.officialName}
+        subtitle={finance.tagline}
+        rowAlign="end"
+        actions={
+          <button type="button" className="btn btn-primary h-11 px-5 font-bold text-black sm:shrink-0">
+            Novo Lançamento
+          </button>
+        }
+      />
     ),
     []
   );

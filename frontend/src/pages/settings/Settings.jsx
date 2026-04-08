@@ -1,12 +1,10 @@
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { PageToolbar } from '../../components/layout/PageToolbar';
 
 export default function Settings() {
   useRegisterAppToolbar(
     () => (
-      <div className="min-w-0">
-        <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">Configurações</h1>
-        <p className="truncate text-sm text-bv-muted">Preferências da conta e do sistema</p>
-      </div>
+      <PageToolbar title="Configurações" subtitle="Preferências da conta e do sistema" />
     ),
     []
   );
