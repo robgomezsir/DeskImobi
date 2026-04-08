@@ -26,6 +26,8 @@ export function Layout() {
     setToolbarLeading(node);
   }, []);
 
+  const closeMobileDrawer = useCallback(() => setMobileDrawerOpen(false), []);
+
   useEffect(() => {
     setMobileDrawerOpen(false);
   }, [location.pathname]);
@@ -44,8 +46,8 @@ export function Layout() {
 
   const mainColClass = isMdUp
     ? sidebarCollapsed
-      ? 'flex flex-1 min-w-0 flex-col bg-transparent ml-20 transition-[margin] duration-200 ease-out'
-      : 'flex flex-1 min-w-0 flex-col bg-transparent ml-64 transition-[margin] duration-200 ease-out'
+      ? 'flex flex-1 min-w-0 flex-col bg-transparent ml-20 transition-[margin] duration-200 ease-out motion-reduce:transition-none motion-reduce:duration-0'
+      : 'flex flex-1 min-w-0 flex-col bg-transparent ml-64 transition-[margin] duration-200 ease-out motion-reduce:transition-none motion-reduce:duration-0'
     : 'flex min-h-0 w-full min-w-0 flex-1 flex-col bg-transparent';
 
   return (
@@ -55,7 +57,7 @@ export function Layout() {
           type="button"
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
           aria-label="Fechar menu"
-          onClick={() => setMobileDrawerOpen(false)}
+          onClick={closeMobileDrawer}
         />
       ) : null}
 
@@ -64,7 +66,7 @@ export function Layout() {
         onToggleSidebar={toggleSidebar}
         isMobileLayout={!isMdUp}
         mobileDrawerOpen={mobileDrawerOpen}
-        onCloseMobile={() => setMobileDrawerOpen(false)}
+        onCloseMobile={closeMobileDrawer}
       />
       <div className={mainColClass}>
         <SetAppToolbarContext.Provider value={setToolbar}>
