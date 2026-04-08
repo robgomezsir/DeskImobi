@@ -13,6 +13,7 @@ import {
 import { toast } from 'sonner';
 import { generateLeadProposalPDF } from '../../services/pdf.service';
 import { BV_MODULES } from '../../constants/brandModules';
+import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 
 const calc = BV_MODULES.calc;
 
@@ -73,23 +74,25 @@ export default function FinancialCalculator() {
     }).format(val);
   };
 
-  return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{calc.officialName}</h1>
-          <p className="text-bv-muted">{calc.tagline}</p>
+  useRegisterAppToolbar(
+    () => (
+      <div className="mx-auto flex w-full max-w-6xl min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{calc.officialName}</h1>
+          <p className="truncate text-sm text-bv-muted">{calc.tagline}</p>
         </div>
-        <button 
-          onClick={handleExportPDF}
-          className="btn btn-outline h-12 gap-2"
-        >
+        <button type="button" onClick={handleExportPDF} className="btn btn-outline h-11 shrink-0 gap-2">
           <Download size={18} />
           Exportar PDF
         </button>
       </div>
+    ),
+    []
+  );
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  return (
+    <div className="mx-auto max-w-6xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Form Column */}
         <div className="lg:col-span-1">
           <div className="glass p-6 rounded-3xl space-y-6 border border-[var(--line)]">

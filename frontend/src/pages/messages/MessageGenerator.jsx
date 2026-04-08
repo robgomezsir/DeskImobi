@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
 import { BV_MODULES } from '../../constants/brandModules';
+import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 
 const flow = BV_MODULES.flow;
 
@@ -50,16 +51,19 @@ export default function MessageGenerator() {
     toast.success('Copiado para a área de transferência');
   };
 
-  return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{flow.officialName}</h1>
-          <p className="text-bv-muted">{flow.tagline}</p>
-        </div>
+  useRegisterAppToolbar(
+    () => (
+      <div className="mx-auto w-full max-w-6xl min-w-0">
+        <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{flow.officialName}</h1>
+        <p className="truncate text-sm text-bv-muted">{flow.tagline}</p>
       </div>
+    ),
+    []
+  );
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  return (
+    <div className="mx-auto max-w-6xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Form Column */}
         <div className="lg:col-span-1">
           <div className="glass p-6 rounded-3xl space-y-6 sticky top-24">

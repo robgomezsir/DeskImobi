@@ -20,6 +20,7 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { BV_MODULES } from '../../constants/brandModules';
+import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 
 const insights = BV_MODULES.insights;
 
@@ -33,29 +34,32 @@ const marketData = [
 ];
 
 export default function Insights() {
-  return (
-    <div className="space-y-8 animate-in fade-in duration-700">
-      <div className="flex justify-between items-end">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles size={20} className="text-bv-green shadow-glow" />
-            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-bv-green">IA Ativa • Sovereign Analyst</span>
+  useRegisterAppToolbar(
+    () => (
+      <div className="flex w-full min-w-0 flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div className="min-w-0">
+          <div className="mb-1 flex items-center gap-2">
+            <Sparkles size={18} className="text-bv-green shadow-glow" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-bv-green">IA Ativa • Sovereign Analyst</span>
           </div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{insights.officialName}</h1>
-          <p className="text-bv-muted">{insights.tagline}</p>
+          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{insights.officialName}</h1>
+          <p className="truncate text-sm text-bv-muted">{insights.tagline}</p>
         </div>
-        <div className="flex gap-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-bv-muted" size={18} />
-            <input 
-              type="text" 
-              placeholder="Analisar bairro ou região..." 
-              className="w-full bg-bv-surface-muted border border-[var(--line)] rounded-xl pl-10 pr-4 h-12 outline-none focus:border-bv-green/50 transition-all text-sm text-bv-text placeholder:text-bv-muted w-64"
-            />
-          </div>
+        <div className="relative w-full shrink-0 lg:max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-bv-muted" size={18} />
+          <input
+            type="text"
+            placeholder="Analisar bairro ou região..."
+            className="h-11 w-full rounded-xl border border-[var(--line)] bg-bv-surface-muted pl-10 pr-4 text-sm text-bv-text outline-none transition-all placeholder:text-bv-muted focus:border-bv-green/50"
+          />
         </div>
       </div>
+    ),
+    []
+  );
 
+  return (
+    <div className="space-y-8 animate-in fade-in duration-700">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}

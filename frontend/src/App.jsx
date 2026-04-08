@@ -10,6 +10,7 @@ import FinancialCalculator from './pages/calculator/FinancialCalculator';
 import MessageGenerator from './pages/messages/MessageGenerator';
 import Finance from './pages/finance/Finance';
 import Insights from './pages/insights/Insights';
+import Settings from './pages/settings/Settings';
 
 const PageTransition = ({ children }) => (
   <motion.div
@@ -44,7 +45,7 @@ function App() {
             <Route path="/insights" element={<PageTransition><Insights /></PageTransition>} />
             
             {/* Fallbacks/Aliases */}
-            <Route path="/settings" element={<PageTransition><div className="text-3xl font-display font-bold">Configurações</div></PageTransition>} />
+            <Route path="/settings" element={<PageTransition><Settings /></PageTransition>} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>
         </Route>

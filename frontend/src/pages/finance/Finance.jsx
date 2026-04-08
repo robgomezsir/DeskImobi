@@ -19,6 +19,7 @@ import {
   Cell
 } from 'recharts';
 import { BV_MODULES } from '../../constants/brandModules';
+import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 
 const finance = BV_MODULES.finance;
 
@@ -40,18 +41,23 @@ const commissions = [
 ];
 
 export default function Finance() {
-  return (
-    <div className="space-y-8 animate-in fade-in duration-700">
-      <div className="flex justify-between items-end">
-        <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{finance.officialName}</h1>
-          <p className="text-bv-muted">{finance.tagline}</p>
+  useRegisterAppToolbar(
+    () => (
+      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{finance.officialName}</h1>
+          <p className="truncate text-sm text-bv-muted">{finance.tagline}</p>
         </div>
-        <button className="btn btn-primary px-6 h-12 text-black font-bold">
+        <button type="button" className="btn btn-primary h-11 px-5 font-bold text-black sm:shrink-0">
           Novo Lançamento
         </button>
       </div>
+    ),
+    []
+  );
 
+  return (
+    <div className="space-y-8 animate-in fade-in duration-700">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}

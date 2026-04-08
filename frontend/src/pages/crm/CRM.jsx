@@ -19,6 +19,7 @@ import {
 import AddClientModal from './AddClientModal';
 import axios from 'axios'; // For backend AI call
 import { BV_MODULES } from '../../constants/brandModules';
+import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 
 const crm = BV_MODULES.crm;
 
@@ -81,23 +82,25 @@ export default function CRM() {
     }
   };
 
-  return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{crm.officialName}</h1>
-          <p className="text-bv-muted">{crm.tagline}</p>
+  useRegisterAppToolbar(
+    () => (
+      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{crm.officialName}</h1>
+          <p className="truncate text-sm text-bv-muted">{crm.tagline}</p>
         </div>
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="btn btn-primary h-12 px-6"
-        >
+        <button type="button" onClick={() => setIsModalOpen(true)} className="btn btn-primary h-11 shrink-0 px-5">
           <Plus size={20} />
           Novo Cliente
         </button>
       </div>
+    ),
+    []
+  );
 
-      <div className="flex flex-col md:flex-row gap-4">
+  return (
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1 group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted group-focus-within:text-bv-green transition-colors" size={18} />
           <input 

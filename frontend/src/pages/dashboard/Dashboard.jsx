@@ -23,6 +23,7 @@ import {
   Area
 } from 'recharts';
 import { BV_MODULES } from '../../constants/brandModules';
+import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 
 const dashboard = BV_MODULES.dashboard;
 const flowModule = BV_MODULES.flow;
@@ -76,6 +77,24 @@ export default function Dashboard() {
     fetchMetrics();
   }, [user]);
 
+  useRegisterAppToolbar(
+    () => (
+      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{dashboard.officialName}</h1>
+          <p className="truncate text-sm text-bv-muted">{dashboard.tagline}</p>
+        </div>
+        <div className="hidden shrink-0 gap-2 sm:flex">
+          <div className="glass flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-bv-muted">
+            <Activity size={16} className="text-bv-green" />
+            Tempo Real: Ativo
+          </div>
+        </div>
+      </div>
+    ),
+    []
+  );
+
   const cards = [
     { title: 'Base de Clientes', value: metrics.totalClients, icon: Users, color: 'text-bv-text', bg: 'bg-bv-surface-muted' },
     { title: 'Novos Leads (7d)', value: metrics.newLeads, icon: Target, color: 'text-bv-green', bg: 'bg-bv-green/10' },
@@ -85,19 +104,6 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
-      <div className="flex justify-between items-end">
-        <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{dashboard.officialName}</h1>
-          <p className="text-bv-muted">{dashboard.tagline}</p>
-        </div>
-        <div className="hidden md:flex gap-2">
-          <div className="glass px-4 py-2 rounded-xl flex items-center gap-2 text-sm text-bv-muted">
-            <Activity size={16} className="text-bv-green" />
-            Tempo Real: Ativo
-          </div>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card, i) => (
           <motion.div 
