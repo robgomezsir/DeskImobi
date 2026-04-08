@@ -40,7 +40,7 @@ function FlowPhaseCard({
   pctOk,
 }) {
   return (
-    <div className="space-y-4 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
+    <div className="flex h-full min-h-0 flex-col space-y-4 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <h3 className="text-base font-bold uppercase tracking-[0.06em] text-bv-text">{title}</h3>
         <span className="text-lg font-bold tabular-nums text-bv-text">{pct}%</span>
@@ -231,76 +231,83 @@ export default function FinancialCalculator() {
   };
 
   return (
-    <div className="mx-auto max-w-lg animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-700">
+    <div className="mx-auto w-full max-w-7xl animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-700">
       <div className="flex items-center gap-2 text-bv-muted">
         <Layers className="h-5 w-5 shrink-0 text-bv-green" aria-hidden />
         <p className="text-xs font-medium uppercase tracking-[0.12em]">Simulação de obra / lançamento</p>
       </div>
 
-      <form onSubmit={handleGerarFluxo} className="space-y-6">
-        <div className="space-y-4 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
-          <h2 className="flex items-center gap-2 text-lg font-bold text-bv-text">
-            <Home className="h-5 w-5 text-bv-green" aria-hidden />
-            Dados do imóvel
-          </h2>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-bv-muted">Nome do empreendimento *</label>
-            <input
-              type="text"
-              required
-              className="input-field"
-              placeholder="Nome do empreendimento *"
-              value={projectName}
-              onChange={(e) => {
-                setProjectName(e.target.value);
-                setFlowConfirmed(false);
-              }}
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-bv-muted">Unidade</label>
-            <input
-              type="text"
-              className="input-field"
-              placeholder="Unidade"
-              value={unit}
-              onChange={(e) => setUnit(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-bv-muted">Valor total do imóvel</label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted">R$</span>
-              <input
-                type="number"
-                min={0}
-                step={1000}
-                className="input-field pl-12"
-                placeholder="0"
-                value={valorTotal || ''}
-                onChange={(e) => {
-                  setValorTotal(Number(e.target.value));
-                  setFlowConfirmed(false);
-                }}
-              />
+      <form
+        onSubmit={handleGerarFluxo}
+        className="flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:items-stretch lg:gap-x-8 lg:gap-y-6"
+      >
+        <div className="space-y-4 lg:col-span-4 lg:row-start-1 lg:self-start">
+          <div className="space-y-4 lg:sticky lg:top-24 lg:space-y-4">
+            <div className="space-y-4 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
+              <h2 className="flex items-center gap-2 text-lg font-bold text-bv-text">
+                <Home className="h-5 w-5 text-bv-green" aria-hidden />
+                Dados do imóvel
+              </h2>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-bv-muted">Nome do empreendimento *</label>
+                <input
+                  type="text"
+                  required
+                  className="input-field"
+                  placeholder="Nome do empreendimento *"
+                  value={projectName}
+                  onChange={(e) => {
+                    setProjectName(e.target.value);
+                    setFlowConfirmed(false);
+                  }}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-bv-muted">Unidade</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="Unidade"
+                  value={unit}
+                  onChange={(e) => setUnit(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-bv-muted">Valor total do imóvel</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted">R$</span>
+                  <input
+                    type="number"
+                    min={0}
+                    step={1000}
+                    className="input-field pl-12"
+                    placeholder="0"
+                    value={valorTotal || ''}
+                    onChange={(e) => {
+                      setValorTotal(Number(e.target.value));
+                      setFlowConfirmed(false);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`rounded-xl border px-4 py-3 text-center text-sm font-medium ${
+                pctOk
+                  ? 'border-bv-green/30 bg-bv-green/5 text-bv-green'
+                  : 'border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-200'
+              }`}
+              role="status"
+            >
+              Soma das percentagens:{' '}
+              <span className="tabular-nums">{pctSum.toFixed(1)}%</span>
+              {!pctOk ? ` — ajuste para 100% (referência: 10% + 60% + 10% + 20%).` : null}
             </div>
           </div>
         </div>
 
-        <div
-          className={`rounded-xl border px-4 py-3 text-center text-sm font-medium ${
-            pctOk
-              ? 'border-bv-green/30 bg-bv-green/5 text-bv-green'
-              : 'border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-200'
-          }`}
-          role="status"
-        >
-          Soma das percentagens:{' '}
-          <span className="tabular-nums">{pctSum.toFixed(1)}%</span>
-          {!pctOk ? ` — ajuste para 100% (referência: 10% + 60% + 10% + 20%).` : null}
-        </div>
-
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:col-span-8 lg:row-span-2 lg:row-start-1 lg:gap-5 xl:gap-6">
           {FLOW_SECTIONS.map(({ key, label }) => (
             <FlowPhaseCard
               key={key}
@@ -316,32 +323,45 @@ export default function FinancialCalculator() {
           ))}
         </div>
 
-        <button type="submit" className="btn btn-primary h-12 w-full font-bold text-black">
-          <Calculator className="mr-2 inline h-5 w-5 align-middle" aria-hidden />
-          Gerar fluxo de pagamento
-        </button>
+        <div className="lg:col-span-4 lg:row-start-2 lg:self-end">
+          <button type="submit" className="btn btn-primary h-12 w-full font-bold text-black">
+            <Calculator className="mr-2 inline h-5 w-5 align-middle" aria-hidden />
+            Gerar fluxo de pagamento
+          </button>
+        </div>
       </form>
 
       {flowConfirmed && buckets ? (
-        <div className="rounded-2xl border border-bv-green/25 bg-bv-green/5 p-4 text-sm text-bv-muted sm:p-5">
-          <p className="font-semibold text-bv-text">Resumo</p>
-          <ul className="mt-3 list-inside list-disc space-y-1">
-            <li>
-              Entrada: {flow.parcelasEntrada} × {formatCurrency(buckets.entrada.valorParcela)} (
-              {formatCurrency(buckets.entrada.totalFase)})
+        <div className="rounded-2xl border border-bv-green/25 bg-bv-green/5 p-4 text-sm text-bv-muted sm:p-5 lg:p-6">
+          <p className="mb-4 font-semibold text-bv-text">Resumo</p>
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+            <li className="list-none rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/25 px-3 py-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Entrada</span>
+              <p className="mt-1 text-bv-text">
+                {flow.parcelasEntrada} × {formatCurrency(buckets.entrada.valorParcela)}
+              </p>
+              <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.entrada.totalFase)}</p>
             </li>
-            <li>
-              Mensais: {flow.parcelasMensais} × {formatCurrency(buckets.mensais.valorParcela)} (
-              {formatCurrency(buckets.mensais.totalFase)})
+            <li className="list-none rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/25 px-3 py-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Mensais</span>
+              <p className="mt-1 text-bv-text">
+                {flow.parcelasMensais} × {formatCurrency(buckets.mensais.valorParcela)}
+              </p>
+              <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.mensais.totalFase)}</p>
             </li>
-            <li>
-              Intercaladas: {flow.parcelasIntercaladas} ×{' '}
-              {formatCurrency(buckets.intercaladas.valorParcela)} (
-              {formatCurrency(buckets.intercaladas.totalFase)})
+            <li className="list-none rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/25 px-3 py-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Intercaladas</span>
+              <p className="mt-1 text-bv-text">
+                {flow.parcelasIntercaladas} × {formatCurrency(buckets.intercaladas.valorParcela)}
+              </p>
+              <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.intercaladas.totalFase)}</p>
             </li>
-            <li>
-              Chaves: {flow.parcelasChaves} × {formatCurrency(buckets.chaves.valorParcela)} (
-              {formatCurrency(buckets.chaves.totalFase)})
+            <li className="list-none rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/25 px-3 py-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-bv-green">Chaves</span>
+              <p className="mt-1 text-bv-text">
+                {flow.parcelasChaves} × {formatCurrency(buckets.chaves.valorParcela)}
+              </p>
+              <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.chaves.totalFase)}</p>
             </li>
           </ul>
         </div>
