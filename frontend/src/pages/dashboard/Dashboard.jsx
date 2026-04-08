@@ -36,8 +36,8 @@ const data = [
 
 const ACCENT = '#00F5A0';
 
-/** Fundo artístico do Dashboard — `public/dashboard-bg.jpg` (query evita cache antigo após atualizar o ficheiro) */
-const DASHBOARD_BG_URL = '/dashboard-bg.jpg?v=2';
+/** Fundo artístico do Dashboard — `public/dashboard-bg.png` (BG BLACK brand) */
+const DASHBOARD_BG_URL = '/dashboard-bg.png?v=1';
 
 export default function Dashboard() {
   const [metrics, setMetrics] = useState({
