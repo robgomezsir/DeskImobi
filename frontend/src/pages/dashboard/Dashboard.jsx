@@ -223,7 +223,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="glass flex min-h-[300px] flex-col rounded-3xl p-4 sm:min-h-[360px] sm:rounded-3xl sm:p-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-8"
+          className="glass bv-card-hover flex min-h-[300px] flex-col rounded-3xl p-4 sm:min-h-[360px] sm:rounded-3xl sm:p-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-8"
           style={glassBackdropStyle}
         >
           <div className="mb-4 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
@@ -279,7 +279,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="glass flex flex-col rounded-3xl p-4 sm:rounded-3xl sm:p-6 lg:p-8"
+          className="glass bv-card-hover flex flex-col rounded-3xl p-4 sm:rounded-3xl sm:p-6 lg:p-8"
           style={glassBackdropStyle}
         >
           <div className="mb-6 flex items-center gap-3 sm:mb-8">

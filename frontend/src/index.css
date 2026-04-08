@@ -373,9 +373,11 @@ html.light {
       var(--glass-shadow);
   }
 
-  /** Hover cartão: brilho radial no preenchimento; contorno em gradiente preservado */
+  /** Hover cartão: brilho radial no interior (brand card_system.hover_effect — não “acender” só a borda) */
   .bv-card-hover {
-    transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+      background 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .bv-card-hover:hover {
@@ -465,20 +467,36 @@ html.light {
       0 12px 48px rgba(0, 0, 0, 0.28);
   }
 
-  /** card_system.hover_effect: clarão radial no topo, sem glow na borda */
+  /**
+   * Hover dashboard: halo verde suave no topo-interior (referência UI),
+   * + inset shadow difuso — anel exterior mantém-se discreto (não é o foco).
+   */
   [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
   [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
     transform: none;
     background:
       radial-gradient(
-        ellipse 120% 90% at 50% 0%,
-        rgba(var(--accent-rgb), 0.26) 0%,
-        transparent 58%
+        ellipse 140% 100% at 50% -12%,
+        rgba(var(--accent-rgb), 0.45) 0%,
+        rgba(var(--accent-rgb), 0.16) 32%,
+        rgba(var(--accent-rgb), 0.04) 52%,
+        transparent 72%
+      ),
+      linear-gradient(
+        165deg,
+        rgba(0, 245, 160, 0.07) 0%,
+        rgba(0, 0, 0, 0.04) 48%,
+        rgba(0, 12, 8, 0.09) 100%
       ),
       rgba(0, 0, 0, 0.3),
       var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
+    box-shadow:
+      inset 0 52px 110px -36px rgba(0, 245, 160, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 0 0 1px rgba(var(--accent-rgb), 0.14),
+      0 12px 48px rgba(0, 0, 0, 0.26);
   }
 
   html.light [data-bv-dashboard-canvas] .glass,
@@ -505,13 +523,25 @@ html.light {
     transform: none;
     background:
       radial-gradient(
-        ellipse 120% 90% at 50% 0%,
-        rgba(var(--accent-rgb), 0.2) 0%,
-        transparent 58%
+        ellipse 140% 100% at 50% -12%,
+        rgba(var(--accent-rgb), 0.28) 0%,
+        rgba(var(--accent-rgb), 0.1) 34%,
+        rgba(var(--accent-rgb), 0.03) 52%,
+        transparent 72%
       ),
-      rgba(255, 255, 255, 0.45),
+      linear-gradient(
+        170deg,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(255, 255, 255, 0.08) 100%
+      ),
+      rgba(255, 255, 255, 0.48),
       var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
+    box-shadow:
+      inset 0 48px 100px -34px rgba(0, 245, 160, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      0 0 0 1px rgba(var(--accent-rgb), 0.14),
+      0 12px 40px rgba(0, 0, 0, 0.06);
   }
 }
