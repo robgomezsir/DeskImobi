@@ -14,19 +14,25 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 import logoWhite from '../../assets/logo-white.png';
+import { BV_MODULE_KEYS, BV_MODULES } from '../../constants/brandModules';
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-const navItems = [
-  { name: 'BV Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { name: 'BV CRM', icon: Users, path: '/crm' },
-  { name: 'BV Calc', icon: Calculator, path: '/calculadora' },
-  { name: 'BV Finance', icon: Wallet, path: '/finance' },
-  { name: 'BV Flow', icon: Zap, path: '/mensagens' },
-  { name: 'BV Insights', icon: Sparkles, path: '/insights' },
-];
+const navIcons = {
+  dashboard: LayoutDashboard,
+  crm: Users,
+  calc: Calculator,
+  finance: Wallet,
+  flow: Zap,
+  insights: Sparkles,
+};
+
+const navItems = BV_MODULE_KEYS.map((key) => ({
+  ...BV_MODULES[key],
+  icon: navIcons[key],
+}));
 
 export function Sidebar() {
   const location = useLocation();
@@ -53,7 +59,7 @@ export function Sidebar() {
               )}
             >
               <item.icon size={20} className={cn(isActive ? "text-bv-green" : "group-hover:text-white")} />
-              <span className="font-medium">{item.name}</span>
+              <span className="font-medium">{item.officialName}</span>
             </Link>
           );
         })}

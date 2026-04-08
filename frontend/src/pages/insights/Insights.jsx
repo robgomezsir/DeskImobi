@@ -19,6 +19,9 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from 'recharts';
+import { BV_MODULES } from '../../constants/brandModules';
+
+const insights = BV_MODULES.insights;
 
 const marketData = [
   { month: 'Jan', price: 8200 },
@@ -38,8 +41,8 @@ export default function Insights() {
             <Sparkles size={20} className="text-bv-green shadow-glow" />
             <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-bv-green">IA Ativa • Sovereign Analyst</span>
           </div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Insights</h1>
-          <p className="text-bv-white-ghost">O mercado fala. Você entende.</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{insights.officialName}</h1>
+          <p className="text-bv-white-ghost">{insights.tagline}</p>
         </div>
         <div className="flex gap-4">
           <div className="relative">

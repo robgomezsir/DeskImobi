@@ -18,6 +18,9 @@ import {
 } from 'lucide-react';
 import AddClientModal from './AddClientModal';
 import axios from 'axios'; // For backend AI call
+import { BV_MODULES } from '../../constants/brandModules';
+
+const crm = BV_MODULES.crm;
 
 export default function CRM() {
   const [clients, setClients] = useState([]);
@@ -82,8 +85,8 @@ export default function CRM() {
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV CRM</h1>
-          <p className="text-bv-white-ghost">Do primeiro contato ao fechamento.</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{crm.officialName}</h1>
+          <p className="text-bv-white-ghost">{crm.tagline}</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}

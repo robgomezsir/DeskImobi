@@ -12,6 +12,9 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { generateLeadProposalPDF } from '../../services/pdf.service';
+import { BV_MODULES } from '../../constants/brandModules';
+
+const calc = BV_MODULES.calc;
 
 export default function FinancialCalculator() {
   const [formData, setFormData] = useState({
@@ -74,8 +77,8 @@ export default function FinancialCalculator() {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Calc</h1>
-          <p className="text-bv-white-ghost">Simule. Decida. Feche.</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{calc.officialName}</h1>
+          <p className="text-bv-white-ghost">{calc.tagline}</p>
         </div>
         <button 
           onClick={handleExportPDF}

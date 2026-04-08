@@ -22,6 +22,10 @@ import {
   AreaChart,
   Area
 } from 'recharts';
+import { BV_MODULES } from '../../constants/brandModules';
+
+const dashboard = BV_MODULES.dashboard;
+const flowModule = BV_MODULES.flow;
 
 const data = [
   { name: 'Jan', leads: 400, sales: 24 },
@@ -83,8 +87,8 @@ export default function Dashboard() {
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Dashboard</h1>
-          <p className="text-bv-white-ghost">Sua performance em tempo real.</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{dashboard.officialName}</h1>
+          <p className="text-bv-white-ghost">{dashboard.tagline}</p>
         </div>
         <div className="hidden md:flex gap-2">
           <div className="glass px-4 py-2 rounded-xl flex items-center gap-2 text-sm text-gray-400">
@@ -177,7 +181,7 @@ export default function Dashboard() {
                 Você tem <span className="text-bv-green font-bold">3 clientes</span> estagnados há mais de 10 dias.
               </p>
               <button className="btn btn-primary w-full py-2 h-10 text-xs text-black font-bold">
-                BV Flow: Reativar Agora
+                {flowModule.officialName}: Reativar Agora
               </button>
             </div>
 

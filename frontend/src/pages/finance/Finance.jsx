@@ -18,6 +18,9 @@ import {
   ResponsiveContainer,
   Cell
 } from 'recharts';
+import { BV_MODULES } from '../../constants/brandModules';
+
+const finance = BV_MODULES.finance;
 
 const COLORS = ['#00E87A', '#FFFFFF', '#9A9A9A', '#333333'];
 
@@ -41,8 +44,8 @@ export default function Finance() {
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Finance</h1>
-          <p className="text-bv-white-ghost">Cada comissão no lugar certo.</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{finance.officialName}</h1>
+          <p className="text-bv-white-ghost">{finance.tagline}</p>
         </div>
         <button className="btn btn-primary px-6 h-12 text-black font-bold">
           Novo Lançamento

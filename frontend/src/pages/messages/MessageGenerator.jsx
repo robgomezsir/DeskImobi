@@ -12,6 +12,9 @@ import {
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
+import { BV_MODULES } from '../../constants/brandModules';
+
+const flow = BV_MODULES.flow;
 
 export default function MessageGenerator() {
   const { session } = useAuth();
@@ -51,8 +54,8 @@ export default function MessageGenerator() {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Flow</h1>
-          <p className="text-bv-white-ghost">Trabalhe menos. Produza mais.</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{flow.officialName}</h1>
+          <p className="text-bv-white-ghost">{flow.tagline}</p>
         </div>
       </div>
 
