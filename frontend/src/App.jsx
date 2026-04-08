@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Layout } from './components/layout/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Login from './pages/auth/Login';
@@ -12,17 +12,20 @@ import Finance from './pages/finance/Finance';
 import Insights from './pages/insights/Insights';
 import Settings from './pages/settings/Settings';
 
-const PageTransition = ({ children }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -10 }}
-    transition={{ duration: 0.3, ease: 'easeOut' }}
-    className="h-full min-h-0 min-w-0 w-full"
-  >
-    {children}
-  </motion.div>
-);
+function PageTransition({ children }) {
+  const reduceMotion = useReducedMotion();
+  return (
+    <motion.div
+      initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : -10 }}
+      transition={{ duration: reduceMotion ? 0 : 0.22, ease: 'easeOut' }}
+      className="h-full min-h-0 min-w-0 w-full"
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 function App() {
   const location = useLocation();

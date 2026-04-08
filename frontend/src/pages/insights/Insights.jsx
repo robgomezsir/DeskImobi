@@ -95,7 +95,7 @@ export default function Insights() {
                   contentStyle={{backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)'}}
                   itemStyle={{color: '#fff'}}
                 />
-                <Area type="monotone" dataKey="price" stroke="#00E87A" strokeWidth={3} fillOpacity={1} fill="url(#colorPrice)" />
+                <Area isAnimationActive={false} type="monotone" dataKey="price" stroke="#00E87A" strokeWidth={3} fillOpacity={1} fill="url(#colorPrice)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>

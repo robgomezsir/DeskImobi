@@ -55,7 +55,7 @@ export function Layout() {
       {!isMdUp && mobileDrawerOpen ? (
         <button
           type="button"
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-none md:hidden"
           aria-label="Fechar menu"
           onClick={closeMobileDrawer}
         />
@@ -70,7 +70,7 @@ export function Layout() {
       />
       <div className={mainColClass}>
         <SetAppToolbarContext.Provider value={setToolbar}>
-          <header className="flex shrink-0 items-center gap-2 border-b border-[var(--line-subtle)] bg-bv-page/90 px-4 py-3 backdrop-blur-sm sm:gap-3 sm:px-6 lg:px-8">
+          <header className="flex shrink-0 items-center gap-2 border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:gap-3 sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
             {!isMdUp ? (
               <button
                 type="button"
@@ -88,7 +88,7 @@ export function Layout() {
               <ThemeToggleButton />
             </div>
           </header>
-          <main className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-8 sm:pt-6 lg:px-8">
+          <main className="bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-8 sm:pt-6 lg:px-8">
             <Outlet />
           </main>
         </SetAppToolbarContext.Provider>

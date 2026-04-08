@@ -76,6 +76,7 @@ html.light {
 @utility glass {
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
@@ -87,6 +88,7 @@ html.light {
 @utility glass-card {
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   border-radius: 1.5rem;
@@ -110,6 +112,36 @@ html.light {
 
 @utility border-bv-line-subtle {
   border-color: var(--line-subtle);
+}
+
+/*
+ * Mobile: blur em camadas custa muito GPU e trava a rolagem. Fundo um pouco mais opaco compensa.
+ * Desktop: mantém vidro com blur.
+ */
+@media (max-width: 767.98px) {
+  html.dark {
+    --glass-bg: rgba(255, 255, 255, 0.075);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  html.light {
+    --glass-bg: rgba(0, 0, 0, 0.065);
+    --glass-border: rgba(0, 0, 0, 0.1);
+  }
+
+  .glass,
+  .glass-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 }
 
 @layer base {
@@ -185,5 +217,11 @@ html.light {
 
   .card-bv:hover {
     background: var(--hover-surface);
+  }
+
+  /** Área de rolagem principal: menos encadeamento com o body e inércia no iOS. */
+  .bv-scroll-root {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
   }
 }

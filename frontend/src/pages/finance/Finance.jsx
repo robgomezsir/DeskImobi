@@ -130,7 +130,7 @@ export default function Finance() {
                   contentStyle={{backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)'}}
                   itemStyle={{color: '#fff'}}
                 />
-                <Bar dataKey="comissao" radius={[6, 6, 0, 0]}>
+                <Bar isAnimationActive={false} dataKey="comissao" radius={[6, 6, 0, 0]}>
                   {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={index === 5 ? '#00E87A' : 'rgba(255,255,255,0.1)'} />
                   ))}

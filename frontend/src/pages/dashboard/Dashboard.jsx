@@ -159,11 +159,11 @@ export default function Dashboard() {
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#9A9A9A', fontSize: 12}} dy={10} />
                   <YAxis axisLine={false} tickLine={false} tick={{fill: '#9A9A9A', fontSize: 12}} />
                   <Tooltip 
-                    contentStyle={{backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)', backdropFilter: 'blur(20px)'}}
-                    itemStyle={{color: '#fff'}}
+                    contentStyle={{ backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}
+                    itemStyle={{ color: '#fff' }}
                   />
-                  <Area type="monotone" dataKey="leads" stroke="#00E87A" strokeWidth={3} fillOpacity={1} fill="url(#colorLeads)" />
-                  <Area type="monotone" dataKey="sales" stroke="#ffffff" strokeWidth={2} strokeDasharray="5 5" fillOpacity={0} />
+                  <Area isAnimationActive={false} type="monotone" dataKey="leads" stroke="#00E87A" strokeWidth={3} fillOpacity={1} fill="url(#colorLeads)" />
+                  <Area isAnimationActive={false} type="monotone" dataKey="sales" stroke="#ffffff" strokeWidth={2} strokeDasharray="5 5" fillOpacity={0} />
                 </AreaChart>
             </ResponsiveContainer>
           </div>

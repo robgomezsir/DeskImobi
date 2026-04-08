@@ -62,7 +62,7 @@ export default function MessageGenerator() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Form Column */}
         <div className="lg:col-span-1">
-          <div className="space-y-6 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto xl:top-24">
+          <div className="bv-scroll-root space-y-6 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto xl:top-24">
             <form onSubmit={handleGenerate} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-bv-muted">Etapa do Funil</label>
