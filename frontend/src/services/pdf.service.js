@@ -6,17 +6,18 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   const pageWidth = doc.internal.pageSize.getWidth();
   
   // Header
-  doc.setFillColor(31, 31, 31); // Dark background for header
+  doc.setFillColor(0, 0, 0); // Pure Black
   doc.rect(0, 0, pageWidth, 40, 'F');
   
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(22);
   doc.setTextColor(255, 255, 255);
-  doc.text('IMOBIFLOW AI', 15, 25);
+  doc.text('BROKERVISION', 15, 25);
   
   doc.setFontSize(10);
+  doc.setTextColor(0, 232, 122); // BV Green
   doc.setFont('helvetica', 'normal');
-  doc.text('PROPOSTA DE FINANCIAMENTO PERSONALIZADA', 15, 32);
+  doc.text('RELATÓRIO DE VIABILIDADE SOBERANA', 15, 32);
   
   // Client Info
   doc.setTextColor(31, 31, 31);
@@ -41,7 +42,7 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   doc.text('VALOR DA PARCELA MENSAL', 20, 115);
   
   doc.setFontSize(24);
-  doc.setTextColor(37, 99, 235); // Primary blue
+  doc.setTextColor(0, 232, 122); // BV Green
   doc.text(formatCurrency(simulationResults.monthlyPayment), 20, 130);
   
   doc.setFontSize(10);
@@ -61,12 +62,12 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   doc.text(`Total Geral Pago: ${formatCurrency(simulationResults.totalPaid)}`, 15, 192);
   
   // AI Insights
-  doc.setFillColor(239, 246, 255); // Light blue
+  doc.setFillColor(240, 250, 245); // Very light Green
   doc.rect(15, 210, pageWidth - 30, 40, 'F');
   
-  doc.setTextColor(29, 78, 216);
+  doc.setTextColor(0, 168, 84); // BV Green (Darker)
   doc.setFont('helvetica', 'bold');
-  doc.text('INSIGHT DE VIABILIDADE (IA)', 20, 222);
+  doc.text('ANÁLISE SOBERANA (INTELIGÊNCIA BV)', 20, 222);
   
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(9);
@@ -78,9 +79,9 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(156, 163, 175);
-  doc.text('Gerado automaticamente pelo ImobiFlow AI - O assistente inteligente do corretor.', pageWidth / 2, 285, { align: 'center' });
+  doc.text('Gerado pelo BrokerVision - The Sovereign Analyst of Real Estate.', pageWidth / 2, 285, { align: 'center' });
   
-  doc.save(`Proposta_Imobiflow_${Date.now()}.pdf`);
+  doc.save(`Relatorio_BrokerVision_${Date.now()}.pdf`);
 };
 
 const formatCurrency = (val) => {

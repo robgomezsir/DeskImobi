@@ -7,30 +7,24 @@ export default {
   theme: {
     extend: {
       colors: {
+        bv: {
+          green: '#00E87A',
+          'green-deep': '#00A854',
+          black: '#000000',
+          'black-soft': '#0A0A0A',
+          card: '#111111',
+          white: '#FFFFFF',
+          'white-soft': '#E8E8E8',
+          'white-ghost': '#9A9A9A',
+        },
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
+          DEFAULT: '#00E87A',
+          foreground: '#000000',
         },
-        dark: {
-          950: '#0a0a0a',
-          900: '#121212',
-          800: '#1e1e1e',
-          700: '#2d2d2d',
-        },
-        accent: '#f59e0b', // Ambar para destaque
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
-        display: ['Outfit', 'sans-serif'],
+        sans: ['Nunito', 'Inter', 'ui-sans-serif', 'system-ui'],
+        display: ['Nunito', 'sans-serif'],
       },
     },
   },

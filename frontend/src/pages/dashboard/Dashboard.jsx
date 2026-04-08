@@ -73,18 +73,18 @@ export default function Dashboard() {
   }, [user]);
 
   const cards = [
-    { title: 'Total de Clientes', value: metrics.totalClients, icon: Users, color: 'text-blue-400', bg: 'bg-blue-400/10' },
-    { title: 'Novos Leads (7d)', value: metrics.newLeads, icon: Target, color: 'text-primary-400', bg: 'bg-primary-400/10' },
-    { title: 'Em Negociação', value: metrics.activeNegotiations, icon: Activity, color: 'text-orange-400', bg: 'bg-orange-400/10' },
-    { title: 'Negócios Fechados', value: metrics.closedDeals, icon: CheckCircle2, color: 'text-green-400', bg: 'bg-green-400/10' },
+    { title: 'Base de Clientes', value: metrics.totalClients, icon: Users, color: 'text-white', bg: 'bg-white/5' },
+    { title: 'Novos Leads (7d)', value: metrics.newLeads, icon: Target, color: 'text-bv-green', bg: 'bg-bv-green/10' },
+    { title: 'Em Negociação', value: metrics.activeNegotiations, icon: Activity, color: 'text-white', bg: 'bg-white/5' },
+    { title: 'Contratos Fechados', value: metrics.closedDeals, icon: CheckCircle2, color: 'text-bv-green', bg: 'bg-bv-green/10' },
   ];
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight">Dashboard</h1>
-          <p className="text-gray-400">Bem-vindo de volta! Aqui está o resumo da sua performance.</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Dashboard</h1>
+          <p className="text-bv-white-ghost">Bem-vindo ao cockpit. Sua inteligência soberana está ativa.</p>
         </div>
         <div className="hidden md:flex gap-2">
           <div className="glass px-4 py-2 rounded-xl flex items-center gap-2 text-sm text-gray-400">
@@ -137,23 +137,23 @@ export default function Dashboard() {
           </div>
           <div className="flex-1 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data}>
-                <defs>
-                  <linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff05" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#6b7280', fontSize: 12}} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#6b7280', fontSize: 12}} />
-                <Tooltip 
-                  contentStyle={{backgroundColor: '#121212', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.5)'}}
-                  itemStyle={{color: '#fff'}}
-                />
-                <Area type="monotone" dataKey="leads" stroke="#0ea5e9" strokeWidth={3} fillOpacity={1} fill="url(#colorLeads)" />
-                <Area type="monotone" dataKey="sales" stroke="#f59e0b" strokeWidth={3} fillOpacity={0} />
-              </AreaChart>
+                <AreaChart data={data}>
+                  <defs>
+                    <linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#00E87A" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#00E87A" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff05" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#9A9A9A', fontSize: 12}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: '#9A9A9A', fontSize: 12}} />
+                  <Tooltip 
+                    contentStyle={{backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)', backdropFilter: 'blur(20px)'}}
+                    itemStyle={{color: '#fff'}}
+                  />
+                  <Area type="monotone" dataKey="leads" stroke="#00E87A" strokeWidth={3} fillOpacity={1} fill="url(#colorLeads)" />
+                  <Area type="monotone" dataKey="sales" stroke="#ffffff" strokeWidth={2} strokeDasharray="5 5" fillOpacity={0} />
+                </AreaChart>
             </ResponsiveContainer>
           </div>
         </motion.div>
@@ -173,11 +173,11 @@ export default function Dashboard() {
           
           <div className="space-y-6 flex-1">
             <div className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-3">
-              <p className="text-sm leading-relaxed">
-                Você tem <span className="text-orange-400 font-bold">3 clientes</span> parados há mais de 10 dias no estágio de negociação.
+              <p className="text-sm leading-relaxed text-bv-white">
+                Você tem <span className="text-bv-green font-bold">3 clientes</span> estagnados há mais de 10 dias.
               </p>
-              <button className="btn btn-primary w-full py-2 h-10 text-xs text-white">
-                Gerar Mensagem de Reativação
+              <button className="btn btn-primary w-full py-2 h-10 text-xs text-black font-bold">
+                BV Flow: Reativar Agora
               </button>
             </div>
 

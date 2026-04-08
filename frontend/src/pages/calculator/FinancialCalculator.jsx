@@ -74,8 +74,8 @@ export default function FinancialCalculator() {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight">Calculadora de Fluxo</h1>
-          <p className="text-gray-400">Simule financiamentos e fluxos de pagamento para seus clientes</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Calc</h1>
+          <p className="text-bv-white-ghost">Simulação estratégica de ativos e fluxos de capital.</p>
         </div>
         <button 
           onClick={handleExportPDF}
@@ -89,10 +89,10 @@ export default function FinancialCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Form Column */}
         <div className="lg:col-span-1">
-          <div className="glass p-6 rounded-3xl space-y-6">
-            <h3 className="text-lg font-bold flex items-center gap-2">
-              <Calculator size={20} className="text-primary-500" />
-              Parâmetros
+          <div className="glass p-6 rounded-3xl space-y-6 border border-white/10">
+            <h3 className="text-lg font-bold flex items-center gap-2 text-white">
+              <Calculator size={20} className="text-bv-green" />
+              Parâmetros de Análise
             </h3>
             
             <form onSubmit={calculateFinancing} className="space-y-4">
@@ -144,8 +144,8 @@ export default function FinancialCalculator() {
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary w-full h-12 mt-4">
-                Calcular Fluxo
+              <button type="submit" className="btn btn-primary w-full h-12 mt-4 text-black font-bold">
+                Processar Simulação
               </button>
             </form>
           </div>
@@ -154,12 +154,12 @@ export default function FinancialCalculator() {
         {/* Results Column */}
         <div className="lg:col-span-2">
           {!results ? (
-            <div className="glass-card h-full min-h-[400px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-white/10">
-              <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-gray-500 mb-4">
+            <div className="glass-card h-full min-h-[400px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-white/5">
+              <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-gray-700 mb-4">
                 <TrendingDown size={32} />
               </div>
-              <h3 className="text-xl font-medium mb-2">Simulação Pronta para Iniciar</h3>
-              <p className="text-gray-400 max-w-xs">Insira os valores e clique em calcular para visualizar o detalhamento das parcelas.</p>
+              <h3 className="text-xl font-medium mb-2 text-bv-white">Pronto para Análise</h3>
+              <p className="text-bv-white-ghost max-w-xs">Defina os parâmetros ao lado para gerar o relatório de viabilidade econômica.</p>
             </div>
           ) : (
             <div className="space-y-6 animate-in fade-in zoom-in duration-500">
@@ -202,13 +202,13 @@ export default function FinancialCalculator() {
               </div>
 
               {/* Insights Card */}
-              <div className="glass p-6 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent">
-                <div className="flex items-center gap-2 text-primary-400 font-bold mb-4">
+              <div className="glass p-6 rounded-3xl border border-bv-green/20 bg-bv-green/5">
+                <div className="flex items-center gap-2 text-bv-green font-bold mb-4">
                   <Sparkles size={20} />
-                  INSIGHT DE VIABILIDADE
+                  ANÁLISE SOBERANA
                 </div>
-                <p className="text-gray-300 leading-relaxed italic">
-                  "Com base no valor da parcela de {formatCurrency(results.monthlyPayment)}, o cliente ideal deve possuir uma renda familiar bruta mínima aproximada de {formatCurrency(results.monthlyPayment * 3.33)}, considerando o comprometimento máximo de 30% permitido pela maioria dos bancos."
+                <p className="text-bv-white-ghost leading-relaxed italic">
+                  "Prosperidade requer precisão. Com uma parcela de {formatCurrency(results.monthlyPayment)}, a viabilidade exige uma renda bruta de {formatCurrency(results.monthlyPayment * 3.33)}, mantendo a margem de segurança de 30%."
                 </p>
               </div>
             </div>

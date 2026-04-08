@@ -13,16 +13,18 @@ import { useAuth } from '../../contexts/AuthContext';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+import logoWhite from '../../assets/logo-white.png';
+
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
 const navItems = [
-  { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { name: 'CRM Clientes', icon: Users, path: '/crm' },
-  { name: 'Calculadora', icon: Calculator, path: '/calculadora' },
-  { name: 'Gerador IA', icon: MessageSquare, path: '/mensagens' },
-  { name: 'Insights', icon: TrendingUp, path: '/insights' },
+  { name: 'BV Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+  { name: 'BV CRM', icon: Users, path: '/crm' },
+  { name: 'BV Calc', icon: Calculator, path: '/calculadora' },
+  { name: 'BV Flow', icon: MessageSquare, path: '/mensagens' },
+  { name: 'BV Insights', icon: TrendingUp, path: '/insights' },
 ];
 
 export function Sidebar() {
@@ -30,14 +32,9 @@ export function Sidebar() {
   const { signOut, user } = useAuth();
 
   return (
-    <aside className="w-64 glass border-r h-screen fixed left-0 top-0 flex flex-col p-4 z-50">
-      <div className="flex items-center gap-3 px-2 mb-10">
-        <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
-          <Briefcase className="text-white" size={24} />
-        </div>
-        <h1 className="text-xl font-display font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-          ImobiFlow<span className="text-primary-500">AI</span>
-        </h1>
+    <aside className="w-64 glass border-r border-white/10 h-screen fixed left-0 top-0 flex flex-col p-4 z-50">
+      <div className="flex items-center gap-3 px-2 mb-10 mt-2">
+        <img src={logoWhite} alt="BrokerVision" className="h-8 w-auto" />
       </div>
 
       <nav className="flex-1 space-y-1">
@@ -48,13 +45,13 @@ export function Sidebar() {
               key={item.path}
               to={item.path}
               className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg transition-all group",
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
                 isActive 
-                  ? "bg-primary-600/10 text-primary-400 border border-primary-600/20" 
-                  : "text-gray-400 hover:text-white hover:bg-white/5"
+                  ? "bg-bv-green/10 text-bv-green border border-bv-green/20" 
+                  : "text-bv-white-ghost hover:text-bv-white hover:bg-white/5"
               )}
             >
-              <item.icon size={20} className={cn(isActive ? "text-primary-400" : "group-hover:text-white")} />
+              <item.icon size={20} className={cn(isActive ? "text-bv-green" : "group-hover:text-white")} />
               <span className="font-medium">{item.name}</span>
             </Link>
           );
@@ -81,13 +78,13 @@ export function Sidebar() {
           <span className="font-medium">Sair</span>
         </button>
 
-        <div className="flex items-center gap-3 px-2 py-3 bg-white/5 rounded-xl">
-          <div className="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-xs font-bold font-display">
+        <div className="flex items-center gap-3 px-2 py-3 bg-white/5 rounded-xl border border-white/5">
+          <div className="w-8 h-8 rounded-full bg-bv-green flex items-center justify-center text-xs font-bold text-black">
             {user?.email?.[0].toUpperCase()}
           </div>
           <div className="overflow-hidden">
-            <p className="text-sm font-medium text-white truncate">{user?.email}</p>
-            <p className="text-[10px] text-gray-500 uppercase tracking-wider">Plano Pro</p>
+            <p className="text-sm font-medium text-bv-white truncate">{user?.email}</p>
+            <p className="text-[10px] text-bv-green uppercase tracking-wider font-bold">SOVEREIGN PRO</p>
           </div>
         </div>
       </div>

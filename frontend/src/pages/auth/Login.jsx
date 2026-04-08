@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
-import { LogIn, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import logoWhite from '../../assets/logo-white.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -23,26 +24,24 @@ export default function Login() {
 
       if (error) throw error;
 
-      toast.success('Login realizado com sucesso!');
+      toast.success('Acesso concedido. Bem-vindo ao BrokerVision.');
       navigate('/dashboard');
     } catch (error) {
-      toast.error('Erro ao entrar: ' + error.message);
+      toast.error('Ocorreu um erro ao validar suas credenciais.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-950 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-black p-4">
       <div className="w-full max-w-md glass p-10 rounded-3xl space-y-8 animate-in fade-in zoom-in duration-500">
-        <div className="text-center space-y-3">
-          <div className="mx-auto w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg shadow-primary-600/30 mb-4">
-            <LogIn className="text-white" size={32} />
-          </div>
-          <h1 className="text-4xl font-display font-bold tracking-tight">
-            ImobiFlow<span className="text-primary-500">AI</span>
+        <div className="text-center space-y-4">
+          <img src={logoWhite} alt="BrokerVision" className="h-12 w-auto mx-auto mb-6" />
+          <h1 className="text-3xl font-display font-bold tracking-tight text-white">
+            Acesse seu <span className="text-bv-green">Cockpit</span>
           </h1>
-          <p className="text-gray-400">Acesse sua inteligência para vender mais</p>
+          <p className="text-gray-400">Entre na inteligência soberana do mercado imobiliário.</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">

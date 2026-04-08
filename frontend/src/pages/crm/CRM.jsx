@@ -69,12 +69,12 @@ export default function CRM() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'lead': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
-      case 'contact': return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
-      case 'negotiation': return 'bg-orange-500/10 text-orange-500 border-orange-500/20';
-      case 'closed': return 'bg-green-500/10 text-green-500 border-green-500/20';
-      case 'lost': return 'bg-red-500/10 text-red-500 border-red-500/20';
-      default: return 'bg-gray-500/10 text-gray-500 border-gray-500/20';
+      case 'lead': return 'bg-white/5 text-bv-white-ghost border-white/10';
+      case 'contact': return 'bg-white/5 text-bv-white border-white/20';
+      case 'negotiation': return 'bg-bv-green/10 text-bv-green border-bv-green/20';
+      case 'closed': return 'bg-bv-green text-black border-bv-green font-bold';
+      case 'lost': return 'bg-white/5 text-gray-600 border-white/5';
+      default: return 'bg-white/5 text-gray-500 border-white/5';
     }
   };
 
@@ -82,8 +82,8 @@ export default function CRM() {
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight">CRM Clientes</h1>
-          <p className="text-gray-400">Gerencie seus leads e oportunidades de negócio</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV CRM</h1>
+          <p className="text-bv-white-ghost">Gerenciamento soberano de leads e ativos imobiliários.</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
@@ -133,9 +133,9 @@ export default function CRM() {
               ) : clients.length === 0 ? (
                 <tr>
                   <td colSpan="4" className="px-6 py-20 text-center text-gray-500">
-                    <Users className="mx-auto mb-4 opacity-20" size={64} />
-                    <p className="text-xl font-display font-medium text-gray-400">Nenhum cliente cadastrado</p>
-                    <p className="max-w-xs mx-auto mt-2">Comece adicionando seu primeiro lead para gerenciar seu funil de vendas.</p>
+                    <Users className="mx-auto mb-4 opacity-10" size={64} />
+                    <p className="text-xl font-display font-medium text-bv-white">Vácuo de Oportunidades</p>
+                    <p className="max-w-xs mx-auto mt-2 text-bv-white-ghost">Nenhum lead detectado. Adicione seu primeiro contato para iniciar a análise.</p>
                   </td>
                 </tr>
               ) : (
@@ -179,8 +179,8 @@ export default function CRM() {
                           <button 
                             onClick={() => handleClassify(client.id)}
                             disabled={classifyingId === client.id}
-                            className="w-8 h-8 rounded-lg bg-primary-600/20 hover:bg-primary-600/30 flex items-center justify-center text-primary-400 transition-all"
-                            title="Classificar com IA"
+                            className="w-8 h-8 rounded-lg bg-bv-green/20 hover:bg-bv-green/30 flex items-center justify-center text-bv-green transition-all"
+                            title="IA: Análise Soberana"
                           >
                             {classifyingId === client.id ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
                           </button>

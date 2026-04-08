@@ -51,8 +51,8 @@ export default function MessageGenerator() {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight">Gerador de Mensagens IA</h1>
-          <p className="text-gray-400">Scripts persuasivos para cada etapa da venda</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Flow</h1>
+          <p className="text-bv-white-ghost">Scripts de alta conversão para o corretor soberano.</p>
         </div>
       </div>
 
@@ -97,10 +97,10 @@ export default function MessageGenerator() {
                   value={formData.tone}
                   onChange={e => setFormData({...formData, tone: e.target.value})}
                 >
-                  <option>Profissional e Empático</option>
-                  <option>Amigável e Descontraído</option>
-                  <option>Urgente e Escasso</option>
-                  <option>Consultivo e Técnico</option>
+                  <option>Estratégico e Preciso</option>
+                  <option>Soberano e Autoritário</option>
+                  <option>Urgente e Exclusivo</option>
+                  <option>Diplomático e Técnico</option>
                 </select>
               </div>
 
@@ -117,10 +117,10 @@ export default function MessageGenerator() {
               <button 
                 type="submit"
                 disabled={loading}
-                className="btn btn-primary w-full h-12 gap-2"
+                className="btn btn-primary w-full h-12 gap-2 text-black font-bold"
               >
                 {loading ? <Loader2 className="animate-spin" size={20} /> : <Sparkles size={20} />}
-                Gerar Scripts
+                Processar Scripts
               </button>
             </form>
           </div>
@@ -129,41 +129,41 @@ export default function MessageGenerator() {
         {/* Results Column */}
         <div className="lg:col-span-2 space-y-6">
           {!result ? (
-            <div className="glass-card h-[600px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-white/10">
-              <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-gray-500 mb-4">
+            <div className="glass-card h-[600px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-white/5">
+              <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-gray-700 mb-4">
                 <Send size={32} />
               </div>
-              <h3 className="text-xl font-medium mb-2">Aguardando Parâmetros</h3>
-              <p className="text-gray-400 max-w-xs">Preencha os campos ao lado para gerar scripts personalizados com IA.</p>
+              <h3 className="text-xl font-medium mb-2 text-bv-white">Pronto para a Corrente de Vendas</h3>
+              <p className="text-bv-white-ghost max-w-xs">Defina os parâmetros ao lado para gerar o fluxo de comunicação soberana.</p>
             </div>
           ) : (
             <div className="space-y-6 animate-in fade-in zoom-in duration-500">
               {/* WhatsApp Card */}
-              <div className="glass-card p-6 border-l-4 border-green-500">
+              <div className="glass-card p-6 border-l-4 border-bv-green">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-2 text-green-500 font-bold">
+                  <div className="flex items-center gap-2 text-bv-green font-bold">
                     <MessageCircle size={20} />
-                    WHATSAPP
+                    WHATSAPP ESTRATÉGICO
                   </div>
                   <button onClick={() => copyToClipboard(result.whatsapp)} className="btn-icon">
                     <Copy size={16} />
                   </button>
                 </div>
-                <p className="text-gray-200 leading-relaxed whitespace-pre-wrap">{result.whatsapp}</p>
+                <p className="text-bv-white-ghost leading-relaxed whitespace-pre-wrap">{result.whatsapp}</p>
               </div>
 
               {/* Call Script Card */}
-              <div className="glass-card p-6 border-l-4 border-blue-500">
+              <div className="glass-card p-6 border-l-4 border-white/40">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-2 text-blue-500 font-bold">
+                  <div className="flex items-center gap-2 text-white/60 font-bold">
                     <PhoneCall size={20} />
-                    SCRIPT DE LIGAÇÃO
+                    SCRIPT DE CONEXÃO
                   </div>
                   <button onClick={() => copyToClipboard(result.script)} className="btn-icon">
                     <Copy size={16} />
                   </button>
                 </div>
-                <p className="text-gray-200 leading-relaxed whitespace-pre-wrap">{result.script}</p>
+                <p className="text-bv-white-ghost leading-relaxed whitespace-pre-wrap">{result.script}</p>
               </div>
 
               {/* Objection Killer Card */}
