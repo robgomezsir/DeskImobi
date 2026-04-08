@@ -3,11 +3,27 @@
 
 /*
  * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
- * Accent: #00F5A0. Cartões: fill rgba(accent, 0.06), borda rgba(accent, 0.10). Blur de vidro só no Dashboard.
+ * Accent: #00F5A0. Cartões: fill rgba(accent, 0.06); contorno opção 1 = gradiente cónico 6%/20%. Blur só no Dashboard.
  */
 
 :root {
   --accent-rgb: 0, 245, 160;
+  /**
+   * Opção 1 de contorno (brokervision-brand-context): cor padrão em conic-gradient,
+   * opacidade 6% → 20% → 6% → 20% duas vezes ao longo do perímetro (8 trechos).
+   */
+  --bv-card-outline-gradient: conic-gradient(
+    from -90deg at 50% 50%,
+    rgba(var(--accent-rgb), 0.06) 0deg,
+    rgba(var(--accent-rgb), 0.2) 45deg,
+    rgba(var(--accent-rgb), 0.06) 90deg,
+    rgba(var(--accent-rgb), 0.2) 135deg,
+    rgba(var(--accent-rgb), 0.06) 180deg,
+    rgba(var(--accent-rgb), 0.2) 225deg,
+    rgba(var(--accent-rgb), 0.06) 270deg,
+    rgba(var(--accent-rgb), 0.2) 315deg,
+    rgba(var(--accent-rgb), 0.06) 360deg
+  );
 }
 
 /* —— escuro (primário) —— */
@@ -92,46 +108,74 @@ html.light {
   --font-display: "Nunito", sans-serif;
 }
 
-/** Cartão padrão: fill accent 6%, borda 10%, raio 16px — sem backdrop blur fora do dashboard */
+/**
+ * Cartão padrão: preenchimento + contorno em gradiente (padding-box / border-box).
+ * Fallback sólido: `prefers-reduced-transparency` e utilitário `bv-card-outline-fallback`.
+ */
 @utility glass {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  border: 1px solid transparent;
   border-radius: 1rem;
+  background:
+    linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+    var(--bv-card-outline-gradient) border-box;
+  background-clip: padding-box, border-box;
+  -webkit-background-clip: padding-box, border-box;
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
-/** Combine com `glass` ou `glass-card` — realce verde (brand green_highlight) */
+/** Combine com `glass` — realce em `.glass.glass-green` (components) */
 @utility glass-green {
-  border-color: var(--glass-border-green);
+  isolation: isolate;
 }
 
 @utility glass-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  border: 1px solid transparent;
   border-radius: 1rem;
+  background:
+    linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+    var(--bv-card-outline-gradient) border-box;
+  background-clip: padding-box, border-box;
+  -webkit-background-clip: padding-box, border-box;
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
-/** Painéis elevados (modais, header flutuante): sem blur fora do escopo dashboard */
+/** Painéis elevados (modais, toggles): fill mais denso, mesmo contorno em gradiente */
 @utility glass-blur {
-  background: var(--glass-bg-blur);
-  border: 1px solid var(--glass-border-strong);
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  background:
+    linear-gradient(var(--glass-bg-blur), var(--glass-bg-blur)) padding-box,
+    var(--bv-card-outline-gradient) border-box;
+  background-clip: padding-box, border-box;
+  -webkit-background-clip: padding-box, border-box;
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
 @utility glass-card-blur {
-  background: var(--glass-bg-blur);
-  border: 1px solid var(--glass-border-strong);
+  border: 1px solid transparent;
   border-radius: 1rem;
+  background:
+    linear-gradient(var(--glass-bg-blur), var(--glass-bg-blur)) padding-box,
+    var(--bv-card-outline-gradient) border-box;
+  background-clip: padding-box, border-box;
+  -webkit-background-clip: padding-box, border-box;
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+/** Quando o gradiente de borda não for desejável (ex.: testes A/B) */
+@utility bv-card-outline-fallback {
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
 }
 
 /** Números de destaque: gradiente 60% → 100% (brand typography.text_gradient_for_results) */
@@ -209,8 +253,10 @@ html.light {
   html.dark .glass-card-blur {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    border: 1px solid var(--card-border) !important;
     background: rgba(17, 17, 17, 0.94) !important;
-    border-color: var(--card-border) !important;
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
     box-shadow: var(--glass-shadow) !important;
   }
 
@@ -220,8 +266,10 @@ html.light {
   html.light .glass-card-blur {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    border: 1px solid var(--card-border) !important;
     background: rgba(255, 255, 255, 0.94) !important;
-    border-color: var(--card-border) !important;
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
     box-shadow: var(--glass-shadow) !important;
   }
 
@@ -265,10 +313,9 @@ html.light {
 }
 
 @layer components {
-  /** green_highlight quando `glass glass-green` */
+  /** green_highlight quando `glass glass-green` — contorno mantém gradiente; só sombras extra */
   .glass.glass-green,
   .glass-card.glass-green {
-    border-color: var(--glass-border-green);
     box-shadow:
       var(--glass-inset-highlight),
       0 0 24px rgba(0, 245, 160, 0.08),
@@ -276,17 +323,22 @@ html.light {
       var(--glass-shadow);
   }
 
-  /** Hover cartão: brilho radial superior (card_system.hover_effect) */
+  /** Hover cartão: brilho radial no preenchimento; contorno em gradiente preservado */
   .bv-card-hover {
     transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .bv-card-hover:hover {
-    background: radial-gradient(
-      ellipse 120% 90% at 50% 0%,
-      rgba(var(--accent-rgb), 0.22) 0%,
-      var(--card-bg) 55%
-    );
+    background:
+      radial-gradient(
+          ellipse 120% 90% at 50% 0%,
+          rgba(var(--accent-rgb), 0.22) 0%,
+          var(--card-bg) 55%
+        )
+        padding-box,
+      var(--bv-card-outline-gradient) border-box;
+    background-clip: padding-box, border-box;
+    -webkit-background-clip: padding-box, border-box;
   }
 
   .btn {
@@ -329,7 +381,11 @@ html.light {
   }
 
   .card-bv:hover {
-    background: var(--hover-surface);
+    background:
+      linear-gradient(var(--hover-surface), var(--hover-surface)) padding-box,
+      var(--bv-card-outline-gradient) border-box;
+    background-clip: padding-box, border-box;
+    -webkit-background-clip: padding-box, border-box;
   }
 
   .bv-scroll-root {
