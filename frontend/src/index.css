@@ -4,15 +4,13 @@
 /*
  * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
  * Accent: #00F5A0. Liquid glass: backdrop-filter + fill 6% (brokervision-brand-context.json).
- * Dashboard: vidro translúcido (fill ~6–12% accent) + blur moderado (fosco elegante, não “sopa”).
+ * Dashboard: cartões sobre imagem com preenchimento opaco (sem ver o fundo através do fill).
  */
 
 :root {
   --accent-rgb: 0, 245, 160;
   /** Desfoque padrão em superfícies .glass (fora do canvas do Dashboard) */
   --bv-liquid-glass-blur: 28px;
-  /** Desfoque dos cartões no canvas do Dashboard — harmonioso com a referência liquid glass */
-  --bv-dashboard-backdrop-blur: 32px;
   /**
    * Opção 1 de contorno (brokervision-brand-context): cor padrão em conic-gradient,
    * opacidade 6% → 20% → 6% → 20% duas vezes ao longo do perímetro (8 trechos).
@@ -221,8 +219,6 @@ html.light {
 @media (max-width: 767.98px) {
   :root {
     --bv-liquid-glass-blur: 20px;
-    /** ~62% do blur desktop do Dashboard */
-    --bv-dashboard-backdrop-blur: 20px;
   }
 
   html.dark {
@@ -349,21 +345,13 @@ html.light {
   }
 
   /**
-   * Dashboard sobre imagem: liquid glass translúcido (referência brand).
-   * Fill leve + blur moderado; sem vinheta pesada — o fundo “respira” através do vidro.
+   * Dashboard: fundo dos cartões totalmente opaco (alpha 1) — imagem de fundo não transparece no fill.
    */
   [data-bv-dashboard-canvas] .glass,
   [data-bv-dashboard-canvas] .glass-card {
-    background:
-      linear-gradient(
-        155deg,
-        rgba(0, 245, 160, 0.06) 0%,
-        rgba(0, 0, 0, 0.04) 45%,
-        rgba(0, 12, 10, 0.09) 100%
-      ),
-      var(--card-bg);
-    backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.15) brightness(1.04);
-    -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.15) brightness(1.04);
+    background: var(--card-fill-solid);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.09),
       0 0 0 1px rgba(var(--accent-rgb), 0.28),
@@ -376,37 +364,22 @@ html.light {
     z-index: 1;
   }
 
-  /** Hover nos KPIs: mantém vinheta + stack para o vidro não “sumir” no hover */
+  /** Hover KPIs: brilho radial opaco (sem transparência no preenchimento) */
   [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
   [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
-    background:
-      radial-gradient(
-        ellipse 120% 90% at 50% 0%,
-        rgba(var(--accent-rgb), 0.2) 0%,
-        transparent 58%
-      ),
-      linear-gradient(
-        155deg,
-        rgba(0, 245, 160, 0.08) 0%,
-        rgba(0, 0, 0, 0.05) 50%,
-        rgba(0, 12, 10, 0.1) 100%
-      ),
-      var(--card-bg);
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      color-mix(in srgb, rgb(var(--accent-rgb)) 22%, #000000 78%) 0%,
+      var(--card-fill-solid) 55%
+    );
   }
 
-  /**
-   * Dashboard tema claro: fundo `dashboard-bg-light.png` — vinheta branca no vidro
-   * (evita overlay preto do modo escuro, que deixaria os cartões sujos sobre o BG WHITE).
-   */
+  /** Dashboard tema claro: mesmo princípio — fill opaco sobre a imagem */
   html.light [data-bv-dashboard-canvas] .glass,
   html.light [data-bv-dashboard-canvas] .glass-card {
-    background:
-      linear-gradient(
-        165deg,
-        rgba(255, 255, 255, 0.22) 0%,
-        rgba(255, 255, 255, 0.08) 100%
-      ),
-      var(--card-bg);
+    background: var(--card-fill-solid);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.65),
       0 0 0 1px rgba(var(--accent-rgb), 0.22),
@@ -415,18 +388,11 @@ html.light {
 
   html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
   html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
-    background:
-      radial-gradient(
-        ellipse 120% 90% at 50% 0%,
-        rgba(var(--accent-rgb), 0.16) 0%,
-        transparent 58%
-      ),
-      linear-gradient(
-        165deg,
-        rgba(255, 255, 255, 0.28) 0%,
-        rgba(255, 255, 255, 0.1) 100%
-      ),
-      var(--card-bg);
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      color-mix(in srgb, rgb(var(--accent-rgb)) 18%, #ffffff 82%) 0%,
+      var(--card-fill-solid) 55%
+    );
   }
 
   /** green_highlight quando `glass glass-green` — contorno mantém gradiente; só sombras extra */
