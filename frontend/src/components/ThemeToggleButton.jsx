@@ -2,10 +2,9 @@ import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 /**
- * Alternador de tema fixo no canto superior direito da viewport.
- * Visível em todos os módulos (Layout) e nas telas de auth.
+ * Alternador de tema no fluxo do layout (sem fixed), para alinhar com outros botões da página.
  */
-export function ThemeToggleFloating() {
+export function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -13,7 +12,7 @@ export function ThemeToggleFloating() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="fixed top-4 right-4 z-[100] rounded-xl p-3 glass text-bv-muted hover:text-bv-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50"
+      className="inline-flex shrink-0 items-center justify-center rounded-xl p-2.5 glass text-bv-muted hover:text-bv-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50"
       aria-label={isDark ? 'Ativar tema claro' : 'Ativar tema escuro'}
       title={isDark ? 'Tema claro' : 'Tema escuro'}
     >

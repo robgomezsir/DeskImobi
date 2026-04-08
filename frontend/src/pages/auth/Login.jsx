@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useTheme } from '../../contexts/ThemeContext';
-import { ThemeToggleFloating } from '../../components/ThemeToggleFloating';
+import { ThemeToggleButton } from '../../components/ThemeToggleButton';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import logoWhite from '../../assets/logo-white.png';
@@ -38,10 +38,12 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-bv-page p-4">
-      <ThemeToggleFloating />
-
-      <div className="w-full max-w-md glass p-10 rounded-3xl space-y-8 animate-in fade-in zoom-in duration-500">
+    <div className="flex min-h-screen flex-col bg-bv-page">
+      <header className="flex shrink-0 justify-end px-4 pt-4 sm:px-8">
+        <ThemeToggleButton />
+      </header>
+      <div className="flex flex-1 items-center justify-center p-4 pb-8">
+        <div className="w-full max-w-md glass p-10 rounded-3xl space-y-8 animate-in fade-in zoom-in duration-500">
         <div className="text-center space-y-4">
           <img
             src={isDark ? logoWhite : logoHorizontalDark}
@@ -102,6 +104,7 @@ export default function Login() {
             Cadastre-se grátis
           </Link>
         </div>
+      </div>
       </div>
     </div>
   );

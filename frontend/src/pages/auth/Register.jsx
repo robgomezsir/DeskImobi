@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { toast } from 'sonner';
 import { Loader2, Mail, Lock, User } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
-import { ThemeToggleFloating } from '../../components/ThemeToggleFloating';
+import { ThemeToggleButton } from '../../components/ThemeToggleButton';
 import logoHorizontalDark from '../../assets/logo-horizontal-dark.png';
 
 export default function Register() {
@@ -48,10 +48,12 @@ export default function Register() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-bv-page p-4">
-      <ThemeToggleFloating />
-
-      <div className="w-full max-w-lg glass p-10 rounded-3xl space-y-8 animate-in fade-in slide-in-from-bottom duration-500">
+    <div className="flex min-h-screen flex-col bg-bv-page">
+      <header className="flex shrink-0 justify-end px-4 pt-4 sm:px-8">
+        <ThemeToggleButton />
+      </header>
+      <div className="flex flex-1 items-center justify-center p-4 pb-8">
+        <div className="w-full max-w-lg glass p-10 rounded-3xl space-y-8 animate-in fade-in slide-in-from-bottom duration-500">
         <div className="text-center space-y-3">
           <div className="mx-auto w-20 h-20 bg-bv-surface-muted rounded-2xl flex items-center justify-center mb-6 border border-[var(--line)] p-4">
             <img
@@ -147,6 +149,7 @@ export default function Register() {
             Aceder ao Terminal
           </Link>
         </div>
+      </div>
       </div>
     </div>
   );
