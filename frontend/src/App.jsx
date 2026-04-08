@@ -8,6 +8,8 @@ import CRM from './pages/crm/CRM';
 import Dashboard from './pages/dashboard/Dashboard';
 import FinancialCalculator from './pages/calculator/FinancialCalculator';
 import MessageGenerator from './pages/messages/MessageGenerator';
+import Finance from './pages/finance/Finance';
+import Insights from './pages/insights/Insights';
 
 const PageTransition = ({ children }) => (
   <motion.div
@@ -38,10 +40,11 @@ function App() {
             <Route path="/crm" element={<PageTransition><CRM /></PageTransition>} />
             <Route path="/mensagens" element={<PageTransition><MessageGenerator /></PageTransition>} />
             <Route path="/calculadora" element={<PageTransition><FinancialCalculator /></PageTransition>} />
+            <Route path="/finance" element={<PageTransition><Finance /></PageTransition>} />
+            <Route path="/insights" element={<PageTransition><Insights /></PageTransition>} />
             
             {/* Fallbacks/Aliases */}
             <Route path="/settings" element={<PageTransition><div className="text-3xl font-display font-bold">Configurações</div></PageTransition>} />
-            <Route path="/insights" element={<PageTransition><div className="text-3xl font-display font-bold">Insights de IA</div></PageTransition>} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>
         </Route>
