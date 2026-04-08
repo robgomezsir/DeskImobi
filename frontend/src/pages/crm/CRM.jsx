@@ -89,7 +89,7 @@ export default function CRM() {
         title={crm.officialName}
         subtitle={crm.tagline}
         actions={
-          <button type="button" onClick={() => setIsModalOpen(true)} className="btn btn-primary h-11 shrink-0 px-5">
+          <button type="button" onClick={() => setIsModalOpen(true)} className="btn btn-primary h-11 w-full shrink-0 px-5 sm:w-auto">
             <Plus size={20} />
             Novo Cliente
           </button>
@@ -101,8 +101,8 @@ export default function CRM() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex flex-col gap-4 md:flex-row">
-        <div className="relative flex-1 group">
+      <div className="flex flex-col gap-3 md:flex-row md:gap-4">
+        <div className="group relative min-w-0 flex-1">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted group-focus-within:text-bv-green transition-colors" size={18} />
           <input 
             type="text" 
@@ -112,34 +112,34 @@ export default function CRM() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button className="btn btn-outline h-12 px-4 gap-2">
+        <button type="button" className="btn btn-outline h-12 w-full shrink-0 gap-2 px-4 md:w-auto">
           <Filter size={18} />
           Filtros
         </button>
       </div>
 
-      <div className="glass rounded-3xl overflow-hidden border">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+      <div className="overflow-hidden rounded-2xl border glass sm:rounded-3xl">
+        <div className="-mx-px overflow-x-auto sm:mx-0">
+          <table className="w-full min-w-[640px] border-collapse text-left">
             <thead>
               <tr className="border-b border-[var(--line-subtle)] bg-bv-surface-muted">
-                <th className="px-6 py-4 text-sm font-semibold text-bv-text-soft uppercase tracking-wider">Cliente</th>
-                <th className="px-6 py-4 text-sm font-semibold text-bv-text-soft uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-sm font-semibold text-bv-text-soft uppercase tracking-wider">Interesse</th>
-                <th className="px-6 py-4 text-sm font-semibold text-bv-text-soft uppercase tracking-wider text-right">Ações</th>
+                <th className="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-bv-text-soft sm:px-6 sm:py-4 sm:text-sm">Cliente</th>
+                <th className="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-bv-text-soft sm:px-6 sm:py-4 sm:text-sm">Status</th>
+                <th className="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-bv-text-soft sm:px-6 sm:py-4 sm:text-sm">Interesse</th>
+                <th className="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wider text-bv-text-soft sm:px-6 sm:py-4 sm:text-sm">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
               {loading ? (
                 <tr>
-                  <td colSpan="4" className="px-6 py-12 text-center text-bv-muted">
+                  <td colSpan="4" className="px-4 py-12 text-center text-bv-muted sm:px-6">
                     <Loader2 className="animate-spin mx-auto mb-4 text-bv-green" size={32} />
                     Carregando leads...
                   </td>
                 </tr>
               ) : clients.length === 0 ? (
                 <tr>
-                  <td colSpan="4" className="px-6 py-20 text-center text-bv-muted">
+                  <td colSpan="4" className="px-4 py-16 text-center text-bv-muted sm:px-6 sm:py-20">
                     <Users className="mx-auto mb-4 opacity-10" size={64} />
                     <p className="text-xl font-display font-medium text-bv-text">Vácuo de Oportunidades</p>
                     <p className="max-w-xs mx-auto mt-2 text-bv-muted">Nenhum lead detectado. Adicione seu primeiro contato para iniciar a análise.</p>
@@ -156,33 +156,38 @@ export default function CRM() {
                       transition={{ delay: i * 0.05 }}
                       className="hover:bg-bv-surface-muted transition-colors group"
                     >
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-bv-green/20 text-bv-green flex items-center justify-center font-bold font-display">
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">
+                        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-bv-green/20 font-display font-bold text-bv-green sm:h-10 sm:w-10">
                             {client.name[0].toUpperCase()}
                           </div>
-                          <div>
-                            <p className="font-semibold text-bv-text-soft">{client.name}</p>
-                            <div className="flex items-center gap-3 mt-1 text-xs text-bv-muted">
-                              <span className="flex items-center gap-1"><Mail size={10} /> {client.email || 'N/A'}</span>
-                              <span className="flex items-center gap-1"><Phone size={10} /> {client.phone}</span>
+                          <div className="min-w-0">
+                            <p className="truncate font-semibold text-bv-text-soft">{client.name}</p>
+                            <div className="mt-1 flex flex-col gap-0.5 text-xs text-bv-muted sm:flex-row sm:flex-wrap sm:gap-x-3 sm:gap-y-1">
+                              <span className="flex min-w-0 items-center gap-1">
+                                <Mail size={10} className="shrink-0" />{' '}
+                                <span className="truncate">{client.email || 'N/A'}</span>
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Phone size={10} className="shrink-0" /> {client.phone}
+                              </span>
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(client.status)}`}>
                           {client.status.toUpperCase()}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-3 sm:px-6 sm:py-4">
                         <div className="text-sm">
                           <p className="font-medium text-bv-text-soft">{client.property_type || 'Qualquer'}</p>
-                          <p className="text-bv-muted text-xs">{client.location || 'Sem localização'}</p>
+                          <p className="text-xs text-bv-muted">{client.location || 'Sem localização'}</p>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <td className="px-3 py-3 text-right sm:px-6 sm:py-4">
+                        <div className="flex items-center justify-end gap-1 opacity-100 transition-opacity sm:gap-2 sm:opacity-0 sm:group-hover:opacity-100">
                           <button 
                             onClick={() => handleClassify(client.id)}
                             disabled={classifyingId === client.id}

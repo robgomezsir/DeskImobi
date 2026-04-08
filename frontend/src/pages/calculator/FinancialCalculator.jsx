@@ -82,7 +82,7 @@ export default function FinancialCalculator() {
         title={calc.officialName}
         subtitle={calc.tagline}
         actions={
-          <button type="button" onClick={handleExportPDF} className="btn btn-outline h-11 shrink-0 gap-2">
+          <button type="button" onClick={handleExportPDF} className="btn btn-outline h-11 w-full shrink-0 gap-2 sm:w-auto">
             <Download size={18} />
             Exportar PDF
           </button>
@@ -97,7 +97,7 @@ export default function FinancialCalculator() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Form Column */}
         <div className="lg:col-span-1">
-          <div className="glass p-6 rounded-3xl space-y-6 border border-[var(--line)]">
+          <div className="space-y-6 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
             <h3 className="text-lg font-bold flex items-center gap-2 text-bv-text">
               <Calculator size={20} className="text-bv-green" />
               Parâmetros de Análise
@@ -162,7 +162,7 @@ export default function FinancialCalculator() {
         {/* Results Column */}
         <div className="lg:col-span-2">
           {!results ? (
-            <div className="glass-card h-full min-h-[400px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-[var(--line-subtle)]">
+            <div className="glass-card flex h-full min-h-[280px] flex-col items-center justify-center border-2 border-dashed border-[var(--line-subtle)] p-6 text-center sm:min-h-[400px] sm:p-8">
               <div className="w-16 h-16 rounded-2xl bg-bv-surface-muted flex items-center justify-center text-bv-muted mb-4">
                 <TrendingDown size={32} />
               </div>
@@ -175,13 +175,13 @@ export default function FinancialCalculator() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="glass-card p-6 bg-bv-green/5 border-bv-green/20">
                   <p className="text-sm text-bv-green mb-1">Parcela Mensal Estimada</p>
-                  <h2 className="text-4xl font-display font-bold text-bv-text">
+                  <h2 className="font-display text-2xl font-bold text-bv-text sm:text-3xl md:text-4xl">
                     {formatCurrency(results.monthlyPayment)}
                   </h2>
                 </div>
                 <div className="glass-card p-6">
                   <p className="text-sm text-bv-muted mb-1">Total a ser Pago</p>
-                  <h2 className="text-4xl font-display font-bold text-bv-text">
+                  <h2 className="font-display text-2xl font-bold text-bv-text sm:text-3xl md:text-4xl">
                     {formatCurrency(results.totalPaid)}
                   </h2>
                 </div>

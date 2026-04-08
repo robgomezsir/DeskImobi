@@ -112,7 +112,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="glass p-6 rounded-3xl group hover:border-bv-green/30 transition-all hover:-translate-y-1"
+            className="glass rounded-2xl p-5 transition-all group hover:-translate-y-1 hover:border-bv-green/30 sm:rounded-3xl sm:p-6"
           >
             <div className="flex justify-between items-start mb-4">
               <div className={`p-3 rounded-2xl ${card.bg} ${card.color}`}>
@@ -123,7 +123,7 @@ export default function Dashboard() {
               </span>
             </div>
             <p className="text-bv-muted text-sm font-medium">{card.title}</p>
-            <p className="text-4xl font-display font-bold mt-1">{card.value}</p>
+            <p className="mt-1 font-display text-3xl font-bold sm:text-4xl">{card.value}</p>
           </motion.div>
         ))}
       </div>
@@ -133,20 +133,20 @@ export default function Dashboard() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
-          className="lg:col-span-2 glass p-8 rounded-3xl h-[400px] flex flex-col"
+          className="flex min-h-[300px] flex-col rounded-2xl glass p-4 sm:min-h-[360px] sm:rounded-3xl sm:p-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-8"
         >
           {/* ... Chart Content ... */}
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h3 className="text-xl font-display font-bold">Desempenho de Vendas</h3>
+          <div className="mb-4 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0">
+              <h3 className="text-lg font-display font-bold sm:text-xl">Desempenho de Vendas</h3>
               <p className="text-sm text-bv-muted">Leads captados vs Vendas concluídas</p>
             </div>
-            <select className="bg-bv-surface-muted border border-[var(--line)] rounded-lg px-3 py-1 text-xs outline-none">
+            <select className="w-full shrink-0 rounded-lg border border-[var(--line)] bg-bv-surface-muted px-3 py-2 text-xs outline-none sm:w-auto sm:py-1">
               <option>Últimos 6 meses</option>
               <option>Últimos 12 meses</option>
             </select>
           </div>
-          <div className="flex-1 w-full">
+          <div className="min-h-[220px] w-full flex-1 sm:min-h-[240px] lg:min-h-0">
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={data}>
                   <defs>
@@ -173,9 +173,9 @@ export default function Dashboard() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
-          className="glass p-8 rounded-3xl flex flex-col"
+          className="flex flex-col rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 lg:p-8"
         >
-          <div className="flex items-center gap-3 mb-8">
+          <div className="mb-6 flex items-center gap-3 sm:mb-8">
             <div className="p-2 bg-bv-green/10 text-bv-green rounded-xl">
               <TrendingUp size={20} />
             </div>

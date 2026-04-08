@@ -48,12 +48,12 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-bv-page">
-      <header className="flex shrink-0 justify-end px-4 pt-4 sm:px-8">
+    <div className="flex min-h-[100dvh] flex-col bg-bv-page">
+      <header className="flex shrink-0 justify-end px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-8">
         <ThemeToggleButton />
       </header>
       <div className="flex flex-1 items-center justify-center p-4 pb-8">
-        <div className="w-full max-w-lg glass p-10 rounded-3xl space-y-8 animate-in fade-in slide-in-from-bottom duration-500">
+        <div className="w-full max-w-lg space-y-6 rounded-2xl glass p-6 sm:space-y-8 sm:rounded-3xl sm:p-10 animate-in fade-in slide-in-from-bottom duration-500">
         <div className="text-center space-y-3">
           <div className="mx-auto w-20 h-20 bg-bv-surface-muted rounded-2xl flex items-center justify-center mb-6 border border-[var(--line)] p-4">
             <img

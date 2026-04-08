@@ -25,9 +25,9 @@ export function PageToolbar({
     <div className={rowClass}>
       <div className="min-w-0">
         {kicker ? <div className="mb-1">{kicker}</div> : null}
-        <h1 className="text-2xl font-display font-bold tracking-tight text-bv-text md:text-3xl">{title}</h1>
+        <h1 className="text-xl font-display font-bold tracking-tight text-bv-text sm:text-2xl md:text-3xl">{title}</h1>
         {subtitle != null && subtitle !== '' ? (
-          <p className="truncate text-sm text-bv-muted">{subtitle}</p>
+          <p className="line-clamp-2 max-w-full text-pretty text-sm text-bv-muted sm:line-clamp-none sm:truncate">{subtitle}</p>
         ) : null}
       </div>
       {actions != null ? actions : null}

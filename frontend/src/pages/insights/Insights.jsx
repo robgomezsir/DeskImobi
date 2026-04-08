@@ -61,25 +61,25 @@ export default function Insights() {
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="lg:col-span-2 glass p-8 rounded-3xl"
+          className="rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 lg:col-span-2 lg:p-8"
         >
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h3 className="text-xl font-display font-bold flex items-center gap-2">
+          <div className="mb-4 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0">
+              <h3 className="flex flex-wrap items-center gap-2 text-lg font-display font-bold sm:text-xl">
                 Tendência de Preço m²
-                <div className="p-1 rounded-full bg-bv-surface-muted text-bv-muted cursor-help">
+                <div className="cursor-help rounded-full bg-bv-surface-muted p-1 text-bv-muted">
                   <Info size={12} />
                 </div>
               </h3>
               <p className="text-sm text-bv-muted">Valor médio ponderado em São Paulo (Capital)</p>
             </div>
-            <div className="text-right">
-              <p className="text-2xl font-display font-bold text-bv-green">R$ 9.200</p>
-              <p className="text-[10px] text-bv-green font-bold uppercase tracking-wider">+2.4% este mês</p>
+            <div className="shrink-0 text-left sm:text-right">
+              <p className="font-display text-xl font-bold text-bv-green sm:text-2xl">R$ 9.200</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-bv-green">+2.4% este mês</p>
             </div>
           </div>
 
-          <div className="h-[300px] w-full mt-4">
+          <div className="mt-2 h-[240px] w-full min-h-0 sm:mt-4 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={marketData}>
                 <defs>
@@ -105,9 +105,9 @@ export default function Insights() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass p-8 rounded-3xl flex flex-col"
+          className="flex flex-col rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 lg:p-8"
         >
-          <div className="flex items-center gap-3 mb-8">
+          <div className="mb-6 flex items-center gap-3 sm:mb-8">
             <div className="p-2 bg-bv-green/10 text-bv-green rounded-xl">
               <Star size={20} />
             </div>
@@ -162,12 +162,12 @@ export default function Insights() {
           { label: 'Taxa de Vacância Avg', value: '4.2%', color: 'text-bv-text' },
           { label: 'Lead Quality Score', value: 'A+', color: 'text-bv-green' },
         ].map((stat, i) => (
-          <div key={i} className="glass p-6 rounded-3xl flex justify-between items-center group cursor-default">
-            <div>
-              <p className="text-[10px] uppercase tracking-widest text-bv-muted font-bold mb-1">{stat.label}</p>
-              <p className={`text-2xl font-display font-bold ${stat.color}`}>{stat.value}</p>
+          <div key={i} className="flex cursor-default items-center justify-between rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 group">
+            <div className="min-w-0">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-bv-muted">{stat.label}</p>
+              <p className={`font-display text-xl font-bold sm:text-2xl ${stat.color}`}>{stat.value}</p>
             </div>
-            <div className="p-2 bg-bv-surface-muted rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="rounded-lg bg-bv-surface-muted p-2 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
               <TrendingUp size={16} />
             </div>
           </div>

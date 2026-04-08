@@ -38,33 +38,66 @@ const navItems = BV_MODULE_KEYS.map((key) => ({
 }));
 
 /**
- * @param {{ collapsed: boolean, onToggleSidebar: () => void }} props
+ * @param {{
+ *   collapsed: boolean;
+ *   onToggleSidebar: () => void;
+ *   isMobileLayout?: boolean;
+ *   mobileDrawerOpen?: boolean;
+ *   onCloseMobile?: () => void;
+ * }} props
  */
-export function Sidebar({ collapsed, onToggleSidebar }) {
+export function Sidebar({
+  collapsed,
+  onToggleSidebar,
+  isMobileLayout = false,
+  mobileDrawerOpen = false,
+  onCloseMobile,
+}) {
   const location = useLocation();
   const { signOut, user } = useAuth();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const effectiveCollapsed = isMobileLayout ? false : collapsed;
+
+  const handleLogoClick = () => {
+    if (isMobileLayout) {
+      onCloseMobile?.();
+      return;
+    }
+    onToggleSidebar();
+  };
 
   return (
     <aside
+      id="app-sidebar-nav"
       className={cn(
-        'glass border-r border-[var(--line)] h-screen fixed left-0 top-0 flex flex-col z-50 transition-[width] duration-200 ease-out',
-        collapsed ? 'w-20 p-2' : 'w-64 p-4'
+        'glass fixed left-0 top-0 z-50 flex h-[100dvh] flex-col border-r border-[var(--line)] transition-[width,transform] duration-200 ease-out',
+        isMobileLayout
+          ? cn(
+              'w-[min(16rem,calc(100vw-1.5rem))] max-w-[85vw] p-4 pt-[max(1rem,env(safe-area-inset-top))]',
+              mobileDrawerOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full pointer-events-none'
+            )
+          : cn('translate-x-0', effectiveCollapsed ? 'w-20 p-2' : 'w-64 p-4')
       )}
     >
-      <div className={cn('mb-8 mt-2 shrink-0', collapsed ? 'px-0' : 'px-2')}>
+      <div className={cn('mb-8 mt-2 shrink-0', effectiveCollapsed ? 'px-0' : 'px-2')}>
         <button
           type="button"
-          onClick={onToggleSidebar}
+          onClick={handleLogoClick}
           className={cn(
             'flex w-full items-center rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50',
-            collapsed ? 'justify-center p-2 hover:bg-[var(--hover-surface)]' : 'justify-start px-2 py-2 -m-2 hover:bg-[var(--hover-surface)]'
+            effectiveCollapsed ? 'justify-center p-2 hover:bg-[var(--hover-surface)]' : 'justify-start px-2 py-2 -m-2 hover:bg-[var(--hover-surface)]'
           )}
-          aria-expanded={!collapsed}
-          aria-label={collapsed ? 'Expandir menu lateral' : 'Recolher menu lateral'}
+          aria-expanded={!effectiveCollapsed}
+          aria-label={
+            isMobileLayout
+              ? 'Fechar menu'
+              : effectiveCollapsed
+                ? 'Expandir menu lateral'
+                : 'Recolher menu lateral'
+          }
         >
-          {collapsed ? (
+          {effectiveCollapsed ? (
             <img
               src={BRAND_ICON_URLS.symbolGreen32}
               alt=""
@@ -81,18 +114,19 @@ export function Sidebar({ collapsed, onToggleSidebar }) {
         </button>
       </div>
 
-      <nav className="flex-1 min-h-0 space-y-1 overflow-y-auto">
+      <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto overflow-x-hidden pb-[env(safe-area-inset-bottom)]">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link
               key={item.path}
               to={item.path}
-              title={collapsed ? item.officialName : undefined}
+              title={effectiveCollapsed ? item.officialName : undefined}
               aria-label={item.officialName}
+              onClick={() => isMobileLayout && onCloseMobile?.()}
               className={cn(
                 'flex items-center rounded-lg transition-all group',
-                collapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2.5',
+                effectiveCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2.5',
                 isActive
                   ? 'bg-bv-green/10 text-bv-green border border-bv-green/20'
                   : 'text-bv-muted hover:text-bv-text hover:bg-[var(--hover-surface)] border border-transparent'
@@ -102,51 +136,52 @@ export function Sidebar({ collapsed, onToggleSidebar }) {
                 size={20}
                 className={cn('shrink-0', isActive ? 'text-bv-green' : 'group-hover:text-bv-text')}
               />
-              <span className={cn('font-medium truncate', collapsed && 'sr-only')}>{item.officialName}</span>
+              <span className={cn('min-w-0 font-medium truncate', effectiveCollapsed && 'sr-only')}>{item.officialName}</span>
             </Link>
           );
         })}
       </nav>
 
-      <div className="mt-auto space-y-3 pt-4 border-t border-[var(--line-subtle)] shrink-0">
+      <div className="mt-auto shrink-0 space-y-3 border-t border-[var(--line-subtle)] pt-4">
         <Link
           to="/settings"
-          title={collapsed ? 'Configurações' : undefined}
+          title={effectiveCollapsed ? 'Configurações' : undefined}
           aria-label="Configurações"
+          onClick={() => isMobileLayout && onCloseMobile?.()}
           className={cn(
-            'flex rounded-lg text-bv-muted hover:text-bv-text transition-all',
-            collapsed ? 'justify-center px-2 py-2' : 'items-center gap-3 px-3 py-2',
-            location.pathname === '/settings' && 'text-bv-green bg-bv-green/10'
+            'flex rounded-lg text-bv-muted transition-all hover:text-bv-text',
+            effectiveCollapsed ? 'justify-center px-2 py-2' : 'items-center gap-3 px-3 py-2',
+            location.pathname === '/settings' && 'bg-bv-green/10 text-bv-green'
           )}
         >
           <Settings size={20} className="shrink-0" />
-          <span className={cn('font-medium', collapsed && 'sr-only')}>Configurações</span>
+          <span className={cn('font-medium', effectiveCollapsed && 'sr-only')}>Configurações</span>
         </Link>
 
         <button
           type="button"
           onClick={signOut}
-          title={collapsed ? 'Sair' : undefined}
+          title={effectiveCollapsed ? 'Sair' : undefined}
           aria-label="Sair"
           className={cn(
-            'flex rounded-lg text-red-400 hover:bg-red-400/10 transition-all w-full',
-            collapsed ? 'justify-center px-2 py-2' : 'items-center gap-3 px-3 py-2 text-left'
+            'flex w-full rounded-lg text-left text-red-400 transition-all hover:bg-red-400/10',
+            effectiveCollapsed ? 'justify-center px-2 py-2' : 'items-center gap-3 px-3 py-2'
           )}
         >
           <LogOut size={20} className="shrink-0" />
-          <span className={cn('font-medium', collapsed && 'sr-only')}>Sair</span>
+          <span className={cn('font-medium', effectiveCollapsed && 'sr-only')}>Sair</span>
         </button>
 
         <div
           className={cn(
             'flex rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted',
-            collapsed ? 'justify-center p-2' : 'items-center gap-3 px-2 py-3'
+            effectiveCollapsed ? 'justify-center p-2' : 'items-center gap-3 px-2 py-3'
           )}
         >
-          <div className="w-8 h-8 rounded-full bg-bv-green flex items-center justify-center text-xs font-bold text-black shrink-0">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-bv-green text-xs font-bold text-black">
             {user?.email?.[0].toUpperCase()}
           </div>
-          <div className={cn('overflow-hidden min-w-0', collapsed && 'sr-only')}>
+          <div className={cn('min-w-0 overflow-hidden', effectiveCollapsed && 'sr-only')}>
             <p className="text-sm font-medium text-bv-text truncate">{user?.email}</p>
             <p className="text-[10px] text-bv-green uppercase tracking-wider font-bold">SOVEREIGN PRO</p>
           </div>

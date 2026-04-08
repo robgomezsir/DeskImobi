@@ -38,12 +38,12 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-bv-page">
-      <header className="flex shrink-0 justify-end px-4 pt-4 sm:px-8">
+    <div className="flex min-h-[100dvh] flex-col bg-bv-page">
+      <header className="flex shrink-0 justify-end px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-8">
         <ThemeToggleButton />
       </header>
       <div className="flex flex-1 items-center justify-center p-4 pb-8">
-        <div className="w-full max-w-md glass p-10 rounded-3xl space-y-8 animate-in fade-in zoom-in duration-500">
+        <div className="w-full max-w-md space-y-6 rounded-2xl glass p-6 sm:space-y-8 sm:rounded-3xl sm:p-10 animate-in fade-in zoom-in duration-500">
         <div className="text-center space-y-4">
           <img
             src={isDark ? logoWhite : logoHorizontalDark}
