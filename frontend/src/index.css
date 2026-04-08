@@ -345,54 +345,14 @@ html.light {
   }
 
   /**
-   * Dashboard: fundo dos cartões totalmente opaco (alpha 1) — imagem de fundo não transparece no fill.
+   * Dashboard cartões: overrides opacos estão em `@layer utilities` no fim do ficheiro —
+   * o utility `.glass` vive na mesma camada e tem precedência sobre `@layer components`.
    */
-  [data-bv-dashboard-canvas] .glass,
-  [data-bv-dashboard-canvas] .glass-card {
-    background: var(--card-fill-solid);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.09),
-      0 0 0 1px rgba(var(--accent-rgb), 0.28),
-      0 12px 48px rgba(0, 0, 0, 0.32);
-  }
 
   [data-bv-dashboard-canvas] .glass > *,
   [data-bv-dashboard-canvas] .glass-card > * {
     position: relative;
     z-index: 1;
-  }
-
-  /** Hover KPIs: brilho radial opaco (sem transparência no preenchimento) */
-  [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
-  [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
-    background: radial-gradient(
-      ellipse 120% 90% at 50% 0%,
-      color-mix(in srgb, rgb(var(--accent-rgb)) 22%, #000000 78%) 0%,
-      var(--card-fill-solid) 55%
-    );
-  }
-
-  /** Dashboard tema claro: mesmo princípio — fill opaco sobre a imagem */
-  html.light [data-bv-dashboard-canvas] .glass,
-  html.light [data-bv-dashboard-canvas] .glass-card {
-    background: var(--card-fill-solid);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.65),
-      0 0 0 1px rgba(var(--accent-rgb), 0.22),
-      0 12px 40px rgba(0, 0, 0, 0.08);
-  }
-
-  html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
-  html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
-    background: radial-gradient(
-      ellipse 120% 90% at 50% 0%,
-      color-mix(in srgb, rgb(var(--accent-rgb)) 18%, #ffffff 82%) 0%,
-      var(--card-fill-solid) 55%
-    );
   }
 
   /** green_highlight quando `glass glass-green` — contorno mantém gradiente; só sombras extra */
@@ -464,5 +424,55 @@ html.light {
   .bv-scroll-root {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+/**
+ * Dashboard: cartões opacos — TEM de estar em `@layer utilities` para vencer o @utility `.glass`
+ * (em Tailwind v4 a camada `utilities` ganha à camada `components` independentemente da especificidade).
+ */
+@layer utilities {
+  [data-bv-dashboard-canvas] .glass,
+  [data-bv-dashboard-canvas] .glass-card {
+    background: var(--card-fill-solid);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.09),
+      0 0 0 1px rgba(var(--accent-rgb), 0.28),
+      0 12px 48px rgba(0, 0, 0, 0.32);
+  }
+
+  [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
+  [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      color-mix(in srgb, rgb(var(--accent-rgb)) 22%, #000000 78%) 0%,
+      var(--card-fill-solid) 55%
+    );
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  html.light [data-bv-dashboard-canvas] .glass,
+  html.light [data-bv-dashboard-canvas] .glass-card {
+    background: var(--card-fill-solid);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      0 0 0 1px rgba(var(--accent-rgb), 0.22),
+      0 12px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
+  html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      color-mix(in srgb, rgb(var(--accent-rgb)) 18%, #ffffff 82%) 0%,
+      var(--card-fill-solid) 55%
+    );
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
