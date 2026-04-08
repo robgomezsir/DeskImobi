@@ -3,13 +3,13 @@
 
 /*
  * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
- * Accent: #00F5A0. Liquid glass: fill semitransparente + backdrop-filter. Contorno: anel 1px (::before). Desfoque ~60% → token em px (--bv-liquid-glass-blur).
+ * Accent: #00F5A0. Liquid glass: fill semitransparente + backdrop-filter 80px. Contorno: anel 1px (::before).
  */
 
 :root {
   --accent-rgb: 0, 245, 160;
-  /** Desfoque do vidro (especificação “60%” → 60px no motor CSS) */
-  --bv-liquid-glass-blur: 60px;
+  /** Desfoque do plano por trás dos cartões (liquid glass) — 80px global */
+  --bv-liquid-glass-blur: 80px;
   /**
    * Opção 1 de contorno (brokervision-brand-context): cor padrão em conic-gradient,
    * opacidade 6% → 20% → 6% → 20% duas vezes ao longo do perímetro (8 trechos).
@@ -217,7 +217,8 @@ html.light {
  */
 @media (max-width: 767.98px) {
   :root {
-    --bv-liquid-glass-blur: 36px;
+    /** ~60% do blur desktop para custo em GPU */
+    --bv-liquid-glass-blur: 48px;
   }
 
   html.dark {
