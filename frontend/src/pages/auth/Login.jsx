@@ -1,21 +1,24 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Sun, Moon } from 'lucide-react';
 import logoWhite from '../../assets/logo-white.png';
+import logoHorizontalDark from '../../assets/logo-horizontal-dark.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -34,23 +37,36 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-bv-page p-4">
+      <button
+        type="button"
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 z-10 rounded-xl p-3 glass text-bv-muted hover:text-bv-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50"
+        aria-label={isDark ? 'Ativar tema claro' : 'Ativar tema escuro'}
+      >
+        {isDark ? <Sun size={22} strokeWidth={2} /> : <Moon size={22} strokeWidth={2} />}
+      </button>
+
       <div className="w-full max-w-md glass p-10 rounded-3xl space-y-8 animate-in fade-in zoom-in duration-500">
         <div className="text-center space-y-4">
-          <img src={logoWhite} alt="BrokerVision" className="h-12 w-auto mx-auto mb-6" />
-          <h1 className="text-3xl font-display font-bold tracking-tight text-white">
+          <img
+            src={isDark ? logoWhite : logoHorizontalDark}
+            alt="BrokerVision"
+            className="h-12 w-auto mx-auto mb-6"
+          />
+          <h1 className="text-3xl font-display font-bold tracking-tight text-bv-text">
             Acesse seu <span className="text-bv-green">Cockpit</span>
           </h1>
-          <p className="text-gray-400">Entre na inteligência soberana do mercado imobiliário.</p>
+          <p className="text-bv-muted">Entre na inteligência soberana do mercado imobiliário.</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300 ml-1">E-mail</label>
-            <input 
-              type="email" 
+            <label className="text-sm font-medium text-bv-text-soft ml-1">E-mail</label>
+            <input
+              type="email"
               required
-              className="input-field py-3 bg-white/5" 
+              className="input-field py-3 bg-bv-surface-muted"
               placeholder="seu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -59,37 +75,36 @@ export default function Login() {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center px-1">
-              <label className="text-sm font-medium text-gray-300">Senha</label>
-              <Link to="/auth/forgot-password" size="sm" className="text-xs text-primary-500 hover:text-primary-400">
+              <label className="text-sm font-medium text-bv-text-soft">Senha</label>
+              <Link
+                to="/auth/forgot-password"
+                className="text-xs text-bv-green hover:text-bv-green-deep font-medium"
+              >
                 Esqueceu a senha?
               </Link>
             </div>
-            <input 
-              type="password" 
+            <input
+              type="password"
               required
-              className="input-field py-3 bg-white/5" 
+              className="input-field py-3 bg-bv-surface-muted"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="btn btn-primary w-full py-4 text-lg font-semibold"
           >
-            {loading ? (
-              <Loader2 className="animate-spin" size={24} />
-            ) : (
-              'Entrar agora'
-            )}
+            {loading ? <Loader2 className="animate-spin" size={24} /> : 'Entrar agora'}
           </button>
         </form>
 
-        <div className="text-center text-sm text-gray-400">
+        <div className="text-center text-sm text-bv-muted">
           Ainda não tem conta?{' '}
-          <Link to="/auth/register" className="text-primary-500 font-semibold hover:underline">
+          <Link to="/auth/register" className="text-bv-green font-semibold hover:underline">
             Cadastre-se grátis
           </Link>
         </div>

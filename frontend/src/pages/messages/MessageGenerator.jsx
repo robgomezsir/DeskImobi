@@ -54,8 +54,8 @@ export default function MessageGenerator() {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{flow.officialName}</h1>
-          <p className="text-bv-white-ghost">{flow.tagline}</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{flow.officialName}</h1>
+          <p className="text-bv-muted">{flow.tagline}</p>
         </div>
       </div>
 
@@ -65,7 +65,7 @@ export default function MessageGenerator() {
           <div className="glass p-6 rounded-3xl space-y-6 sticky top-24">
             <form onSubmit={handleGenerate} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">Etapa do Funil</label>
+                <label className="text-sm font-medium text-bv-muted">Etapa do Funil</label>
                 <select 
                   className="input-field"
                   value={formData.funnelStage}
@@ -80,7 +80,7 @@ export default function MessageGenerator() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">Tipo de Imóvel</label>
+                <label className="text-sm font-medium text-bv-muted">Tipo de Imóvel</label>
                 <select 
                   className="input-field"
                   value={formData.propertyType}
@@ -94,7 +94,7 @@ export default function MessageGenerator() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">Tom de Voz</label>
+                <label className="text-sm font-medium text-bv-muted">Tom de Voz</label>
                 <select 
                   className="input-field"
                   value={formData.tone}
@@ -108,7 +108,7 @@ export default function MessageGenerator() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">Detalhes Adicionais</label>
+                <label className="text-sm font-medium text-bv-muted">Detalhes Adicionais</label>
                 <textarea 
                   className="input-field min-h-[100px] py-3"
                   placeholder="Ex: O cliente tem pressa pois está se mudando de cidade..."
@@ -132,12 +132,12 @@ export default function MessageGenerator() {
         {/* Results Column */}
         <div className="lg:col-span-2 space-y-6">
           {!result ? (
-            <div className="glass-card h-[600px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-white/5">
-              <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-gray-700 mb-4">
+            <div className="glass-card h-[600px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-[var(--line-subtle)]">
+              <div className="w-16 h-16 rounded-2xl bg-bv-surface-muted flex items-center justify-center text-bv-muted mb-4">
                 <Send size={32} />
               </div>
-              <h3 className="text-xl font-medium mb-2 text-bv-white">Pronto para a Corrente de Vendas</h3>
-              <p className="text-bv-white-ghost max-w-xs">Defina os parâmetros ao lado para gerar o fluxo de comunicação soberana.</p>
+              <h3 className="text-xl font-medium mb-2 text-bv-text">Pronto para a Corrente de Vendas</h3>
+              <p className="text-bv-muted max-w-xs">Defina os parâmetros ao lado para gerar o fluxo de comunicação soberana.</p>
             </div>
           ) : (
             <div className="space-y-6 animate-in fade-in zoom-in duration-500">
@@ -152,13 +152,13 @@ export default function MessageGenerator() {
                     <Copy size={16} />
                   </button>
                 </div>
-                <p className="text-bv-white-ghost leading-relaxed whitespace-pre-wrap">{result.whatsapp}</p>
+                <p className="text-bv-muted leading-relaxed whitespace-pre-wrap">{result.whatsapp}</p>
               </div>
 
               {/* Call Script Card */}
-              <div className="glass-card p-6 border-l-4 border-white/40">
+              <div className="glass-card p-6 border-l-4 border-[var(--line)]">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-2 text-white/60 font-bold">
+                  <div className="flex items-center gap-2 text-bv-muted font-bold">
                     <PhoneCall size={20} />
                     SCRIPT DE CONEXÃO
                   </div>
@@ -166,13 +166,13 @@ export default function MessageGenerator() {
                     <Copy size={16} />
                   </button>
                 </div>
-                <p className="text-bv-white-ghost leading-relaxed whitespace-pre-wrap">{result.script}</p>
+                <p className="text-bv-muted leading-relaxed whitespace-pre-wrap">{result.script}</p>
               </div>
 
               {/* Objection Killer Card */}
-              <div className="glass-card p-6 border-l-4 border-orange-500">
+              <div className="glass-card p-6 border-l-4 border-bv-green">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-2 text-orange-500 font-bold">
+                  <div className="flex items-center gap-2 text-bv-green font-bold">
                     <AlertCircle size={20} />
                     MATADOR DE OBJEÇÃO
                   </div>
@@ -180,7 +180,7 @@ export default function MessageGenerator() {
                     <Copy size={16} />
                   </button>
                 </div>
-                <p className="text-gray-200 leading-relaxed whitespace-pre-wrap">{result.objection}</p>
+                <p className="text-bv-muted leading-relaxed whitespace-pre-wrap">{result.objection}</p>
               </div>
             </div>
           )}

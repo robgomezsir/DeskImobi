@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "icons": "node scripts/generate-favicons.mjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -13,6 +14,7 @@
     "@supabase/supabase-js": "^2.101.1",
     "@tanstack/react-query": "^5.96.2",
     "autoprefixer": "^10.4.27",
+    "axios": "^1.8.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "html2canvas": "^1.4.1",
@@ -27,20 +29,21 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.2",
-    "axios": "^1.8.1",
     "zod": "^4.3.6",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@tailwindcss/vite": "^4.0.9",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "@tailwindcss/vite": "^4.0.9",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.34.5",
     "vite": "^8.0.1"
   }
 }

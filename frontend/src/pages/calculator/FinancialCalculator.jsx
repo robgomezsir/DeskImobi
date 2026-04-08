@@ -77,8 +77,8 @@ export default function FinancialCalculator() {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{calc.officialName}</h1>
-          <p className="text-bv-white-ghost">{calc.tagline}</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{calc.officialName}</h1>
+          <p className="text-bv-muted">{calc.tagline}</p>
         </div>
         <button 
           onClick={handleExportPDF}
@@ -92,17 +92,17 @@ export default function FinancialCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Form Column */}
         <div className="lg:col-span-1">
-          <div className="glass p-6 rounded-3xl space-y-6 border border-white/10">
-            <h3 className="text-lg font-bold flex items-center gap-2 text-white">
+          <div className="glass p-6 rounded-3xl space-y-6 border border-[var(--line)]">
+            <h3 className="text-lg font-bold flex items-center gap-2 text-bv-text">
               <Calculator size={20} className="text-bv-green" />
               Parâmetros de Análise
             </h3>
             
             <form onSubmit={calculateFinancing} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">Valor do Imóvel</label>
+                <label className="text-sm font-medium text-bv-muted">Valor do Imóvel</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">R$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted">R$</span>
                   <input 
                     type="number"
                     className="input-field pl-12"
@@ -113,9 +113,9 @@ export default function FinancialCalculator() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">Entrada</label>
+                <label className="text-sm font-medium text-bv-muted">Entrada</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">R$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted">R$</span>
                   <input 
                     type="number"
                     className="input-field pl-12"
@@ -127,7 +127,7 @@ export default function FinancialCalculator() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-400">Taxa Anual (%)</label>
+                  <label className="text-sm font-medium text-bv-muted">Taxa Anual (%)</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -137,7 +137,7 @@ export default function FinancialCalculator() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-400">Prazo (Anos)</label>
+                  <label className="text-sm font-medium text-bv-muted">Prazo (Anos)</label>
                   <input 
                     type="number"
                     className="input-field"
@@ -157,26 +157,26 @@ export default function FinancialCalculator() {
         {/* Results Column */}
         <div className="lg:col-span-2">
           {!results ? (
-            <div className="glass-card h-full min-h-[400px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-white/5">
-              <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-gray-700 mb-4">
+            <div className="glass-card h-full min-h-[400px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-[var(--line-subtle)]">
+              <div className="w-16 h-16 rounded-2xl bg-bv-surface-muted flex items-center justify-center text-bv-muted mb-4">
                 <TrendingDown size={32} />
               </div>
-              <h3 className="text-xl font-medium mb-2 text-bv-white">Pronto para Análise</h3>
-              <p className="text-bv-white-ghost max-w-xs">Defina os parâmetros ao lado para gerar o relatório de viabilidade econômica.</p>
+              <h3 className="text-xl font-medium mb-2 text-bv-text">Pronto para Análise</h3>
+              <p className="text-bv-muted max-w-xs">Defina os parâmetros ao lado para gerar o relatório de viabilidade econômica.</p>
             </div>
           ) : (
             <div className="space-y-6 animate-in fade-in zoom-in duration-500">
               {/* Main Metric Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="glass-card p-6 bg-primary-600/5 border-primary-600/20">
-                  <p className="text-sm text-primary-400 mb-1">Parcela Mensal Estimada</p>
-                  <h2 className="text-4xl font-display font-bold text-white">
+                <div className="glass-card p-6 bg-bv-green/5 border-bv-green/20">
+                  <p className="text-sm text-bv-green mb-1">Parcela Mensal Estimada</p>
+                  <h2 className="text-4xl font-display font-bold text-bv-text">
                     {formatCurrency(results.monthlyPayment)}
                   </h2>
                 </div>
                 <div className="glass-card p-6">
-                  <p className="text-sm text-gray-400 mb-1">Total a ser Pago</p>
-                  <h2 className="text-4xl font-display font-bold text-white">
+                  <p className="text-sm text-bv-muted mb-1">Total a ser Pago</p>
+                  <h2 className="text-4xl font-display font-bold text-bv-text">
                     {formatCurrency(results.totalPaid)}
                   </h2>
                 </div>
@@ -184,20 +184,20 @@ export default function FinancialCalculator() {
 
               {/* Breakdown Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="glass p-4 rounded-2xl border border-white/5">
-                  <div className="flex items-center gap-2 text-gray-400 text-xs mb-2">
+                <div className="glass p-4 rounded-2xl border border-[var(--line-subtle)]">
+                  <div className="flex items-center gap-2 text-bv-muted text-xs mb-2">
                     <DollarSign size={14} /> VALOR FINANCIADO
                   </div>
                   <p className="text-lg font-bold">{formatCurrency(results.principal)}</p>
                 </div>
-                <div className="glass p-4 rounded-2xl border border-white/5">
-                  <div className="flex items-center gap-2 text-orange-400 text-xs mb-2">
+                <div className="glass p-4 rounded-2xl border border-[var(--line-subtle)]">
+                  <div className="flex items-center gap-2 text-bv-green-deep text-xs mb-2">
                     <TrendingDown size={14} /> TOTAL DE JUROS
                   </div>
                   <p className="text-lg font-bold">{formatCurrency(results.totalInterest)}</p>
                 </div>
-                <div className="glass p-4 rounded-2xl border border-white/5">
-                  <div className="flex items-center gap-2 text-gray-400 text-xs mb-2">
+                <div className="glass p-4 rounded-2xl border border-[var(--line-subtle)]">
+                  <div className="flex items-center gap-2 text-bv-muted text-xs mb-2">
                     <Calendar size={14} /> TOTAL DE PARCELAS
                   </div>
                   <p className="text-lg font-bold">{formData.termYears * 12} meses</p>
@@ -210,7 +210,7 @@ export default function FinancialCalculator() {
                   <Sparkles size={20} />
                   ANÁLISE SOBERANA
                 </div>
-                <p className="text-bv-white-ghost leading-relaxed italic">
+                <p className="text-bv-muted leading-relaxed italic">
                   "Prosperidade requer precisão. Com uma parcela de {formatCurrency(results.monthlyPayment)}, a viabilidade exige uma renda bruta de {formatCurrency(results.monthlyPayment * 3.33)}, mantendo a margem de segurança de 30%."
                 </p>
               </div>

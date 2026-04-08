@@ -43,17 +43,17 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="glass w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in duration-300 border border-white/10">
-        <div className="flex justify-between items-center px-6 py-5 border-b border-white/5 bg-white/5">
-          <h3 className="text-xl font-display font-bold text-white tracking-tight">Capturar Novo Lead</h3>
-          <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-xl transition-colors text-bv-white-ghost">
+      <div className="glass w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in duration-300 border border-[var(--line)]">
+        <div className="flex justify-between items-center px-6 py-5 border-b border-[var(--line-subtle)] bg-bv-surface-muted">
+          <h3 className="text-xl font-display font-bold text-bv-text tracking-tight">Capturar Novo Lead</h3>
+          <button onClick={onClose} className="p-2 hover:bg-bv-surface-strong rounded-xl transition-colors text-bv-muted">
             <X size={20} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-bv-white-ghost ml-1">Identidade do Lead *</label>
+            <label className="text-sm font-medium text-bv-muted ml-1">Identidade do Lead *</label>
             <input 
               required
               className="input-field" 
@@ -65,7 +65,7 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-bv-white-ghost ml-1">Conexão Digital (Telefone) *</label>
+              <label className="text-sm font-medium text-bv-muted ml-1">Conexão Digital (Telefone) *</label>
               <input 
                 required
                 className="input-field" 
@@ -75,7 +75,7 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-bv-white-ghost ml-1">Correio Eletrônico</label>
+              <label className="text-sm font-medium text-bv-muted ml-1">Correio Eletrônico</label>
               <input 
                 type="email"
                 className="input-field" 
@@ -88,7 +88,7 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-bv-white-ghost ml-1">Perfil do Lead</label>
+              <label className="text-sm font-medium text-bv-muted ml-1">Perfil do Lead</label>
               <select 
                 className="input-field pr-8"
                 value={formData.client_type}
@@ -100,7 +100,7 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-bv-white-ghost ml-1">Classe de Ativo</label>
+              <label className="text-sm font-medium text-bv-muted ml-1">Classe de Ativo</label>
               <select 
                 className="input-field pr-8"
                 value={formData.property_type}
@@ -118,7 +118,7 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
             <button 
               type="button"
               onClick={onClose}
-              className="btn btn-outline flex-1 h-12 text-bv-white-ghost"
+              className="btn btn-outline flex-1 h-12 text-bv-muted"
             >
               Recuar
             </button>

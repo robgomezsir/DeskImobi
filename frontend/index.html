@@ -1,15 +1,37 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
   <head>
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('bv-theme');
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.className = t;
+            return;
+          }
+          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            document.documentElement.className = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
     <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/bv-symbol-green-16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/bv-symbol-green-32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/bv-symbol-black-32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/bv-symbol-white-32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#000000" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>BrokerVision | A visão que faltava.</title>
     <meta name="description" content="BrokerVision - O sistema operacional do corretor moderno. Inteligência de dados, CRM especializado e visão estratégica para o mercado imobiliário." />
     <meta name="keywords" content="BrokerVision, corretor de imóveis, CRM imobiliário, inteligência imobiliária, dados imobiliários" />
   </head>
-  <body class="bg-dark-950 text-white selection:bg-primary-500/30">
+  <body class="selection:bg-bv-green/30">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -41,16 +41,16 @@ export default function Insights() {
             <Sparkles size={20} className="text-bv-green shadow-glow" />
             <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-bv-green">IA Ativa • Sovereign Analyst</span>
           </div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{insights.officialName}</h1>
-          <p className="text-bv-white-ghost">{insights.tagline}</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{insights.officialName}</h1>
+          <p className="text-bv-muted">{insights.tagline}</p>
         </div>
         <div className="flex gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-bv-muted" size={18} />
             <input 
               type="text" 
               placeholder="Analisar bairro ou região..." 
-              className="bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 h-12 outline-none focus:border-bv-green/50 transition-all text-sm w-64"
+              className="w-full bg-bv-surface-muted border border-[var(--line)] rounded-xl pl-10 pr-4 h-12 outline-none focus:border-bv-green/50 transition-all text-sm text-bv-text placeholder:text-bv-muted w-64"
             />
           </div>
         </div>
@@ -66,11 +66,11 @@ export default function Insights() {
             <div>
               <h3 className="text-xl font-display font-bold flex items-center gap-2">
                 Tendência de Preço m²
-                <div className="p-1 rounded-full bg-white/5 text-gray-500 cursor-help">
+                <div className="p-1 rounded-full bg-bv-surface-muted text-bv-muted cursor-help">
                   <Info size={12} />
                 </div>
               </h3>
-              <p className="text-sm text-gray-500">Valor médio ponderado em São Paulo (Capital)</p>
+              <p className="text-sm text-bv-muted">Valor médio ponderado em São Paulo (Capital)</p>
             </div>
             <div className="text-right">
               <p className="text-2xl font-display font-bold text-bv-green">R$ 9.200</p>
@@ -114,13 +114,13 @@ export default function Insights() {
           </div>
           
           <div className="space-y-4 flex-1">
-            <div className="p-5 bg-white/5 rounded-2xl border border-white/5 hover:border-bv-green/30 transition-all group">
+            <div className="p-5 bg-bv-surface-muted rounded-2xl border border-[var(--line-subtle)] hover:border-bv-green/30 transition-all group">
               <div className="flex justify-between items-start mb-2">
                 <span className="text-[10px] bg-bv-green/10 text-bv-green px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Alta Demanda</span>
-                <Clock size={14} className="text-gray-500" />
+                <Clock size={14} className="text-bv-muted" />
               </div>
-              <h4 className="font-bold text-white mb-1">Studios no Itaim Bibi</h4>
-              <p className="text-xs text-gray-400 leading-relaxed">
+              <h4 className="font-bold text-bv-text mb-1">Studios no Itaim Bibi</h4>
+              <p className="text-xs text-bv-muted leading-relaxed">
                 A procura por aluguel subiu 15% nos últimos 14 dias. Ideal para investidores de yield recorrente.
               </p>
               <button className="mt-4 flex items-center gap-1 text-xs text-bv-green font-bold group-hover:gap-2 transition-all">
@@ -128,13 +128,13 @@ export default function Insights() {
               </button>
             </div>
 
-            <div className="p-5 bg-white/5 rounded-2xl border border-white/5 hover:border-bv-green/30 transition-all group">
+            <div className="p-5 bg-bv-surface-muted rounded-2xl border border-[var(--line-subtle)] hover:border-bv-green/30 transition-all group">
               <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] bg-white/10 text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Preço Crítico</span>
-                <MapPin size={14} className="text-gray-500" />
+                <span className="text-[10px] bg-bv-surface-strong text-bv-text px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Preço Crítico</span>
+                <MapPin size={14} className="text-bv-muted" />
               </div>
-              <h4 className="font-bold text-white mb-1">Pinheiros: Queda no ticket</h4>
-              <p className="text-xs text-gray-400 leading-relaxed">
+              <h4 className="font-bold text-bv-text mb-1">Pinheiros: Queda no ticket</h4>
+              <p className="text-xs text-bv-muted leading-relaxed">
                 Residuais de revenda abaixo do m² médio. Momento de "buy-low" para estoque estratégico.
               </p>
               <button className="mt-4 flex items-center gap-1 text-xs text-bv-green font-bold group-hover:gap-2 transition-all">
@@ -146,7 +146,7 @@ export default function Insights() {
           <div className="mt-8 p-4 bg-bv-green/5 rounded-2xl border border-bv-green/10">
             <div className="flex items-center gap-2 mb-2">
               <Zap size={16} className="text-bv-green" />
-              <span className="text-xs font-bold text-white">Próximo Insight em:</span>
+              <span className="text-xs font-bold text-bv-text">Próximo Insight em:</span>
             </div>
             <div className="text-2xl font-display font-bold text-bv-green tracking-widest uppercase">
               02:14:55
@@ -158,15 +158,15 @@ export default function Insights() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
           { label: 'Sentimento de Mercado', value: 'Otimista', color: 'text-bv-green' },
-          { label: 'Taxa de Vacância Avg', value: '4.2%', color: 'text-white' },
+          { label: 'Taxa de Vacância Avg', value: '4.2%', color: 'text-bv-text' },
           { label: 'Lead Quality Score', value: 'A+', color: 'text-bv-green' },
         ].map((stat, i) => (
           <div key={i} className="glass p-6 rounded-3xl flex justify-between items-center group cursor-default">
             <div>
-              <p className="text-[10px] uppercase tracking-widest text-bv-white-ghost font-bold mb-1">{stat.label}</p>
+              <p className="text-[10px] uppercase tracking-widest text-bv-muted font-bold mb-1">{stat.label}</p>
               <p className={`text-2xl font-display font-bold ${stat.color}`}>{stat.value}</p>
             </div>
-            <div className="p-2 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="p-2 bg-bv-surface-muted rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
               <TrendingUp size={16} />
             </div>
           </div>

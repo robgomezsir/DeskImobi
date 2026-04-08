@@ -77,9 +77,9 @@ export default function Dashboard() {
   }, [user]);
 
   const cards = [
-    { title: 'Base de Clientes', value: metrics.totalClients, icon: Users, color: 'text-white', bg: 'bg-white/5' },
+    { title: 'Base de Clientes', value: metrics.totalClients, icon: Users, color: 'text-bv-text', bg: 'bg-bv-surface-muted' },
     { title: 'Novos Leads (7d)', value: metrics.newLeads, icon: Target, color: 'text-bv-green', bg: 'bg-bv-green/10' },
-    { title: 'Em Negociação', value: metrics.activeNegotiations, icon: Activity, color: 'text-white', bg: 'bg-white/5' },
+    { title: 'Em Negociação', value: metrics.activeNegotiations, icon: Activity, color: 'text-bv-text', bg: 'bg-bv-surface-muted' },
     { title: 'Contratos Fechados', value: metrics.closedDeals, icon: CheckCircle2, color: 'text-bv-green', bg: 'bg-bv-green/10' },
   ];
 
@@ -87,12 +87,12 @@ export default function Dashboard() {
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-4xl font-display font-bold tracking-tight text-white">{dashboard.officialName}</h1>
-          <p className="text-bv-white-ghost">{dashboard.tagline}</p>
+          <h1 className="text-4xl font-display font-bold tracking-tight text-bv-text">{dashboard.officialName}</h1>
+          <p className="text-bv-muted">{dashboard.tagline}</p>
         </div>
         <div className="hidden md:flex gap-2">
-          <div className="glass px-4 py-2 rounded-xl flex items-center gap-2 text-sm text-gray-400">
-            <Activity size={16} className="text-primary-500" />
+          <div className="glass px-4 py-2 rounded-xl flex items-center gap-2 text-sm text-bv-muted">
+            <Activity size={16} className="text-bv-green" />
             Tempo Real: Ativo
           </div>
         </div>
@@ -105,17 +105,17 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="glass p-6 rounded-3xl group hover:border-primary-500/30 transition-all hover:-translate-y-1"
+            className="glass p-6 rounded-3xl group hover:border-bv-green/30 transition-all hover:-translate-y-1"
           >
             <div className="flex justify-between items-start mb-4">
               <div className={`p-3 rounded-2xl ${card.bg} ${card.color}`}>
                 <card.icon size={24} />
               </div>
-              <span className="text-[10px] font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded-full flex items-center gap-1">
+              <span className="text-[10px] font-bold text-bv-green bg-bv-green/10 px-2 py-1 rounded-full flex items-center gap-1">
                 +12% <ArrowUpRight size={10} />
               </span>
             </div>
-            <p className="text-gray-400 text-sm font-medium">{card.title}</p>
+            <p className="text-bv-muted text-sm font-medium">{card.title}</p>
             <p className="text-4xl font-display font-bold mt-1">{card.value}</p>
           </motion.div>
         ))}
@@ -132,9 +132,9 @@ export default function Dashboard() {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h3 className="text-xl font-display font-bold">Desempenho de Vendas</h3>
-              <p className="text-sm text-gray-500">Leads captados vs Vendas concluídas</p>
+              <p className="text-sm text-bv-muted">Leads captados vs Vendas concluídas</p>
             </div>
-            <select className="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-xs outline-none">
+            <select className="bg-bv-surface-muted border border-[var(--line)] rounded-lg px-3 py-1 text-xs outline-none">
               <option>Últimos 6 meses</option>
               <option>Últimos 12 meses</option>
             </select>
@@ -169,15 +169,15 @@ export default function Dashboard() {
           className="glass p-8 rounded-3xl flex flex-col"
         >
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-2 bg-primary-600/10 text-primary-400 rounded-xl">
+            <div className="p-2 bg-bv-green/10 text-bv-green rounded-xl">
               <TrendingUp size={20} />
             </div>
             <h3 className="text-xl font-display font-bold">Insights IA</h3>
           </div>
           
           <div className="space-y-6 flex-1">
-            <div className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-3">
-              <p className="text-sm leading-relaxed text-bv-white">
+            <div className="p-4 bg-bv-surface-muted rounded-2xl border border-[var(--line-subtle)] space-y-3">
+              <p className="text-sm leading-relaxed text-bv-text">
                 Você tem <span className="text-bv-green font-bold">3 clientes</span> estagnados há mais de 10 dias.
               </p>
               <button className="btn btn-primary w-full py-2 h-10 text-xs text-black font-bold">
@@ -185,15 +185,15 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-3">
-              <p className="text-sm leading-relaxed text-gray-400 italic">
+            <div className="p-4 bg-bv-surface-muted rounded-2xl border border-[var(--line-subtle)] space-y-3">
+              <p className="text-sm leading-relaxed text-bv-muted italic">
                 "Sua taxa de conversão aumentou 5% este mês após começar a usar os scripts de objeção personalizados."
               </p>
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-white/5">
-            <button className="flex items-center justify-between w-full text-gray-400 hover:text-white transition-colors group">
+          <div className="mt-8 pt-6 border-t border-[var(--line-subtle)]">
+            <button className="flex items-center justify-between w-full text-bv-muted hover:text-bv-text transition-colors group">
               <span className="text-sm font-medium">Ver todos os insights</span>
               <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </button>
