@@ -1,15 +1,17 @@
 ---
-description: Ao concluir uma implementação de código, fazer commit e push para o remoto.
+description: Ao concluir implementações, fazer commit completo e push para o remoto (sem deixar alterações pendentes do pedido).
 alwaysApply: true
 ---
 
-# Git ao finalizar implementação
+# Commit + push completo ao finalizar implementação
 
 Quando uma tarefa de implementação estiver **concluída** (código funcional, build ok se aplicável):
 
-1. `git status` para confirmar ficheiros.
-2. `git add` apenas o que pertence ao pedido (não incluir ficheiros não relacionados sem confirmação).
-3. `git commit` com mensagem no estilo do projeto (`feat`, `fix`, `refactor`, etc.) e corpo explicativo quando fizer sentido.
-4. `git push origin` na branch atual (normalmente `main`).
+1. **`git status`** — listar tudo o que mudou para o pedido atual.
+2. **`git add`** — incluir **todos** os ficheiros que fazem parte da implementação (assets, CSS, rotas, etc.). Não deixar partes do pedido por commitar. Não misturar com alterações não relacionadas; se existirem, perguntar ou omitir.
+3. **`git commit`** — mensagem clara (`feat`, `fix`, `refactor`, `chore`, …) e corpo opcional com o essencial do que mudou.
+4. **`git push origin <branch>`** — normalmente **`git push origin main`**. Garantir que o remoto fica com o mesmo estado que o trabalho concluído.
 
-Se não houver credenciais ou o push falhar, reportar o erro e o que falta (ex.: autenticação).
+**Obrigatório:** não encerrar a tarefa só com alterações locais; **sempre** fechar o ciclo com **commit + push** bem-sucedido, salvo bloqueio (credenciais, rede, hooks). Nesse caso, reportar o erro e o próximo passo.
+
+Se o utilizador pedir explicitamente excluir ficheiros do commit, respeitar.
