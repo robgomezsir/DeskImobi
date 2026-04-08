@@ -3,11 +3,11 @@ import {
   LayoutDashboard, 
   Users, 
   Calculator, 
-  MessageSquare, 
+  Sparkles,
   Settings, 
   LogOut,
-  TrendingUp,
-  Briefcase
+  Zap,
+  Wallet
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { clsx } from 'clsx';
@@ -23,8 +23,9 @@ const navItems = [
   { name: 'BV Dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { name: 'BV CRM', icon: Users, path: '/crm' },
   { name: 'BV Calc', icon: Calculator, path: '/calculadora' },
-  { name: 'BV Flow', icon: MessageSquare, path: '/mensagens' },
-  { name: 'BV Insights', icon: TrendingUp, path: '/insights' },
+  { name: 'BV Finance', icon: Wallet, path: '/finance' },
+  { name: 'BV Flow', icon: Zap, path: '/mensagens' },
+  { name: 'BV Insights', icon: Sparkles, path: '/insights' },
 ];
 
 export function Sidebar() {

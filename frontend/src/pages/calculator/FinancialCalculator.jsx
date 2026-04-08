@@ -75,7 +75,7 @@ export default function FinancialCalculator() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Calc</h1>
-          <p className="text-bv-white-ghost">Simulação estratégica de ativos e fluxos de capital.</p>
+          <p className="text-bv-white-ghost">Simule. Decida. Feche.</p>
         </div>
         <button 
           onClick={handleExportPDF}

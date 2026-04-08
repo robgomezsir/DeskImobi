@@ -52,7 +52,7 @@ export default function MessageGenerator() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Flow</h1>
-          <p className="text-bv-white-ghost">Scripts de alta conversão para o corretor soberano.</p>
+          <p className="text-bv-white-ghost">Trabalhe menos. Produza mais.</p>
         </div>
       </div>
 

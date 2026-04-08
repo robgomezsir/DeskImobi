@@ -83,7 +83,7 @@ export default function CRM() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV CRM</h1>
-          <p className="text-bv-white-ghost">Gerenciamento soberano de leads e ativos imobiliários.</p>
+          <p className="text-bv-white-ghost">Do primeiro contato ao fechamento.</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}

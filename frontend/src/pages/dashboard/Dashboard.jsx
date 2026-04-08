@@ -84,7 +84,7 @@ export default function Dashboard() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-4xl font-display font-bold tracking-tight text-white">BV Dashboard</h1>
-          <p className="text-bv-white-ghost">Bem-vindo ao cockpit. Sua inteligência soberana está ativa.</p>
+          <p className="text-bv-white-ghost">Sua performance em tempo real.</p>
         </div>
         <div className="hidden md:flex gap-2">
           <div className="glass px-4 py-2 rounded-xl flex items-center gap-2 text-sm text-gray-400">
