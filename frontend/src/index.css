@@ -288,6 +288,10 @@ html.light {
     background-clip: unset !important;
     color: var(--text-primary) !important;
   }
+
+  #app-sidebar-nav nav a.bv-sidebar-nav-link::after {
+    display: none !important;
+  }
 }
 
 @layer base {
@@ -434,6 +438,40 @@ html.light {
   .bv-scroll-root {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
+  }
+
+  /**
+   * Sidebar — brilho radial no hover / rota ativa (brokervision-hover-effect.json, alinhado ao dashboard).
+   */
+  #app-sidebar-nav nav a.bv-sidebar-nav-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 350ms ease;
+    background: radial-gradient(
+      ellipse 70% 55% at 50% 0%,
+      rgba(13, 92, 58, 0.75) 0%,
+      rgba(10, 60, 35, 0.3) 45%,
+      transparent 75%
+    );
+  }
+
+  #app-sidebar-nav nav a.bv-sidebar-nav-link:hover::after,
+  #app-sidebar-nav nav a.bv-sidebar-nav-link[aria-current='page']::after {
+    opacity: 1;
+  }
+
+  html.light #app-sidebar-nav nav a.bv-sidebar-nav-link::after {
+    background: radial-gradient(
+      ellipse 70% 55% at 50% 0%,
+      rgba(13, 92, 58, 0.38) 0%,
+      rgba(10, 60, 35, 0.16) 45%,
+      transparent 75%
+    );
   }
 }
 

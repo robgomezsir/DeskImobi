@@ -1,9 +1,11 @@
 ---
-description: Ao concluir implementações, fazer commit completo e push para o remoto (sem deixar alterações pendentes do pedido).
+description: Sempre que possível, ao concluir implementações, fazer commit completo e push automaticamente (sem esperar pedido explícito).
 alwaysApply: true
 ---
 
-# Commit + push completo ao finalizar implementação
+# Commit + push completo e automático ao finalizar implementação
+
+**O utilizador espera que isto aconteça automaticamente** — não é preciso pedir «faz commit»; ao terminar o trabalho, executar o fluxo abaixo **de imediato**.
 
 Quando uma tarefa de implementação estiver **concluída** (código funcional, build ok se aplicável):
 

@@ -128,9 +128,11 @@ export function Sidebar({
               to={item.path}
               title={effectiveCollapsed ? item.officialName : undefined}
               aria-label={item.officialName}
+              aria-current={isActive ? 'page' : undefined}
               onClick={() => isMobileLayout && onCloseMobile?.()}
               className={cn(
-                'flex items-center rounded-lg transition-all group',
+                'bv-sidebar-nav-link group relative flex items-center overflow-hidden rounded-lg transition-all',
+                '[&>svg]:relative [&>svg]:z-[1] [&>span]:relative [&>span]:z-[1]',
                 effectiveCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2.5',
                 isActive
                   ? 'border border-bv-card bg-bv-card-fill text-bv-green'
@@ -160,14 +162,27 @@ export function Sidebar({
           to="/settings"
           title={effectiveCollapsed ? 'Configurações' : undefined}
           aria-label="Configurações"
+          aria-current={location.pathname === '/settings' ? 'page' : undefined}
           onClick={() => isMobileLayout && onCloseMobile?.()}
           className={cn(
-            'flex rounded-lg text-bv-muted transition-all hover:text-bv-text',
+            'bv-sidebar-nav-link group relative flex overflow-hidden rounded-lg text-bv-muted transition-all hover:text-bv-text',
+            '[&>svg]:relative [&>svg]:z-[1] [&>span]:relative [&>span]:z-[1]',
             effectiveCollapsed ? 'justify-center px-2 py-2' : 'items-center gap-3 px-3 py-2',
-            location.pathname === '/settings' && 'bg-bv-green/10 text-bv-green'
+            location.pathname === '/settings'
+              ? 'border border-bv-card bg-bv-card-fill text-bv-green'
+              : 'border border-transparent hover:bg-[var(--hover-surface)] hover:text-bv-text'
           )}
         >
-          <Settings size={18} strokeWidth={2} className="shrink-0" />
+          <Settings
+            size={18}
+            strokeWidth={2}
+            className={cn(
+              'shrink-0',
+              location.pathname === '/settings'
+                ? 'text-bv-green'
+                : 'text-bv-muted group-hover:text-bv-text'
+            )}
+          />
           <span className={cn('font-medium', effectiveCollapsed && 'sr-only')}>Configurações</span>
         </Link>
 
