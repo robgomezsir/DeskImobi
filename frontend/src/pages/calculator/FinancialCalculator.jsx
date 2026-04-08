@@ -1,85 +1,186 @@
-import { useState } from 'react';
-import { 
-  Calculator, 
-  TrendingDown, 
-  Calendar, 
-  DollarSign, 
-  ArrowRight,
-  PieChart as PieIcon,
-  Download,
-  Info,
-  Sparkles
-} from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Calculator, Download, Home, Layers } from 'lucide-react';
 import { toast } from 'sonner';
-import { generateLeadProposalPDF } from '../../services/pdf.service';
+import { generateFlowPaymentPDF } from '../../services/pdf.service';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 import { useRegisterAppFab } from '../../contexts/AppFabContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
 import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
+import {
+  computeFlowBuckets,
+  DEFAULT_FLOW_PAYMENT,
+  sumFlowPercentages,
+} from './flowPaymentCalculations';
 
 const calc = BV_MODULES.calc;
 
+const FLOW_SECTIONS = [
+  { key: 'entrada', label: 'Entrada' },
+  { key: 'mensais', label: 'Mensais' },
+  { key: 'intercaladas', label: 'Intercaladas' },
+  { key: 'chaves', label: 'Chaves' },
+];
+
+function formatCurrency(val) {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(val);
+}
+
+function FlowPhaseCard({
+  title,
+  pct,
+  onPctChange,
+  parcelas,
+  onParcelasChange,
+  valorParcela,
+  valorTotalOk,
+  pctOk,
+}) {
+  return (
+    <div className="space-y-4 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-base font-bold uppercase tracking-[0.06em] text-bv-text">{title}</h3>
+        <span className="text-lg font-bold tabular-nums text-bv-text">{pct}%</span>
+      </div>
+      <input
+        type="range"
+        min={0}
+        max={100}
+        value={pct}
+        onChange={(e) => onPctChange(Number(e.target.value))}
+        className="bv-flow-slider h-2 w-full cursor-pointer appearance-none rounded-full bg-[var(--surface-muted)] accent-bv-green"
+        aria-label={`Percentagem ${title}`}
+      />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
+          <label className="text-xs font-medium uppercase tracking-wider text-bv-muted">Parcelas</label>
+          <input
+            type="number"
+            min={1}
+            step={1}
+            className="input-field"
+            value={parcelas}
+            onChange={(e) => onParcelasChange(Math.max(1, Number(e.target.value) || 1))}
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-xs font-medium uppercase tracking-wider text-bv-muted">
+            Valor por parcela
+          </label>
+          <p className="flex min-h-[42px] items-center rounded-md border border-[var(--line-subtle)] bg-bv-surface-muted/40 px-3 text-lg font-bold tabular-nums text-bv-green">
+            {valorTotalOk && pctOk ? formatCurrency(valorParcela) : 'R$ 0,00'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function FinancialCalculator() {
-  const [formData, setFormData] = useState({
-    propertyValue: 500000,
-    downPayment: 100000,
-    interestRate: 10.5,
-    termYears: 30
-  });
+  const [projectName, setProjectName] = useState('');
+  const [unit, setUnit] = useState('');
+  const [valorTotal, setValorTotal] = useState(0);
+  const [flow, setFlow] = useState(() => ({ ...DEFAULT_FLOW_PAYMENT }));
+  const [flowConfirmed, setFlowConfirmed] = useState(false);
 
-  const [results, setResults] = useState(null);
+  const pctSum = useMemo(() => sumFlowPercentages(flow), [flow]);
+  const pctOk = Math.abs(pctSum - 100) < 0.01;
+  const valorTotalOk = Number(valorTotal) > 0;
 
-  const calculateFinancing = (e) => {
+  const buckets = useMemo(() => {
+    if (!valorTotalOk || !pctOk) return null;
+    return computeFlowBuckets(Number(valorTotal), flow);
+  }, [valorTotal, flow, valorTotalOk, pctOk]);
+
+  const setPct = (key, value) => {
+    setFlow((prev) => ({ ...prev, [key]: value }));
+    setFlowConfirmed(false);
+  };
+
+  const setParcelas = (key, value) => {
+    setFlow((prev) => ({ ...prev, [key]: value }));
+    setFlowConfirmed(false);
+  };
+
+  const handleGerarFluxo = (e) => {
     e.preventDefault();
-    
-    const principal = formData.propertyValue - formData.downPayment;
-    const monthlyRate = (formData.interestRate / 100) / 12;
-    const numberOfPayments = formData.termYears * 12;
-    
-    // Price Table Formula: M = P * [i(1+i)^n] / [(1+i)^n - 1]
-    const monthlyPayment = principal * 
-      (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
-      (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
-      
-    const totalPaid = monthlyPayment * numberOfPayments;
-    const totalInterest = totalPaid - principal;
-
-    setResults({
-      monthlyPayment,
-      totalPaid,
-      totalInterest,
-      principal
-    });
-    
-    toast.success('Simulação concluída!');
+    const name = projectName.trim();
+    if (!name) {
+      toast.error('Indique o nome do empreendimento.');
+      return;
+    }
+    if (!valorTotalOk) {
+      toast.error('Indique o valor total do imóvel.');
+      return;
+    }
+    if (!pctOk) {
+      toast.error(`As percentagens devem somar 100%. Atualmente: ${pctSum.toFixed(1)}%.`);
+      return;
+    }
+    setFlowConfirmed(true);
+    toast.success('Fluxo de pagamento gerado.');
   };
 
   const handleExportPDF = async () => {
-    if (!results) {
-      toast.error('Realize uma simulação antes de exportar.');
+    if (!flowConfirmed || !buckets) {
+      toast.error('Gere o fluxo de pagamento antes de exportar.');
       return;
     }
-    
+    const name = projectName.trim();
+    if (!name) {
+      toast.error('Indique o nome do empreendimento.');
+      return;
+    }
     try {
       toast.loading('Gerando PDF...', { id: 'pdf' });
-      await generateLeadProposalPDF({}, { ...formData, ...results });
-      toast.success('Proposta exportada com sucesso!', { id: 'pdf' });
-    } catch (error) {
-      toast.error('Erro ao gerar PDF: ' + error.message, { id: 'pdf' });
+      const rows = [
+        {
+          label: 'Entrada',
+          pct: flow.pctEntrada,
+          parcelas: flow.parcelasEntrada,
+          totalFase: buckets.entrada.totalFase,
+          valorParcela: buckets.entrada.valorParcela,
+        },
+        {
+          label: 'Mensais',
+          pct: flow.pctMensais,
+          parcelas: flow.parcelasMensais,
+          totalFase: buckets.mensais.totalFase,
+          valorParcela: buckets.mensais.valorParcela,
+        },
+        {
+          label: 'Intercaladas',
+          pct: flow.pctIntercaladas,
+          parcelas: flow.parcelasIntercaladas,
+          totalFase: buckets.intercaladas.totalFase,
+          valorParcela: buckets.intercaladas.valorParcela,
+        },
+        {
+          label: 'Chaves',
+          pct: flow.pctChaves,
+          parcelas: flow.parcelasChaves,
+          totalFase: buckets.chaves.totalFase,
+          valorParcela: buckets.chaves.valorParcela,
+        },
+      ];
+      await generateFlowPaymentPDF({
+        projectName: name,
+        unit,
+        valorTotal: Number(valorTotal),
+        rows,
+      });
+      toast.success('PDF exportado.', { id: 'pdf' });
+    } catch (err) {
+      toast.error('Erro ao gerar PDF: ' + (err?.message || String(err)), { id: 'pdf' });
     }
-  };
-
-  const formatCurrency = (val) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(val);
   };
 
   useRegisterAppToolbar(
     () => (
-      <PageToolbar title={calc.officialName} subtitle={calc.tagline} />
+      <PageToolbar title="Calculadora de fluxo" subtitle={calc.tagline} />
     ),
     []
   );
@@ -90,145 +191,165 @@ export default function FinancialCalculator() {
         aria-label="Exportar PDF"
         title="Exportar PDF"
         onClick={handleExportPDF}
-        disabled={!results}
+        disabled={!flowConfirmed || !buckets}
       >
         <Download size={24} strokeWidth={2} />
       </ModuleFabButton>
     ),
-    [results]
+    [flowConfirmed, buckets]
   );
 
+  const phaseProps = {
+    entrada: {
+      pct: flow.pctEntrada,
+      onPctChange: (n) => setPct('pctEntrada', n),
+      parcelas: flow.parcelasEntrada,
+      onParcelasChange: (n) => setParcelas('parcelasEntrada', n),
+      valorParcela: buckets?.entrada.valorParcela ?? 0,
+    },
+    mensais: {
+      pct: flow.pctMensais,
+      onPctChange: (n) => setPct('pctMensais', n),
+      parcelas: flow.parcelasMensais,
+      onParcelasChange: (n) => setParcelas('parcelasMensais', n),
+      valorParcela: buckets?.mensais.valorParcela ?? 0,
+    },
+    intercaladas: {
+      pct: flow.pctIntercaladas,
+      onPctChange: (n) => setPct('pctIntercaladas', n),
+      parcelas: flow.parcelasIntercaladas,
+      onParcelasChange: (n) => setParcelas('parcelasIntercaladas', n),
+      valorParcela: buckets?.intercaladas.valorParcela ?? 0,
+    },
+    chaves: {
+      pct: flow.pctChaves,
+      onPctChange: (n) => setPct('pctChaves', n),
+      parcelas: flow.parcelasChaves,
+      onParcelasChange: (n) => setParcelas('parcelasChaves', n),
+      valorParcela: buckets?.chaves.valorParcela ?? 0,
+    },
+  };
+
   return (
-    <div className="mx-auto max-w-6xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* Form Column */}
-        <div className="lg:col-span-1">
-          <div className="space-y-6 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
-            <h3 className="text-lg font-bold flex items-center gap-2 text-bv-text">
-              <Calculator size={20} className="text-bv-green" />
-              Parâmetros de Análise
-            </h3>
-            
-            <form onSubmit={calculateFinancing} className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-bv-muted">Valor do Imóvel</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted">R$</span>
-                  <input 
-                    type="number"
-                    className="input-field pl-12"
-                    value={formData.propertyValue}
-                    onChange={e => setFormData({...formData, propertyValue: Number(e.target.value)})}
-                  />
-                </div>
-              </div>
+    <div className="mx-auto max-w-lg animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-700">
+      <div className="flex items-center gap-2 text-bv-muted">
+        <Layers className="h-5 w-5 shrink-0 text-bv-green" aria-hidden />
+        <p className="text-xs font-medium uppercase tracking-[0.12em]">Simulação de obra / lançamento</p>
+      </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-bv-muted">Entrada</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted">R$</span>
-                  <input 
-                    type="number"
-                    className="input-field pl-12"
-                    value={formData.downPayment}
-                    onChange={e => setFormData({...formData, downPayment: Number(e.target.value)})}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-bv-muted">Taxa Anual (%)</label>
-                  <input 
-                    type="number"
-                    step="0.01"
-                    className="input-field"
-                    value={formData.interestRate}
-                    onChange={e => setFormData({...formData, interestRate: Number(e.target.value)})}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-bv-muted">Prazo (Anos)</label>
-                  <input 
-                    type="number"
-                    className="input-field"
-                    value={formData.termYears}
-                    onChange={e => setFormData({...formData, termYears: Number(e.target.value)})}
-                  />
-                </div>
-              </div>
-
-              <button type="submit" className="btn btn-primary w-full h-12 mt-4 text-black font-bold">
-                Processar Simulação
-              </button>
-            </form>
+      <form onSubmit={handleGerarFluxo} className="space-y-6">
+        <div className="space-y-4 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6">
+          <h2 className="flex items-center gap-2 text-lg font-bold text-bv-text">
+            <Home className="h-5 w-5 text-bv-green" aria-hidden />
+            Dados do imóvel
+          </h2>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-bv-muted">Nome do empreendimento *</label>
+            <input
+              type="text"
+              required
+              className="input-field"
+              placeholder="Nome do empreendimento *"
+              value={projectName}
+              onChange={(e) => {
+                setProjectName(e.target.value);
+                setFlowConfirmed(false);
+              }}
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-bv-muted">Unidade</label>
+            <input
+              type="text"
+              className="input-field"
+              placeholder="Unidade"
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-bv-muted">Valor total do imóvel</label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted">R$</span>
+              <input
+                type="number"
+                min={0}
+                step={1000}
+                className="input-field pl-12"
+                placeholder="0"
+                value={valorTotal || ''}
+                onChange={(e) => {
+                  setValorTotal(Number(e.target.value));
+                  setFlowConfirmed(false);
+                }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Results Column */}
-        <div className="lg:col-span-2">
-          {!results ? (
-            <div className="glass-card flex h-full min-h-[280px] flex-col items-center justify-center border-2 border-dashed border-[var(--line-subtle)] p-6 text-center sm:min-h-[400px] sm:p-8">
-              <div className="w-16 h-16 rounded-2xl bg-bv-surface-muted flex items-center justify-center text-bv-muted mb-4">
-                <TrendingDown size={32} />
-              </div>
-              <h3 className="text-xl font-medium mb-2 text-bv-text">Pronto para Análise</h3>
-              <p className="text-bv-muted max-w-xs">Defina os parâmetros ao lado para gerar o relatório de viabilidade econômica.</p>
-            </div>
-          ) : (
-            <div className="space-y-6 animate-in fade-in zoom-in duration-500">
-              {/* Main Metric Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="glass-card p-6 bg-bv-green/5 border-bv-green/20">
-                  <p className="text-sm text-bv-green mb-1">Parcela Mensal Estimada</p>
-                  <h2 className="font-display text-2xl font-bold text-bv-text sm:text-3xl md:text-4xl">
-                    {formatCurrency(results.monthlyPayment)}
-                  </h2>
-                </div>
-                <div className="glass-card p-6">
-                  <p className="text-sm text-bv-muted mb-1">Total a ser Pago</p>
-                  <h2 className="font-display text-2xl font-bold text-bv-text sm:text-3xl md:text-4xl">
-                    {formatCurrency(results.totalPaid)}
-                  </h2>
-                </div>
-              </div>
-
-              {/* Breakdown Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="glass p-4 rounded-2xl border border-[var(--line-subtle)]">
-                  <div className="flex items-center gap-2 text-bv-muted text-xs mb-2">
-                    <DollarSign size={14} /> VALOR FINANCIADO
-                  </div>
-                  <p className="text-lg font-bold">{formatCurrency(results.principal)}</p>
-                </div>
-                <div className="glass p-4 rounded-2xl border border-[var(--line-subtle)]">
-                  <div className="flex items-center gap-2 text-bv-green-deep text-xs mb-2">
-                    <TrendingDown size={14} /> TOTAL DE JUROS
-                  </div>
-                  <p className="text-lg font-bold">{formatCurrency(results.totalInterest)}</p>
-                </div>
-                <div className="glass p-4 rounded-2xl border border-[var(--line-subtle)]">
-                  <div className="flex items-center gap-2 text-bv-muted text-xs mb-2">
-                    <Calendar size={14} /> TOTAL DE PARCELAS
-                  </div>
-                  <p className="text-lg font-bold">{formData.termYears * 12} meses</p>
-                </div>
-              </div>
-
-              {/* Insights Card */}
-              <div className="glass p-6 rounded-3xl border border-bv-green/20 bg-bv-green/5">
-                <div className="flex items-center gap-2 text-bv-green font-bold mb-4">
-                  <Sparkles size={20} />
-                  ANÁLISE SOBERANA
-                </div>
-                <p className="text-bv-muted leading-relaxed italic">
-                  "Prosperidade requer precisão. Com uma parcela de {formatCurrency(results.monthlyPayment)}, a viabilidade exige uma renda bruta de {formatCurrency(results.monthlyPayment * 3.33)}, mantendo a margem de segurança de 30%."
-                </p>
-              </div>
-            </div>
-          )}
+        <div
+          className={`rounded-xl border px-4 py-3 text-center text-sm font-medium ${
+            pctOk
+              ? 'border-bv-green/30 bg-bv-green/5 text-bv-green'
+              : 'border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-200'
+          }`}
+          role="status"
+        >
+          Soma das percentagens:{' '}
+          <span className="tabular-nums">{pctSum.toFixed(1)}%</span>
+          {!pctOk ? ` — ajuste para 100% (referência: 10% + 60% + 10% + 20%).` : null}
         </div>
-      </div>
+
+        <div className="space-y-4">
+          {FLOW_SECTIONS.map(({ key, label }) => (
+            <FlowPhaseCard
+              key={key}
+              title={label}
+              pct={phaseProps[key].pct}
+              onPctChange={phaseProps[key].onPctChange}
+              parcelas={phaseProps[key].parcelas}
+              onParcelasChange={phaseProps[key].onParcelasChange}
+              valorParcela={phaseProps[key].valorParcela}
+              valorTotalOk={valorTotalOk}
+              pctOk={pctOk}
+            />
+          ))}
+        </div>
+
+        <button type="submit" className="btn btn-primary h-12 w-full font-bold text-black">
+          <Calculator className="mr-2 inline h-5 w-5 align-middle" aria-hidden />
+          Gerar fluxo de pagamento
+        </button>
+      </form>
+
+      {flowConfirmed && buckets ? (
+        <div className="rounded-2xl border border-bv-green/25 bg-bv-green/5 p-4 text-sm text-bv-muted sm:p-5">
+          <p className="font-semibold text-bv-text">Resumo</p>
+          <ul className="mt-3 list-inside list-disc space-y-1">
+            <li>
+              Entrada: {flow.parcelasEntrada} × {formatCurrency(buckets.entrada.valorParcela)} (
+              {formatCurrency(buckets.entrada.totalFase)})
+            </li>
+            <li>
+              Mensais: {flow.parcelasMensais} × {formatCurrency(buckets.mensais.valorParcela)} (
+              {formatCurrency(buckets.mensais.totalFase)})
+            </li>
+            <li>
+              Intercaladas: {flow.parcelasIntercaladas} ×{' '}
+              {formatCurrency(buckets.intercaladas.valorParcela)} (
+              {formatCurrency(buckets.intercaladas.totalFase)})
+            </li>
+            <li>
+              Chaves: {flow.parcelasChaves} × {formatCurrency(buckets.chaves.valorParcela)} (
+              {formatCurrency(buckets.chaves.totalFase)})
+            </li>
+          </ul>
+        </div>
+      ) : null}
+
+      <p className="pb-8 text-center text-[10px] text-bv-muted">
+        © {new Date().getFullYear()} BrokerVision. Todos os direitos reservados.
+      </p>
     </div>
   );
 }

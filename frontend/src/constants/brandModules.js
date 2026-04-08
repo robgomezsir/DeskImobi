@@ -27,7 +27,7 @@ export const BV_MODULES = {
     id: 'calc',
     area: 'Calculadoras Financeiras',
     officialName: 'Calculadora',
-    tagline: 'Simule. Decida. Feche.',
+    tagline: 'Fluxo de pagamento: entrada, mensais, intercaladas e chaves.',
     path: '/calculadora',
   },
   insights: {
