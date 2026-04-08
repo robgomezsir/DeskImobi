@@ -3,7 +3,7 @@
 
 /*
  * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
- * Accent: #00F5A0. Cartões: fill rgba(accent, 0.06); contorno opção 1 = gradiente cónico 6%/20%. Blur só no Dashboard.
+ * Accent: #00F5A0. Preenchimento cartão: 6% (color-mix opaco). Contorno: só anel 1px (::before + mask). Blur só no Dashboard (fill rgba).
  */
 
 :root {
@@ -37,10 +37,12 @@ html.dark {
   --bg-radial-a: rgba(0, 245, 160, 0.06);
   --bg-radial-b: rgba(0, 245, 160, 0.04);
   --card-bg: rgba(var(--accent-rgb), 0.06);
+  --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, #000000 94%);
   --card-border: rgba(var(--accent-rgb), 0.1);
   /** Superfícies tipo painel / sidebar (sem blur; brand: blur só no dashboard) */
   --glass-bg: var(--card-bg);
   --glass-bg-blur: rgba(var(--accent-rgb), 0.09);
+  --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 9%, #000000 91%);
   --glass-border: var(--card-border);
   --glass-border-strong: rgba(var(--accent-rgb), 0.14);
   --glass-border-green: rgba(var(--accent-rgb), 0.12);
@@ -68,9 +70,11 @@ html.light {
   --bg-radial-a: rgba(0, 245, 160, 0.06);
   --bg-radial-b: rgba(0, 200, 120, 0.04);
   --card-bg: rgba(var(--accent-rgb), 0.06);
+  --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, #ffffff 94%);
   --card-border: rgba(var(--accent-rgb), 0.1);
   --glass-bg: var(--card-bg);
   --glass-bg-blur: rgba(var(--accent-rgb), 0.1);
+  --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 10%, #ffffff 90%);
   --glass-border: var(--card-border);
   --glass-border-strong: rgba(var(--accent-rgb), 0.14);
   --glass-border-green: rgba(var(--accent-rgb), 0.12);
@@ -109,17 +113,15 @@ html.light {
 }
 
 /**
- * Cartão padrão: preenchimento + contorno em gradiente (padding-box / border-box).
- * Fallback sólido: `prefers-reduced-transparency` e utilitário `bv-card-outline-fallback`.
+ * Cartão: preenchimento 6% (opaco via --card-fill-solid). Contorno só no ::before (anel 1px).
+ * Ver @layer components para o anel em gradiente.
  */
 @utility glass {
-  border: 1px solid transparent;
+  position: relative;
+  isolation: isolate;
+  border: none;
   border-radius: 1rem;
-  background:
-    linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
-    var(--bv-card-outline-gradient) border-box;
-  background-clip: padding-box, border-box;
-  -webkit-background-clip: padding-box, border-box;
+  background: var(--card-fill-solid);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -131,40 +133,34 @@ html.light {
 }
 
 @utility glass-card {
-  border: 1px solid transparent;
+  position: relative;
+  isolation: isolate;
+  border: none;
   border-radius: 1rem;
-  background:
-    linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
-    var(--bv-card-outline-gradient) border-box;
-  background-clip: padding-box, border-box;
-  -webkit-background-clip: padding-box, border-box;
+  background: var(--card-fill-solid);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
-/** Painéis elevados (modais, toggles): fill mais denso, mesmo contorno em gradiente */
+/** Painéis elevados (modais, toggles): fill denso opaco + mesmo anel */
 @utility glass-blur {
-  border: 1px solid transparent;
+  position: relative;
+  isolation: isolate;
+  border: none;
   border-radius: 1rem;
-  background:
-    linear-gradient(var(--glass-bg-blur), var(--glass-bg-blur)) padding-box,
-    var(--bv-card-outline-gradient) border-box;
-  background-clip: padding-box, border-box;
-  -webkit-background-clip: padding-box, border-box;
+  background: var(--glass-fill-solid);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
 @utility glass-card-blur {
-  border: 1px solid transparent;
+  position: relative;
+  isolation: isolate;
+  border: none;
   border-radius: 1rem;
-  background:
-    linear-gradient(var(--glass-bg-blur), var(--glass-bg-blur)) padding-box,
-    var(--bv-card-outline-gradient) border-box;
-  background-clip: padding-box, border-box;
-  -webkit-background-clip: padding-box, border-box;
+  background: var(--glass-fill-solid);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -173,9 +169,7 @@ html.light {
 /** Quando o gradiente de borda não for desejável (ex.: testes A/B) */
 @utility bv-card-outline-fallback {
   border: 1px solid var(--card-border);
-  background: var(--card-bg);
-  background-clip: border-box;
-  -webkit-background-clip: border-box;
+  background: var(--card-fill-solid);
 }
 
 /** Números de destaque: gradiente 60% → 100% (brand typography.text_gradient_for_results) */
@@ -187,7 +181,7 @@ html.light {
 }
 
 @utility bg-bv-card-fill {
-  background-color: var(--card-bg);
+  background-color: var(--card-fill-solid);
 }
 
 @utility border-bv-card {
@@ -217,10 +211,10 @@ html.light {
 /*
  * Dashboard: única área com backdrop blur nos cartões (background_effects.dashboard_special).
  */
-[data-bv-page='/dashboard'] .glass,
-[data-bv-page='/dashboard'] .glass-card,
-[data-bv-page='/dashboard'] .glass-blur,
-[data-bv-page='/dashboard'] .glass-card-blur {
+main[data-bv-page='/dashboard'] .glass,
+main[data-bv-page='/dashboard'] .glass-card,
+main[data-bv-page='/dashboard'] .glass-blur,
+main[data-bv-page='/dashboard'] .glass-card-blur {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
@@ -231,22 +225,40 @@ html.light {
 @media (max-width: 767.98px) {
   html.dark {
     --card-bg: rgba(var(--accent-rgb), 0.09);
+    --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 9%, #000000 91%);
     --glass-bg-blur: rgba(var(--accent-rgb), 0.12);
+    --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 12%, #000000 88%);
   }
 
   html.light {
     --card-bg: rgba(var(--accent-rgb), 0.08);
+    --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 8%, #ffffff 92%);
     --glass-bg-blur: rgba(var(--accent-rgb), 0.11);
+    --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 11%, #ffffff 89%);
   }
 
-  [data-bv-page='/dashboard'] .glass,
-  [data-bv-page='/dashboard'] .glass-card {
+  main[data-bv-page='/dashboard'] .glass,
+  main[data-bv-page='/dashboard'] .glass-card {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
+  html.dark .glass::before,
+  html.dark .glass-card::before,
+  html.dark .glass-blur::before,
+  html.dark .glass-card-blur::before {
+    display: none !important;
+  }
+
+  html.light .glass::before,
+  html.light .glass-card::before,
+  html.light .glass-blur::before,
+  html.light .glass-card-blur::before {
+    display: none !important;
+  }
+
   html.dark .glass,
   html.dark .glass-card,
   html.dark .glass-blur,
@@ -255,8 +267,6 @@ html.light {
     -webkit-backdrop-filter: none !important;
     border: 1px solid var(--card-border) !important;
     background: rgba(17, 17, 17, 0.94) !important;
-    background-clip: border-box !important;
-    -webkit-background-clip: border-box !important;
     box-shadow: var(--glass-shadow) !important;
   }
 
@@ -268,8 +278,6 @@ html.light {
     -webkit-backdrop-filter: none !important;
     border: 1px solid var(--card-border) !important;
     background: rgba(255, 255, 255, 0.94) !important;
-    background-clip: border-box !important;
-    -webkit-background-clip: border-box !important;
     box-shadow: var(--glass-shadow) !important;
   }
 
@@ -313,6 +321,43 @@ html.light {
 }
 
 @layer components {
+  /**
+   * Contorno opção 1: apenas anel de 1px (gradiente não afeta o interior).
+   * mask composite exclui o content-box — vê-se só a “moldura”.
+   */
+  .glass::before,
+  .glass-card::before,
+  .glass-blur::before,
+  .glass-card-blur::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--bv-card-outline-gradient);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /** Sem anel gradiente — borda sólida (fallback) */
+  .bv-card-outline-fallback::before {
+    display: none !important;
+  }
+
+  /** Dashboard: interior semitransparente para backdrop-filter; contorno continua só no ::before */
+  main[data-bv-page='/dashboard'] .glass,
+  main[data-bv-page='/dashboard'] .glass-card {
+    background: var(--card-bg);
+  }
+
   /** green_highlight quando `glass glass-green` — contorno mantém gradiente; só sombras extra */
   .glass.glass-green,
   .glass-card.glass-green {
@@ -329,16 +374,19 @@ html.light {
   }
 
   .bv-card-hover:hover {
-    background:
-      radial-gradient(
-          ellipse 120% 90% at 50% 0%,
-          rgba(var(--accent-rgb), 0.22) 0%,
-          var(--card-bg) 55%
-        )
-        padding-box,
-      var(--bv-card-outline-gradient) border-box;
-    background-clip: padding-box, border-box;
-    -webkit-background-clip: padding-box, border-box;
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      rgba(var(--accent-rgb), 0.22) 0%,
+      var(--card-fill-solid) 55%
+    );
+  }
+
+  main[data-bv-page='/dashboard'] .bv-card-hover:hover {
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      rgba(var(--accent-rgb), 0.22) 0%,
+      var(--card-bg) 55%
+    );
   }
 
   .btn {
@@ -381,11 +429,7 @@ html.light {
   }
 
   .card-bv:hover {
-    background:
-      linear-gradient(var(--hover-surface), var(--hover-surface)) padding-box,
-      var(--bv-card-outline-gradient) border-box;
-    background-clip: padding-box, border-box;
-    -webkit-background-clip: padding-box, border-box;
+    background: var(--hover-surface);
   }
 
   .bv-scroll-root {
