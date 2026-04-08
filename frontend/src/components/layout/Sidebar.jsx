@@ -8,8 +8,6 @@ import {
   LogOut,
   Zap,
   Wallet,
-  Sun,
-  Moon,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -45,7 +43,7 @@ const navItems = BV_MODULE_KEYS.map((key) => ({
 export function Sidebar({ collapsed, onToggleSidebar }) {
   const location = useLocation();
   const { signOut, user } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const isDark = theme === 'dark';
 
   return (
@@ -55,46 +53,32 @@ export function Sidebar({ collapsed, onToggleSidebar }) {
         collapsed ? 'w-20 p-2' : 'w-64 p-4'
       )}
     >
-      <div className={cn('mb-6 mt-2 shrink-0 space-y-2', collapsed ? 'px-0' : 'px-2')}>
-        <div className={cn('flex items-center', collapsed ? 'flex-col gap-2' : 'gap-2')}>
-          <button
-            type="button"
-            onClick={onToggleSidebar}
-            className={cn(
-              'flex items-center rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50',
-              collapsed ? 'justify-center p-2 hover:bg-[var(--hover-surface)]' : 'min-w-0 flex-1 justify-start px-2 py-2 -m-2 hover:bg-[var(--hover-surface)]'
-            )}
-            aria-expanded={!collapsed}
-            aria-label={collapsed ? 'Expandir menu lateral' : 'Recolher menu lateral'}
-          >
-            {collapsed ? (
-              <img
-                src={BRAND_ICON_URLS.symbolGreen32}
-                alt=""
-                className="h-8 w-8 shrink-0"
-                width={32}
-                height={32}
-                aria-hidden
-              />
-            ) : isDark ? (
-              <img src={logoWhite} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
-            ) : (
-              <img src={logoHorizontalDark} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className={cn(
-              'rounded-lg p-2 text-bv-muted transition-colors hover:bg-[var(--hover-surface)] hover:text-bv-text focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50',
-              collapsed && 'w-full flex justify-center'
-            )}
-            aria-label={isDark ? 'Ativar tema claro' : 'Ativar tema escuro'}
-            title={isDark ? 'Tema claro' : 'Tema escuro'}
-          >
-            {isDark ? <Sun size={20} strokeWidth={2} /> : <Moon size={20} strokeWidth={2} />}
-          </button>
-        </div>
+      <div className={cn('mb-8 mt-2 shrink-0', collapsed ? 'px-0' : 'px-2')}>
+        <button
+          type="button"
+          onClick={onToggleSidebar}
+          className={cn(
+            'flex w-full items-center rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50',
+            collapsed ? 'justify-center p-2 hover:bg-[var(--hover-surface)]' : 'justify-start px-2 py-2 -m-2 hover:bg-[var(--hover-surface)]'
+          )}
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? 'Expandir menu lateral' : 'Recolher menu lateral'}
+        >
+          {collapsed ? (
+            <img
+              src={BRAND_ICON_URLS.symbolGreen32}
+              alt=""
+              className="h-8 w-8 shrink-0"
+              width={32}
+              height={32}
+              aria-hidden
+            />
+          ) : isDark ? (
+            <img src={logoWhite} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
+          ) : (
+            <img src={logoHorizontalDark} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
+          )}
+        </button>
       </div>
 
       <nav className="flex-1 min-h-0 space-y-1 overflow-y-auto">

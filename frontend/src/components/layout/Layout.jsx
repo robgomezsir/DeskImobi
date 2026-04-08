@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { ThemeToggleFloating } from '../ThemeToggleFloating';
 import { Sidebar } from './Sidebar';
 
 const STORAGE_KEY = 'bv-sidebar-collapsed';
@@ -29,6 +30,7 @@ export function Layout() {
 
   return (
     <div className="flex h-screen overflow-hidden">
+      <ThemeToggleFloating />
       <Sidebar collapsed={sidebarCollapsed} onToggleSidebar={toggleSidebar} />
       <main
         className={

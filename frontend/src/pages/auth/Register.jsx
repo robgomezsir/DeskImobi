@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { toast } from 'sonner';
-import { Loader2, Mail, Lock, User, Sun, Moon } from 'lucide-react';
+import { Loader2, Mail, Lock, User } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
+import { ThemeToggleFloating } from '../../components/ThemeToggleFloating';
 import logoHorizontalDark from '../../assets/logo-horizontal-dark.png';
 
 export default function Register() {
@@ -13,7 +14,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const isDark = theme === 'dark';
 
   const handleRegister = async (e) => {
@@ -48,14 +49,7 @@ export default function Register() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-bv-page p-4">
-      <button
-        type="button"
-        onClick={toggleTheme}
-        className="absolute top-4 right-4 z-10 rounded-xl p-3 glass text-bv-muted hover:text-bv-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50"
-        aria-label={isDark ? 'Ativar tema claro' : 'Ativar tema escuro'}
-      >
-        {isDark ? <Sun size={22} strokeWidth={2} /> : <Moon size={22} strokeWidth={2} />}
-      </button>
+      <ThemeToggleFloating />
 
       <div className="w-full max-w-lg glass p-10 rounded-3xl space-y-8 animate-in fade-in slide-in-from-bottom duration-500">
         <div className="text-center space-y-3">
