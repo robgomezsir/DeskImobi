@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -75,6 +76,39 @@ export default function Dashboard() {
     [isLight]
   );
 
+  /** Área visível de `<main>` — fundo fixo à viewport; só o conteúdo rola (scroll em main). */
+  const canvasRef = useRef(null);
+  const [mainViewport, setMainViewport] = useState(null);
+
+  useLayoutEffect(() => {
+    const el = canvasRef.current;
+    if (!el) return undefined;
+    const main = el.closest('main');
+    if (!main || !(main instanceof HTMLElement)) return undefined;
+
+    const sync = () => {
+      const r = main.getBoundingClientRect();
+      setMainViewport({
+        top: r.top,
+        left: r.left,
+        width: r.width,
+        height: r.height,
+      });
+    };
+
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(main);
+    window.addEventListener('resize', sync);
+    window.visualViewport?.addEventListener('resize', sync);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', sync);
+      window.visualViewport?.removeEventListener('resize', sync);
+    };
+  }, []);
+
   useEffect(() => {
     const fetchMetrics = async () => {
       const { count: total } = await supabase
@@ -120,24 +154,47 @@ export default function Dashboard() {
     { title: 'CONTRATOS FECHADOS', sub: 'Total', value: metrics.closedDeals, icon: CheckCircle2 },
   ];
 
+  const fixedBackdrop =
+    mainViewport != null ? (
+      <>
+        <div
+          className="pointer-events-none fixed z-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            top: mainViewport.top,
+            left: mainViewport.left,
+            width: mainViewport.width,
+            height: mainViewport.height,
+            backgroundImage: `url(${dashboardBgUrl})`,
+          }}
+          aria-hidden
+        />
+        <div
+          className={
+            isLight
+              ? 'pointer-events-none fixed z-[1] bg-gradient-to-b from-white/35 via-transparent to-white/40'
+              : 'pointer-events-none fixed z-[1] bg-gradient-to-b from-black/25 via-transparent to-black/50'
+          }
+          style={{
+            top: mainViewport.top,
+            left: mainViewport.left,
+            width: mainViewport.width,
+            height: mainViewport.height,
+          }}
+          aria-hidden
+        />
+      </>
+    ) : null;
+
   return (
-    <div
-      className="relative -mx-4 min-w-0 sm:-mx-6 lg:-mx-8"
-      data-bv-dashboard-canvas
-    >
+    <>
+      {typeof document !== 'undefined' && fixedBackdrop
+        ? createPortal(fixedBackdrop, document.body)
+        : null}
       <div
-        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${dashboardBgUrl})` }}
-        aria-hidden
-      />
-      <div
-        className={
-          isLight
-            ? 'pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-white/35 via-transparent to-white/40'
-            : 'pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/25 via-transparent to-black/50'
-        }
-        aria-hidden
-      />
+        ref={canvasRef}
+        className="relative -mx-4 min-w-0 sm:-mx-6 lg:-mx-8"
+        data-bv-dashboard-canvas
+      >
       <div className="relative z-10 space-y-8 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {cards.map((card, i) => (
@@ -261,5 +318,6 @@ export default function Dashboard() {
       </div>
       </div>
     </div>
+    </>
   );
 }
