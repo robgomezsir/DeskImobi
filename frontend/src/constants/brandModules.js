@@ -2,6 +2,7 @@
  * Nomes e rotas dos módulos BrokerVision.
  * Fonte: `brokervision-brand-context.json` (naming_conventions, sidebar.navigation_items).
  * Prefixo "BV" removido das labels voltadas ao utilizador.
+ * Exibição: títulos em MAIÚSCULAS (typography.section_titles) via `uppercase` em PageToolbar / Sidebar.
  */
 
 export const BV_MODULE_KEYS = ['dashboard', 'crm', 'calc', 'insights', 'integrations'];

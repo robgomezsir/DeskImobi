@@ -142,7 +142,14 @@ export function Sidebar({
                 strokeWidth={2}
                 className={cn('shrink-0', isActive ? 'text-bv-green' : 'text-bv-muted group-hover:text-bv-text')}
               />
-              <span className={cn('min-w-0 font-medium truncate', effectiveCollapsed && 'sr-only')}>{item.officialName}</span>
+              <span
+                className={cn(
+                  'min-w-0 truncate font-medium uppercase tracking-[0.06em]',
+                  effectiveCollapsed && 'sr-only'
+                )}
+              >
+                {item.officialName}
+              </span>
             </Link>
           );
         })}
