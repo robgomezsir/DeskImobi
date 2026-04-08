@@ -21,6 +21,7 @@ import {
 } from 'recharts';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
 
 const dashboard = BV_MODULES.dashboard;
@@ -36,8 +37,9 @@ const data = [
 
 const ACCENT = '#00F5A0';
 
-/** Fundo artístico do Dashboard — `public/dashboard-bg.png` (BG BLACK brand) */
-const DASHBOARD_BG_URL = '/dashboard-bg.png?v=1';
+/** Fundos artísticos — `public/dashboard-bg*.png` (BG BLACK / BG WHITE brand) */
+const DASHBOARD_BG_DARK = '/dashboard-bg.png?v=1';
+const DASHBOARD_BG_LIGHT = '/dashboard-bg-light.png?v=1';
 
 export default function Dashboard() {
   const [metrics, setMetrics] = useState({
@@ -47,6 +49,9 @@ export default function Dashboard() {
     closedDeals: 0,
   });
   const { user } = useAuth();
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+  const dashboardBgUrl = isLight ? DASHBOARD_BG_LIGHT : DASHBOARD_BG_DARK;
 
   useEffect(() => {
     const fetchMetrics = async () => {
@@ -100,11 +105,15 @@ export default function Dashboard() {
     >
       <div
         className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${DASHBOARD_BG_URL})` }}
+        style={{ backgroundImage: `url(${dashboardBgUrl})` }}
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/25 via-transparent to-black/50"
+        className={
+          isLight
+            ? 'pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-white/35 via-transparent to-white/40'
+            : 'pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/25 via-transparent to-black/50'
+        }
         aria-hidden
       />
       <div className="relative z-10 space-y-8 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8">

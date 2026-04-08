@@ -380,6 +380,29 @@ html.light {
       var(--card-bg);
   }
 
+  /**
+   * Dashboard tema claro: fundo `dashboard-bg-light.png` — vinheta branca no vidro
+   * (evita overlay preto do modo escuro, que deixaria os cartões sujos sobre o BG WHITE).
+   */
+  html.light [data-bv-dashboard-canvas] .glass,
+  html.light [data-bv-dashboard-canvas] .glass-card {
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.42)),
+      var(--card-bg);
+  }
+
+  html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
+  html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
+    background:
+      radial-gradient(
+        ellipse 120% 90% at 50% 0%,
+        rgba(var(--accent-rgb), 0.22) 0%,
+        var(--card-bg) 55%
+      ),
+      linear-gradient(rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.42)),
+      var(--card-bg);
+  }
+
   /** green_highlight quando `glass glass-green` — contorno mantém gradiente; só sombras extra */
   .glass.glass-green,
   .glass-card.glass-green {
