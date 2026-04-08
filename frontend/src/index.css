@@ -474,7 +474,39 @@ html.light {
   }
 
   /**
-   * Hover: reforço suave do véu verde de cima (linear) + halo radial discreto + inset leve.
+   * Brilho radial no hover (brokervision-hover-effect.json): overlay em ::after.
+   * O ::before fica reservado ao anel 1px (máscara); z-index maior para o anel ficar por cima.
+   */
+  [data-bv-dashboard-canvas] .glass::before,
+  [data-bv-dashboard-canvas] .glass-card::before {
+    z-index: 2;
+  }
+
+  [data-bv-dashboard-canvas] .glass.bv-card-hover::after,
+  [data-bv-dashboard-canvas] .glass-card.bv-card-hover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 350ms ease;
+    background: radial-gradient(
+      ellipse 70% 55% at 50% 0%,
+      rgba(13, 92, 58, 0.75) 0%,
+      rgba(10, 60, 35, 0.3) 45%,
+      transparent 75%
+    );
+  }
+
+  [data-bv-dashboard-canvas] .glass.bv-card-hover:hover::after,
+  [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover::after {
+    opacity: 1;
+  }
+
+  /**
+   * Hover: fundo e sombras iguais ao estado normal — só o ::after anima opacidade.
    */
   [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
   [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
@@ -482,32 +514,24 @@ html.light {
     background:
       linear-gradient(
         180deg,
-        rgba(0, 245, 160, 0.14) 0%,
-        rgba(0, 245, 160, 0.048) 22%,
-        rgba(0, 245, 160, 0.012) 42%,
-        transparent 68%
-      ),
-      radial-gradient(
-        ellipse 125% 85% at 50% -18%,
-        rgba(var(--accent-rgb), 0.14) 0%,
-        rgba(var(--accent-rgb), 0.03) 42%,
-        transparent 62%
+        rgba(0, 245, 160, 0.065) 0%,
+        rgba(0, 245, 160, 0.018) 26%,
+        transparent 52%
       ),
       linear-gradient(
-        168deg,
-        rgba(0, 245, 160, 0.06) 0%,
-        rgba(0, 0, 0, 0.038) 44%,
-        rgba(0, 12, 8, 0.085) 100%
+        165deg,
+        rgba(0, 245, 160, 0.045) 0%,
+        rgba(0, 0, 0, 0.055) 46%,
+        rgba(0, 14, 10, 0.09) 100%
       ),
-      rgba(0, 0, 0, 0.29),
+      rgba(0, 0, 0, 0.34),
       var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     box-shadow:
-      inset 0 38px 92px -34px rgba(0, 245, 160, 0.13),
-      inset 0 1px 0 rgba(255, 255, 255, 0.09),
-      0 0 0 1px rgba(var(--accent-rgb), 0.15),
-      0 12px 48px rgba(0, 0, 0, 0.26);
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 0 0 1px rgba(var(--accent-rgb), 0.22),
+      0 12px 48px rgba(0, 0, 0, 0.28);
   }
 
   html.light [data-bv-dashboard-canvas] .glass,
@@ -535,35 +559,38 @@ html.light {
       0 12px 40px rgba(0, 0, 0, 0.06);
   }
 
+  html.light [data-bv-dashboard-canvas] .glass.bv-card-hover::after,
+  html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover::after {
+    background: radial-gradient(
+      ellipse 70% 55% at 50% 0%,
+      rgba(13, 92, 58, 0.38) 0%,
+      rgba(10, 60, 35, 0.16) 45%,
+      transparent 75%
+    );
+  }
+
   html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
   html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
     transform: none;
     background:
       linear-gradient(
         180deg,
-        rgba(0, 245, 160, 0.1) 0%,
-        rgba(0, 245, 160, 0.032) 24%,
-        rgba(0, 245, 160, 0.008) 44%,
-        transparent 66%
-      ),
-      radial-gradient(
-        ellipse 120% 80% at 50% -20%,
-        rgba(var(--accent-rgb), 0.1) 0%,
-        transparent 58%
+        rgba(0, 245, 160, 0.055) 0%,
+        rgba(0, 245, 160, 0.012) 30%,
+        transparent 52%
       ),
       linear-gradient(
-        172deg,
-        rgba(255, 255, 255, 0.24) 0%,
-        rgba(255, 255, 255, 0.08) 100%
+        170deg,
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.1) 100%
       ),
-      rgba(255, 255, 255, 0.46),
+      rgba(255, 255, 255, 0.52),
       var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     box-shadow:
-      inset 0 34px 88px -32px rgba(0, 245, 160, 0.09),
       inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 0 0 1px rgba(var(--accent-rgb), 0.15),
+      0 0 0 1px rgba(var(--accent-rgb), 0.18),
       0 12px 40px rgba(0, 0, 0, 0.06);
   }
 }

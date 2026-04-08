@@ -1,0 +1,95 @@
+{
+  "effect_name": "card_hover_radial_glow",
+  "description": "Efeito de hover nos cards: um brilho semicircular verde irradia do topo central do card para baixo, simulando uma fonte de luz posicionada acima do card.",
+
+  "visual_properties": {
+    "shape": "semicírculo / meia-elipse",
+    "origin": "topo-centro do card (50% horizontal, 0% vertical)",
+    "direction": "top → bottom (de cima para baixo)",
+    "spread": "expande lateralmente cobrindo ~60–70% da largura do card na base do gradiente",
+    "depth": "alcança aproximadamente 40–55% da altura do card antes de dissipar",
+    "color": {
+      "center": "verde esmeralda saturado — aproximadamente #0D5C3A ou #0A4D30",
+      "midpoint": "verde escuro translúcido — aproximadamente rgba(10, 60, 35, 0.6)",
+      "edge": "transparente — rgba(0, 0, 0, 0) ou funde com o fundo escuro do card"
+    },
+    "intensity": "Moderada — não é um brilho neon agressivo, é suave e atmosférico",
+    "falloff": "Suave (soft), sem bordas duras — gradiente radial com easing natural"
+  },
+
+  "css_implementation": {
+    "method": "radial-gradient no pseudo-elemento ::before ou como segunda camada do background",
+    "trigger": ":hover",
+    "code_example": {
+      "approach": "pseudo-element overlay",
+      "css": {
+        "card_base": {
+          "position": "relative",
+          "overflow": "hidden",
+          "background": "rgba(var(--accent-rgb), 0.06)",
+          "border-radius": "16px",
+          "transition": "background 0.3s ease"
+        },
+        "card_before": {
+          "content": "''",
+          "position": "absolute",
+          "top": "0",
+          "left": "50%",
+          "transform": "translateX(-50%)",
+          "width": "100%",
+          "height": "100%",
+          "background": "radial-gradient(ellipse 70% 55% at 50% 0%, rgba(13, 92, 58, 0.75) 0%, rgba(10, 60, 35, 0.35) 45%, transparent 75%)",
+          "opacity": "0",
+          "transition": "opacity 0.35s ease",
+          "pointer-events": "none",
+          "z-index": "0"
+        },
+        "card_hover_before": {
+          "opacity": "1"
+        }
+      }
+    },
+    "alternative_tailwind": {
+      "note": "Tailwind não suporta radial-gradient nativo — usar style inline ou plugin",
+      "inline_style_on_hover": "background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(13,92,58,0.75), transparent 75%)"
+    }
+  },
+
+  "animation": {
+    "on_hover_enter": {
+      "property": "opacity",
+      "from": "0",
+      "to": "1",
+      "duration": "350ms",
+      "easing": "ease"
+    },
+    "on_hover_leave": {
+      "property": "opacity",
+      "from": "1",
+      "to": "0",
+      "duration": "350ms",
+      "easing": "ease"
+    },
+    "note": "Sem movimento — o glow é estático no topo, apenas aparece/desaparece com fade"
+  },
+
+  "radial_gradient_breakdown": {
+    "syntax": "radial-gradient(ellipse W% H% at X% Y%, color_stop_1, color_stop_2, color_stop_3)",
+    "suggested_values": {
+      "W": "70% (largura da elipse — cobre bem o card)",
+      "H": "55% (altura da elipse — define profundidade do glow)",
+      "X": "50% (centralizado horizontalmente)",
+      "Y": "0% (nasce exatamente no topo)",
+      "stop_1": "rgba(13, 92, 58, 0.75) at 0% — núcleo verde saturado",
+      "stop_2": "rgba(10, 60, 35, 0.30) at 45% — transição suave",
+      "stop_3": "transparent at 75% — dissolve completamente"
+    }
+  },
+
+  "notes": {
+    "not_a_border_glow": "Este efeito NÃO é um brilho nas bordas (box-shadow ou border brilhante). É exclusivamente um gradiente interno no corpo do card.",
+    "replaces": "O comportamento anterior de 'acender as bordas' no hover foi substituído por este glow interno.",
+    "layering": "O glow fica acima do background do card mas abaixo do conteúdo (z-index do ::before menor que o do texto)",
+    "card_background_unchanged": "O background base do card (accent a 6%) permanece — o glow é adicionado por cima, não substitui"
+  }
+}
