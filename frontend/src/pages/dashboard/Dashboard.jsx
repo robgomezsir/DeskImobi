@@ -36,6 +36,9 @@ const data = [
 
 const ACCENT = '#00F5A0';
 
+/** Fundo artístico do Dashboard (brand) — ficheiro em `public/dashboard-bg.jpg` */
+const DASHBOARD_BG_URL = '/dashboard-bg.jpg';
+
 export default function Dashboard() {
   const [metrics, setMetrics] = useState({
     totalClients: 0,
@@ -91,7 +94,20 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
+    <div
+      className="relative -mx-4 overflow-hidden sm:-mx-6 lg:-mx-8"
+      data-bv-dashboard-canvas
+    >
+      <div
+        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${DASHBOARD_BG_URL})` }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/25 via-transparent to-black/50"
+        aria-hidden
+      />
+      <div className="relative z-10 space-y-8 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {cards.map((card, i) => (
           <motion.div
@@ -208,6 +224,7 @@ export default function Dashboard() {
             </button>
           </div>
         </motion.div>
+      </div>
       </div>
     </div>
   );
