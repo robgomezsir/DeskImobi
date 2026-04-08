@@ -222,12 +222,12 @@ html.light {
 }
 
 /*
- * Mobile: desfoque ~60% do desktop (36px) para custo de GPU; fills um pouco mais densos.
+ * Mobile: desfoque mais leve que o desktop — backdrop-filter é caro ao rolar; fills um pouco mais densos compensam o look glass.
  */
 @media (max-width: 767.98px) {
   :root {
-    --bv-liquid-glass-blur: 20px;
-    --bv-dashboard-backdrop-blur: 36px;
+    --bv-liquid-glass-blur: 12px;
+    --bv-dashboard-backdrop-blur: 18px;
   }
 
   html.dark {
@@ -297,6 +297,10 @@ html.light {
 @layer base {
   :root {
     --radius: 12px;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 
   body {
@@ -438,12 +442,16 @@ html.light {
   .bv-scroll-root {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
   }
 
+  /**
+   * Camada de composição dedicada à rolagem do main — reduz repinturas com muitos .glass no ecrã (mobile).
+   */
   @media (max-width: 767.98px) {
     .bv-scroll-root {
-      touch-action: pan-y;
-      scroll-behavior: auto;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
     }
   }
 
@@ -640,73 +648,43 @@ html.light {
   }
 
   /**
-   * Mobile — rolagem fluida: backdrop-filter por cartão é muito caro na GPU ao scrollar.
-   * Fill denso (--glass-fill-solid) + sombras ligeiras; mantém anel ::before.
+   * Mobile: saturate mais baixo no backdrop (menos trabalho por frame) + overlay de hover só onde há hover real.
    */
   @media (max-width: 767.98px) {
-    html.dark .glass,
-    html.dark .glass-card,
-    html.dark .glass-blur,
-    html.dark .glass-card-blur,
-    html.light .glass,
-    html.light .glass-card,
-    html.light .glass-blur,
-    html.light .glass-card-blur {
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-    }
-
-    /**
-     * Modais / auth: sem blur, fill mais denso (evita cartão “vazio”).
-     * Cartões .glass normais mantêm var(--card-bg) do @utility — sem !important
-     * para não esmagar utilitários tipo bg-bv-green/5.
-     */
-    html.dark .glass-blur,
-    html.dark .glass-card-blur {
-      background: var(--glass-fill-solid);
-    }
-
-    html.light .glass-blur,
-    html.light .glass-card-blur {
-      background: var(--glass-fill-solid);
-    }
-
-    html.dark [data-bv-dashboard-canvas] .glass,
-    html.dark [data-bv-dashboard-canvas] .glass-card,
-    html.dark [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
-    html.dark [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
-      background:
-        linear-gradient(180deg, rgba(0, 245, 160, 0.08) 0%, transparent 48%),
-        var(--glass-fill-solid) !important;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 0 0 1px rgba(var(--accent-rgb), 0.2),
-        0 6px 20px rgba(0, 0, 0, 0.2) !important;
+    [data-bv-dashboard-canvas] .glass,
+    [data-bv-dashboard-canvas] .glass-card,
+    [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
+    [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
+      backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.05) brightness(1.02);
+      -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.05) brightness(1.02);
     }
 
     html.light [data-bv-dashboard-canvas] .glass,
     html.light [data-bv-dashboard-canvas] .glass-card,
     html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
     html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
-      background:
-        linear-gradient(180deg, rgba(0, 245, 160, 0.05) 0%, transparent 46%),
-        var(--glass-fill-solid) !important;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.42),
-        0 0 0 1px rgba(var(--accent-rgb), 0.14),
-        0 6px 18px rgba(0, 0, 0, 0.05) !important;
+      backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.03) brightness(1.01);
+      -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.03) brightness(1.01);
     }
   }
 
-  /** Touch: sem overlay de hover (::after) — menos camadas compostas ao scrollar. */
   @media (hover: none) {
     [data-bv-dashboard-canvas] .glass.bv-card-hover::after,
     [data-bv-dashboard-canvas] .glass-card.bv-card-hover::after {
-      display: none !important;
+      display: none;
     }
+  }
 
-    #app-sidebar-nav nav a.bv-sidebar-nav-link::after {
-      display: none !important;
+  /**
+   * CRM / restantes: saturate mais baixo no mobile no backdrop padrão (menos custo ao rolar).
+   */
+  @media (max-width: 767.98px) {
+    .glass,
+    .glass-card,
+    .glass-blur,
+    .glass-card-blur {
+      backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.05);
+      -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.05);
     }
   }
 }

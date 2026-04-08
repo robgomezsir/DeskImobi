@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useMediaQuery } from './hooks/useMediaQuery';
 import { Layout } from './components/layout/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Login from './pages/auth/Login';
@@ -14,9 +14,19 @@ import Settings from './pages/settings/Settings';
 
 function PageTransition({ children }) {
   const reduceMotion = useReducedMotion();
-  const isMobileViewport = useMediaQuery('(max-width: 767.98px)');
-  /** Mobile: sem animação de entrada/saída — menos trabalho de composição na rolagem. */
-  const instant = Boolean(reduceMotion || isMobileViewport);
+  const [narrowViewport, setNarrowViewport] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767.98px)');
+    const sync = () => setNarrowViewport(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  /** Em viewports estreitas o blur + animação da página inteira pioram a rolagem; mantém layout, sem tween. */
+  const instant = Boolean(reduceMotion || narrowViewport);
+
   return (
     <motion.div
       initial={{ opacity: instant ? 1 : 0, y: instant ? 0 : 10 }}
