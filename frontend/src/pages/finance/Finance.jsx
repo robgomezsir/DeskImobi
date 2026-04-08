@@ -6,7 +6,8 @@ import {
   ArrowDownLeft, 
   DollarSign,
   PieChart as PieChartIcon,
-  Calendar
+  Calendar,
+  Plus
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -18,9 +19,12 @@ import {
   ResponsiveContainer,
   Cell
 } from 'recharts';
+import { toast } from 'sonner';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { useRegisterAppFab } from '../../contexts/AppFabContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
+import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
 
 const finance = BV_MODULES.finance;
 
@@ -44,16 +48,20 @@ const commissions = [
 export default function Finance() {
   useRegisterAppToolbar(
     () => (
-      <PageToolbar
-        title={finance.officialName}
-        subtitle={finance.tagline}
-        rowAlign="end"
-        actions={
-          <button type="button" className="btn btn-primary h-11 w-full px-5 font-bold text-black sm:w-auto sm:shrink-0">
-            Novo Lançamento
-          </button>
-        }
-      />
+      <PageToolbar title={finance.officialName} subtitle={finance.tagline} />
+    ),
+    []
+  );
+
+  useRegisterAppFab(
+    () => (
+      <ModuleFabButton
+        aria-label="Novo lançamento"
+        title="Novo Lançamento"
+        onClick={() => toast.info('Em breve')}
+      >
+        <Plus size={24} strokeWidth={2} />
+      </ModuleFabButton>
     ),
     []
   );

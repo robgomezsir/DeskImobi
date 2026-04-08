@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { SetAppToolbarContext } from '../../contexts/AppToolbarContext';
+import { SetAppFabContext } from '../../contexts/AppFabContext';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { ThemeToggleButton } from '../ThemeToggleButton';
 import { Sidebar } from './Sidebar';
@@ -24,6 +25,11 @@ export function Layout() {
   const [toolbarLeading, setToolbarLeading] = useState(null);
   const setToolbar = useCallback((node) => {
     setToolbarLeading(node);
+  }, []);
+
+  const [fabSlot, setFabSlot] = useState(null);
+  const setFab = useCallback((node) => {
+    setFabSlot(node);
   }, []);
 
   const closeMobileDrawer = useCallback(() => setMobileDrawerOpen(false), []);
@@ -70,6 +76,7 @@ export function Layout() {
       />
       <div className={mainColClass}>
         <SetAppToolbarContext.Provider value={setToolbar}>
+          <SetAppFabContext.Provider value={setFab}>
           <header className="flex shrink-0 items-center gap-2 border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:gap-3 sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
             {!isMdUp ? (
               <button
@@ -88,9 +95,21 @@ export function Layout() {
               <ThemeToggleButton />
             </div>
           </header>
-          <main className="bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-8 sm:pt-6 lg:px-8">
+          <main
+            className={
+              fabSlot
+                ? 'bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pb-[max(5.5rem,calc(1.5rem+env(safe-area-inset-bottom)))] pt-4 sm:px-6 sm:pb-[max(6rem,env(safe-area-inset-bottom))] sm:pt-6 lg:px-8'
+                : 'bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-8 sm:pt-6 lg:px-8'
+            }
+          >
             <Outlet />
           </main>
+          {fabSlot && !(isMdUp === false && mobileDrawerOpen) ? (
+            <div className="pointer-events-none fixed bottom-0 right-0 z-[45] p-4 pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] pl-4 pt-2">
+              <div className="pointer-events-auto flex flex-col items-end gap-2">{fabSlot}</div>
+            </div>
+          ) : null}
+          </SetAppFabContext.Provider>
         </SetAppToolbarContext.Provider>
       </div>
     </div>

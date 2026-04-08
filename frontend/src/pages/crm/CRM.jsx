@@ -20,7 +20,9 @@ import { CRMClientMobileCard } from './CRMClientMobileCard';
 import axios from 'axios';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { useRegisterAppFab } from '../../contexts/AppFabContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
+import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
 
 const crm = BV_MODULES.crm;
 
@@ -104,20 +106,20 @@ export default function CRM() {
 
   useRegisterAppToolbar(
     () => (
-      <PageToolbar
-        title={crm.officialName}
-        subtitle={crm.tagline}
-        actions={
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary h-11 w-full shrink-0 px-5 sm:w-auto"
-          >
-            <Plus size={20} />
-            Novo Cliente
-          </button>
-        }
-      />
+      <PageToolbar title={crm.officialName} subtitle={crm.tagline} />
+    ),
+    []
+  );
+
+  useRegisterAppFab(
+    () => (
+      <ModuleFabButton
+        aria-label="Novo cliente"
+        title="Novo Cliente"
+        onClick={() => setIsModalOpen(true)}
+      >
+        <Plus size={24} strokeWidth={2} />
+      </ModuleFabButton>
     ),
     []
   );

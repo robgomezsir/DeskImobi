@@ -14,7 +14,9 @@ import { toast } from 'sonner';
 import { generateLeadProposalPDF } from '../../services/pdf.service';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
+import { useRegisterAppFab } from '../../contexts/AppFabContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
+import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
 
 const calc = BV_MODULES.calc;
 
@@ -77,18 +79,23 @@ export default function FinancialCalculator() {
 
   useRegisterAppToolbar(
     () => (
-      <PageToolbar
-        title={calc.officialName}
-        subtitle={calc.tagline}
-        actions={
-          <button type="button" onClick={handleExportPDF} className="btn btn-outline h-11 w-full shrink-0 gap-2 sm:w-auto">
-            <Download size={18} />
-            Exportar PDF
-          </button>
-        }
-      />
+      <PageToolbar title={calc.officialName} subtitle={calc.tagline} />
     ),
     []
+  );
+
+  useRegisterAppFab(
+    () => (
+      <ModuleFabButton
+        aria-label="Exportar PDF"
+        title="Exportar PDF"
+        onClick={handleExportPDF}
+        disabled={!results}
+      >
+        <Download size={24} strokeWidth={2} />
+      </ModuleFabButton>
+    ),
+    [results]
   );
 
   return (

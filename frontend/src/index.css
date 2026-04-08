@@ -15,11 +15,16 @@ html.dark {
   --bg-page: #000000;
   --bg-radial-a: rgba(0, 232, 122, 0.05);
   --bg-radial-b: rgba(0, 232, 122, 0.03);
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  /** Vidro com blur ativo (herói / superfície única); não recebe o override de blur do mobile em .glass */
-  --glass-bg-blur: rgba(255, 255, 255, 0.055);
-  --glass-border: rgba(255, 255, 255, 0.06);
+  /** Liquid Glass (brokervision_brand_context_pack — liquid_glass_system.card_standard + modal_panel) */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  /** Painéis elevados / herói — fill mais denso + blur maior no utilitário */
+  --glass-bg-blur: rgba(255, 255, 255, 0.09);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  /** Bordas de painéis elevados (modal_panel no pack) */
+  --glass-border-strong: rgba(255, 255, 255, 0.1);
+  --glass-border-green: rgba(0, 232, 122, 0.12);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   --surface-muted: rgba(255, 255, 255, 0.05);
   --surface-strong: rgba(255, 255, 255, 0.1);
   --hover-surface: rgba(255, 255, 255, 0.05);
@@ -40,10 +45,13 @@ html.light {
   --bg-page: #ffffff;
   --bg-radial-a: rgba(0, 232, 122, 0.06);
   --bg-radial-b: rgba(0, 168, 84, 0.04);
-  --glass-bg: rgba(0, 0, 0, 0.04);
-  --glass-bg-blur: rgba(0, 0, 0, 0.05);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(0, 0, 0, 0.06);
+  --glass-bg-blur: rgba(0, 0, 0, 0.08);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-border-strong: rgba(0, 0, 0, 0.12);
+  --glass-border-green: rgba(0, 232, 122, 0.12);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.35);
   --surface-muted: rgba(0, 0, 0, 0.04);
   --surface-strong: rgba(0, 0, 0, 0.07);
   --hover-surface: rgba(0, 0, 0, 0.06);
@@ -81,11 +89,12 @@ html.light {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
 }
 
+/** Combine com `glass` ou `glass-card` — realce verde em @layer components (.glass.glass-green). */
 @utility glass-green {
-  @apply border-bv-green/20 shadow-[0_0_24px_rgba(0,232,122,0.08),inset_0_1px_0_rgba(0,232,122,0.12)];
+  border-color: var(--glass-border-green);
 }
 
 @utility glass-card {
@@ -93,25 +102,25 @@ html.light {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   border-radius: 1.5rem;
 }
 
-/** Vidro com blur em qualquer breakpoint — usar em poucos elementos (herói) para não empilhar custo na rolagem. */
+/** Vidro com blur em qualquer breakpoint — modal_panel: blur(40px) no pack; uso moderado para custo. */
 @utility glass-blur {
   background: var(--glass-bg-blur);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
 }
 
 @utility glass-card-blur {
   background: var(--glass-bg-blur);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
   border-radius: 1.5rem;
 }
 
@@ -136,36 +145,52 @@ html.light {
 }
 
 /*
- * Mobile: muitos .glass com blur empilhados travam a rolagem — só .glass / .glass-card perdem o blur
- * (fundo mais opaco via --glass-bg). Para um herói com blur real, use .glass-blur ou .glass-card-blur.
+ * Mobile: blur mais leve (16px vs 20px) para custo; fill um pouco mais denso para o vidro ler bem sem “sumir”.
+ * glass-blur / glass-card-blur mantêm blur(40px) — usar com moderação em listas longas.
  */
 @media (max-width: 767.98px) {
   html.dark {
-    --glass-bg: rgba(255, 255, 255, 0.075);
+    --glass-bg: rgba(255, 255, 255, 0.09);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-bg-blur: rgba(255, 255, 255, 0.08);
+    --glass-border-strong: rgba(255, 255, 255, 0.12);
+    --glass-bg-blur: rgba(255, 255, 255, 0.12);
   }
 
   html.light {
-    --glass-bg: rgba(0, 0, 0, 0.065);
-    --glass-border: rgba(0, 0, 0, 0.1);
-    --glass-bg-blur: rgba(0, 0, 0, 0.075);
+    --glass-bg: rgba(0, 0, 0, 0.08);
+    --glass-border: rgba(0, 0, 0, 0.11);
+    --glass-border-strong: rgba(0, 0, 0, 0.14);
+    --glass-bg-blur: rgba(0, 0, 0, 0.1);
   }
 
   .glass,
   .glass-card {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .glass,
-  .glass-card,
-  .glass-blur,
-  .glass-card-blur {
+  html.dark .glass,
+  html.dark .glass-card,
+  html.dark .glass-blur,
+  html.dark .glass-card-blur {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    background: rgba(17, 17, 17, 0.94) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: var(--glass-shadow) !important;
+  }
+
+  html.light .glass,
+  html.light .glass-card,
+  html.light .glass-blur,
+  html.light .glass-card-blur {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: var(--glass-shadow) !important;
   }
 }
 
@@ -201,6 +226,17 @@ html.light {
 }
 
 @layer components {
+  /** green_highlight (brand pack) aplicado quando `glass glass-green` */
+  .glass.glass-green,
+  .glass-card.glass-green {
+    border-color: var(--glass-border-green);
+    box-shadow:
+      var(--glass-inset-highlight),
+      0 0 24px rgba(0, 232, 122, 0.08),
+      inset 0 1px 0 rgba(0, 232, 122, 0.12),
+      var(--glass-shadow);
+  }
+
   .btn {
     @apply px-5 py-2.5 rounded-lg font-semibold transition-all duration-200 active:scale-95 flex items-center justify-center gap-2;
     transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
