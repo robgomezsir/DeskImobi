@@ -15,7 +15,7 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   doc.text('BROKERVISION', 15, 25);
   
   doc.setFontSize(10);
-  doc.setTextColor(0, 232, 122); // BV Green
+  doc.setTextColor(0, 245, 160); // BV accent (#00F5A0)
   doc.setFont('helvetica', 'normal');
   doc.text('RELATÓRIO DE VIABILIDADE SOBERANA', 15, 32);
   
@@ -42,7 +42,7 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   doc.text('VALOR DA PARCELA MENSAL', 20, 115);
   
   doc.setFontSize(24);
-  doc.setTextColor(0, 232, 122); // BV Green
+  doc.setTextColor(0, 245, 160); // BV accent (#00F5A0)
   doc.text(formatCurrency(simulationResults.monthlyPayment), 20, 130);
   
   doc.setFontSize(10);

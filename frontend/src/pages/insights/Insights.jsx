@@ -84,8 +84,8 @@ export default function Insights() {
               <AreaChart data={marketData}>
                 <defs>
                   <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00E87A" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="#00E87A" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#00F5A0" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#00F5A0" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff03" />
@@ -95,7 +95,7 @@ export default function Insights() {
                   contentStyle={{backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)'}}
                   itemStyle={{color: '#fff'}}
                 />
-                <Area isAnimationActive={false} type="monotone" dataKey="price" stroke="#00E87A" strokeWidth={3} fillOpacity={1} fill="url(#colorPrice)" />
+                <Area isAnimationActive={false} type="monotone" dataKey="price" stroke="#00F5A0" strokeWidth={3} fillOpacity={1} fill="url(#colorPrice)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>

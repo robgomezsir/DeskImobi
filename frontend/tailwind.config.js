@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         bv: {
-          green: '#00E87A',
+          green: '#00F5A0',
           'green-deep': '#00A854',
           black: '#000000',
           'black-soft': '#0A0A0A',
@@ -18,7 +18,7 @@ export default {
           'white-ghost': '#9A9A9A',
         },
         primary: {
-          DEFAULT: '#00E87A',
+          DEFAULT: '#00F5A0',
           foreground: '#000000',
         },
       },

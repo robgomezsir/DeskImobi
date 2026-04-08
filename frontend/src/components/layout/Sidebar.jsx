@@ -4,11 +4,10 @@ import {
   LayoutDashboard,
   Users,
   Calculator,
-  Sparkles,
+  Lightbulb,
+  Share2,
   Settings,
   LogOut,
-  Zap,
-  Wallet,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -28,9 +27,8 @@ const navIcons = {
   dashboard: LayoutDashboard,
   crm: Users,
   calc: Calculator,
-  finance: Wallet,
-  flow: Zap,
-  insights: Sparkles,
+  insights: Lightbulb,
+  integrations: Share2,
 };
 
 const navItems = BV_MODULE_KEYS.map((key) => ({
@@ -78,7 +76,7 @@ export function Sidebar({
       ref={swipeCloseRef}
       id="app-sidebar-nav"
       className={cn(
-        'glass-blur fixed left-0 top-0 z-50 flex h-[100dvh] flex-col border-r border-[var(--line)] transition-[width,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:duration-0',
+        'fixed left-0 top-0 z-50 flex h-[100dvh] flex-col border-r border-[var(--line)] bg-bv-page transition-[width,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:duration-0',
         isMobileLayout
           ? cn(
               'w-[min(16rem,calc(100vw-1.5rem))] max-w-[85vw] p-4 pt-[max(1rem,env(safe-area-inset-top))]',
@@ -135,13 +133,14 @@ export function Sidebar({
                 'flex items-center rounded-lg transition-all group',
                 effectiveCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2.5',
                 isActive
-                  ? 'bg-bv-green/10 text-bv-green border border-bv-green/20'
-                  : 'text-bv-muted hover:text-bv-text hover:bg-[var(--hover-surface)] border border-transparent'
+                  ? 'border border-bv-card bg-bv-card-fill text-bv-green'
+                  : 'border border-transparent text-bv-muted hover:bg-[var(--hover-surface)] hover:text-bv-text'
               )}
             >
               <item.icon
-                size={20}
-                className={cn('shrink-0', isActive ? 'text-bv-green' : 'group-hover:text-bv-text')}
+                size={18}
+                strokeWidth={2}
+                className={cn('shrink-0', isActive ? 'text-bv-green' : 'text-bv-muted group-hover:text-bv-text')}
               />
               <span className={cn('min-w-0 font-medium truncate', effectiveCollapsed && 'sr-only')}>{item.officialName}</span>
             </Link>
@@ -161,7 +160,7 @@ export function Sidebar({
             location.pathname === '/settings' && 'bg-bv-green/10 text-bv-green'
           )}
         >
-          <Settings size={20} className="shrink-0" />
+          <Settings size={18} strokeWidth={2} className="shrink-0" />
           <span className={cn('font-medium', effectiveCollapsed && 'sr-only')}>Configurações</span>
         </Link>
 
@@ -175,7 +174,7 @@ export function Sidebar({
             effectiveCollapsed ? 'justify-center px-2 py-2' : 'items-center gap-3 px-3 py-2'
           )}
         >
-          <LogOut size={20} className="shrink-0" />
+          <LogOut size={18} strokeWidth={2} className="shrink-0" />
           <span className={cn('font-medium', effectiveCollapsed && 'sr-only')}>Sair</span>
         </button>
 

@@ -7,9 +7,8 @@ import Register from './pages/auth/Register';
 import CRM from './pages/crm/CRM';
 import Dashboard from './pages/dashboard/Dashboard';
 import FinancialCalculator from './pages/calculator/FinancialCalculator';
-import MessageGenerator from './pages/messages/MessageGenerator';
-import Finance from './pages/finance/Finance';
 import Insights from './pages/insights/Insights';
+import Integrations from './pages/integrations/Integrations';
 import Settings from './pages/settings/Settings';
 
 function PageTransition({ children }) {
@@ -42,10 +41,11 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
             <Route path="/crm" element={<PageTransition><CRM /></PageTransition>} />
-            <Route path="/mensagens" element={<PageTransition><MessageGenerator /></PageTransition>} />
             <Route path="/calculadora" element={<PageTransition><FinancialCalculator /></PageTransition>} />
-            <Route path="/finance" element={<PageTransition><Finance /></PageTransition>} />
             <Route path="/insights" element={<PageTransition><Insights /></PageTransition>} />
+            <Route path="/integracoes" element={<PageTransition><Integrations /></PageTransition>} />
+            <Route path="/mensagens" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/finance" element={<Navigate to="/dashboard" replace />} />
             
             {/* Fallbacks/Aliases */}
             <Route path="/settings" element={<PageTransition><Settings /></PageTransition>} />

@@ -2,27 +2,32 @@
 @import "tailwindcss";
 
 /*
- * Tokens BrokerVision (brokervision_brand_context_pack.json — visual_identity.colors).
- * Apenas preto, branco e verde (#00E87A / #00A854). Modo claro: logo horizontal_dark (documentos formais).
+ * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
+ * Accent: #00F5A0. Cartões: fill rgba(accent, 0.06), borda rgba(accent, 0.10). Blur de vidro só no Dashboard.
  */
 
-/* —— escuro: Liquid Glass digital (identidade principal) —— */
+:root {
+  --accent-rgb: 0, 245, 160;
+}
+
+/* —— escuro (primário) —— */
 html.dark {
   color-scheme: dark;
   --text-primary: #ffffff;
   --text-soft: #e8e8e8;
   --text-muted: #9a9a9a;
+  --text-secondary: rgba(255, 255, 255, 0.6);
   --bg-page: #000000;
-  --bg-radial-a: rgba(0, 232, 122, 0.05);
-  --bg-radial-b: rgba(0, 232, 122, 0.03);
-  /** Liquid Glass (brokervision_brand_context_pack — liquid_glass_system.card_standard + modal_panel) */
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  /** Painéis elevados / herói — fill mais denso + blur maior no utilitário */
-  --glass-bg-blur: rgba(255, 255, 255, 0.09);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  /** Bordas de painéis elevados (modal_panel no pack) */
-  --glass-border-strong: rgba(255, 255, 255, 0.1);
-  --glass-border-green: rgba(0, 232, 122, 0.12);
+  --bg-radial-a: rgba(0, 245, 160, 0.06);
+  --bg-radial-b: rgba(0, 245, 160, 0.04);
+  --card-bg: rgba(var(--accent-rgb), 0.06);
+  --card-border: rgba(var(--accent-rgb), 0.1);
+  /** Superfícies tipo painel / sidebar (sem blur; brand: blur só no dashboard) */
+  --glass-bg: var(--card-bg);
+  --glass-bg-blur: rgba(var(--accent-rgb), 0.09);
+  --glass-border: var(--card-border);
+  --glass-border-strong: rgba(var(--accent-rgb), 0.14);
+  --glass-border-green: rgba(var(--accent-rgb), 0.12);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   --glass-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   --surface-muted: rgba(255, 255, 255, 0.05);
@@ -33,23 +38,26 @@ html.dark {
   --line-subtle: rgba(255, 255, 255, 0.06);
   --input-bg: rgba(255, 255, 255, 0.03);
   --input-border: rgba(255, 255, 255, 0.06);
-  --selection: rgba(0, 232, 122, 0.3);
+  --selection: rgba(0, 245, 160, 0.3);
 }
 
-/* —— claro: fundo branco, texto preto (versão formal / documentos) —— */
+/* —— claro (secundário) —— */
 html.light {
   color-scheme: light;
-  --text-primary: #000000;
+  --text-primary: #1e1e1e;
   --text-soft: #0a0a0a;
   --text-muted: #9a9a9a;
+  --text-secondary: rgba(30, 30, 30, 0.6);
   --bg-page: #ffffff;
-  --bg-radial-a: rgba(0, 232, 122, 0.06);
-  --bg-radial-b: rgba(0, 168, 84, 0.04);
-  --glass-bg: rgba(0, 0, 0, 0.06);
-  --glass-bg-blur: rgba(0, 0, 0, 0.08);
-  --glass-border: rgba(0, 0, 0, 0.1);
-  --glass-border-strong: rgba(0, 0, 0, 0.12);
-  --glass-border-green: rgba(0, 232, 122, 0.12);
+  --bg-radial-a: rgba(0, 245, 160, 0.06);
+  --bg-radial-b: rgba(0, 200, 120, 0.04);
+  --card-bg: rgba(var(--accent-rgb), 0.06);
+  --card-border: rgba(var(--accent-rgb), 0.1);
+  --glass-bg: var(--card-bg);
+  --glass-bg-blur: rgba(var(--accent-rgb), 0.1);
+  --glass-border: var(--card-border);
+  --glass-border-strong: rgba(var(--accent-rgb), 0.14);
+  --glass-border-green: rgba(var(--accent-rgb), 0.12);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   --glass-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.35);
   --surface-muted: rgba(0, 0, 0, 0.04);
@@ -60,11 +68,11 @@ html.light {
   --line-subtle: rgba(0, 0, 0, 0.08);
   --input-bg: rgba(0, 0, 0, 0.03);
   --input-border: rgba(0, 0, 0, 0.12);
-  --selection: rgba(0, 232, 122, 0.25);
+  --selection: rgba(0, 245, 160, 0.25);
 }
 
 @theme {
-  --color-bv-green: #00e87a;
+  --color-bv-green: #00f5a0;
   --color-bv-green-deep: #00a854;
   --color-bv-black: #000000;
   --color-bv-black-soft: #0a0a0a;
@@ -77,51 +85,69 @@ html.light {
   --color-bv-text-soft: var(--text-soft);
   --color-bv-muted: var(--text-muted);
 
-  --color-primary: #00e87a;
+  --color-primary: #00f5a0;
   --color-primary-foreground: #000000;
 
   --font-sans: "Nunito", "Inter", ui-sans-serif, system-ui;
   --font-display: "Nunito", sans-serif;
 }
 
+/** Cartão padrão: fill accent 6%, borda 10%, raio 16px — sem backdrop blur fora do dashboard */
 @utility glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-/** Combine com `glass` ou `glass-card` — realce verde em @layer components (.glass.glass-green). */
+/** Combine com `glass` ou `glass-card` — realce verde (brand green_highlight) */
 @utility glass-green {
   border-color: var(--glass-border-green);
 }
 
 @utility glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  border-radius: 1.5rem;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-/** Vidro com blur em qualquer breakpoint — modal_panel: blur(40px) no pack; uso moderado para custo. */
+/** Painéis elevados (modais, header flutuante): sem blur fora do escopo dashboard */
 @utility glass-blur {
   background: var(--glass-bg-blur);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
   border: 1px solid var(--glass-border-strong);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 @utility glass-card-blur {
   background: var(--glass-bg-blur);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
   border: 1px solid var(--glass-border-strong);
+  border-radius: 1rem;
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  border-radius: 1.5rem;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/** Números de destaque: gradiente 60% → 100% (brand typography.text_gradient_for_results) */
+@utility text-metric-value {
+  background: linear-gradient(180deg, var(--text-secondary) 0%, var(--text-primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-bv-card-fill {
+  background-color: var(--card-bg);
+}
+
+@utility border-bv-card {
+  border-color: var(--card-border);
 }
 
 @utility bg-bv-page {
@@ -145,26 +171,32 @@ html.light {
 }
 
 /*
- * Mobile: blur mais leve (16px vs 20px) para custo; fill um pouco mais denso para o vidro ler bem sem “sumir”.
- * glass-blur / glass-card-blur mantêm blur(40px) — usar com moderação em listas longas.
+ * Dashboard: única área com backdrop blur nos cartões (background_effects.dashboard_special).
+ */
+[data-bv-page='/dashboard'] .glass,
+[data-bv-page='/dashboard'] .glass-card,
+[data-bv-page='/dashboard'] .glass-blur,
+[data-bv-page='/dashboard'] .glass-card-blur {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/*
+ * Mobile: blur mais leve nos cartões do dashboard; resto permanece sólido.
  */
 @media (max-width: 767.98px) {
   html.dark {
-    --glass-bg: rgba(255, 255, 255, 0.09);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-border-strong: rgba(255, 255, 255, 0.12);
-    --glass-bg-blur: rgba(255, 255, 255, 0.12);
+    --card-bg: rgba(var(--accent-rgb), 0.09);
+    --glass-bg-blur: rgba(var(--accent-rgb), 0.12);
   }
 
   html.light {
-    --glass-bg: rgba(0, 0, 0, 0.08);
-    --glass-border: rgba(0, 0, 0, 0.11);
-    --glass-border-strong: rgba(0, 0, 0, 0.14);
-    --glass-bg-blur: rgba(0, 0, 0, 0.1);
+    --card-bg: rgba(var(--accent-rgb), 0.08);
+    --glass-bg-blur: rgba(var(--accent-rgb), 0.11);
   }
 
-  .glass,
-  .glass-card {
+  [data-bv-page='/dashboard'] .glass,
+  [data-bv-page='/dashboard'] .glass-card {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
@@ -178,7 +210,7 @@ html.light {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     background: rgba(17, 17, 17, 0.94) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--card-border) !important;
     box-shadow: var(--glass-shadow) !important;
   }
 
@@ -189,8 +221,15 @@ html.light {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     background: rgba(255, 255, 255, 0.94) !important;
-    border-color: rgba(0, 0, 0, 0.1) !important;
+    border-color: var(--card-border) !important;
     box-shadow: var(--glass-shadow) !important;
+  }
+
+  .text-metric-value {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    color: var(--text-primary) !important;
   }
 }
 
@@ -204,8 +243,8 @@ html.light {
     background-color: var(--bg-page);
     color: var(--text-primary);
     background-image:
-      radial-gradient(circle at 10% 10%, var(--bg-radial-a) 0%, transparent 40%),
-      radial-gradient(circle at 90% 90%, var(--bg-radial-b) 0%, transparent 40%);
+      radial-gradient(circle at 10% 10%, var(--bg-radial-a) 0%, transparent 42%),
+      radial-gradient(circle at 90% 90%, var(--bg-radial-b) 0%, transparent 42%);
     min-height: 100vh;
     min-height: 100dvh;
   }
@@ -226,15 +265,28 @@ html.light {
 }
 
 @layer components {
-  /** green_highlight (brand pack) aplicado quando `glass glass-green` */
+  /** green_highlight quando `glass glass-green` */
   .glass.glass-green,
   .glass-card.glass-green {
     border-color: var(--glass-border-green);
     box-shadow:
       var(--glass-inset-highlight),
-      0 0 24px rgba(0, 232, 122, 0.08),
-      inset 0 1px 0 rgba(0, 232, 122, 0.12),
+      0 0 24px rgba(0, 245, 160, 0.08),
+      inset 0 1px 0 rgba(0, 245, 160, 0.12),
       var(--glass-shadow);
+  }
+
+  /** Hover cartão: brilho radial superior (card_system.hover_effect) */
+  .bv-card-hover {
+    transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .bv-card-hover:hover {
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      rgba(var(--accent-rgb), 0.22) 0%,
+      var(--card-bg) 55%
+    );
   }
 
   .btn {
@@ -243,12 +295,12 @@ html.light {
   }
 
   .btn-primary {
-    @apply bg-gradient-to-br from-[#00E87A] to-[#00A854] text-black shadow-lg shadow-bv-green/20 hover:shadow-bv-green/30 hover:brightness-110;
+    @apply bg-gradient-to-br from-[#00F5A0] to-[#00A854] text-black shadow-lg shadow-bv-green/20 hover:shadow-bv-green/30 hover:brightness-110;
   }
 
   .btn-outline {
     @apply border border-[var(--line)] rounded-lg transition-all duration-200;
-    background: var(--glass-bg);
+    background: var(--card-bg);
     color: var(--text-primary);
   }
 
@@ -268,8 +320,8 @@ html.light {
   }
 
   .input-field:focus {
-    border-color: rgba(0, 232, 122, 0.4);
-    box-shadow: 0 0 0 4px rgba(0, 232, 122, 0.1);
+    border-color: rgba(0, 245, 160, 0.45);
+    box-shadow: 0 0 0 4px rgba(0, 245, 160, 0.12);
   }
 
   .card-bv {
@@ -280,7 +332,6 @@ html.light {
     background: var(--hover-surface);
   }
 
-  /** Área de rolagem principal: menos encadeamento com o body e inércia no iOS. */
   .bv-scroll-root {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;

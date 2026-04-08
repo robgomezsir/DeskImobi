@@ -12,11 +12,11 @@ import {
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
-import { BV_MODULES } from '../../constants/brandModules';
+import { LEGACY_BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
 
-const flow = BV_MODULES.flow;
+const flow = LEGACY_BV_MODULES.flow;
 
 export default function MessageGenerator() {
   const { session } = useAuth();

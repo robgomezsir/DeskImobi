@@ -1,59 +1,62 @@
 /**
- * Nomes oficiais e taglines dos módulos BrokerVision.
- * Fonte de verdade alinhada a `brokervision_brand_context_pack.json` (ecosystem_modules).
+ * Nomes e rotas dos módulos BrokerVision.
+ * Fonte: `brokervision-brand-context.json` (naming_conventions, sidebar.navigation_items).
+ * Prefixo "BV" removido das labels voltadas ao utilizador.
  */
 
-export const BV_MODULE_KEYS = [
-  'dashboard',
-  'crm',
-  'calc',
-  'finance',
-  'flow',
-  'insights',
-];
+export const BV_MODULE_KEYS = ['dashboard', 'crm', 'calc', 'insights', 'integrations'];
 
 /** @type {Record<string, { id: string, area: string, officialName: string, tagline: string, path: string }>} */
 export const BV_MODULES = {
   dashboard: {
     id: 'dashboard',
     area: 'Relatórios & Analytics',
-    officialName: 'BV Dashboard',
+    officialName: 'Dashboard',
     tagline: 'Sua performance em tempo real.',
     path: '/dashboard',
   },
   crm: {
     id: 'crm',
     area: 'Gestão de Leads & Clientes',
-    officialName: 'BV CRM',
+    officialName: 'CRM',
     tagline: 'Do primeiro contato ao fechamento.',
     path: '/crm',
   },
   calc: {
     id: 'calc',
     area: 'Calculadoras Financeiras',
-    officialName: 'BV Calc',
+    officialName: 'Calculadora',
     tagline: 'Simule. Decida. Feche.',
     path: '/calculadora',
   },
+  insights: {
+    id: 'insights',
+    area: 'Inteligência Artificial',
+    officialName: 'Broker Insights',
+    tagline: 'O mercado fala. Você entende.',
+    path: '/insights',
+  },
+  integrations: {
+    id: 'integrations',
+    area: 'Conexões',
+    officialName: 'Integrações',
+    tagline: 'Conecte CRM, portais e automações.',
+    path: '/integracoes',
+  },
+};
+
+/** Rotas antigas ainda referenciadas em código legado (sem entrada na navegação). */
+export const LEGACY_BV_MODULES = {
   finance: {
     id: 'finance',
-    area: 'Gestão Financeira',
-    officialName: 'BV Finance',
+    officialName: 'Finance',
     tagline: 'Cada comissão no lugar certo.',
     path: '/finance',
   },
   flow: {
     id: 'flow',
-    area: 'Automações & Fluxos',
-    officialName: 'BV Flow',
+    officialName: 'Mensagens',
     tagline: 'Trabalhe menos. Produza mais.',
     path: '/mensagens',
-  },
-  insights: {
-    id: 'insights',
-    area: 'Inteligência Artificial',
-    officialName: 'BV Insights',
-    tagline: 'O mercado fala. Você entende.',
-    path: '/insights',
   },
 };

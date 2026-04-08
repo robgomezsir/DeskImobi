@@ -96,6 +96,7 @@ export function Layout() {
             </div>
           </header>
           <main
+            data-bv-page={location.pathname}
             className={
               fabSlot
                 ? 'bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pb-[max(5.5rem,calc(1.5rem+env(safe-area-inset-bottom)))] pt-4 sm:px-6 sm:pb-[max(6rem,env(safe-area-inset-bottom))] sm:pt-6 lg:px-8'
