@@ -4,15 +4,15 @@
 /*
  * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
  * Accent: #00F5A0. Liquid glass: backdrop-filter + fill 6% (brokervision-brand-context.json).
- * Dashboard: cartões sobre imagem → 96% backdrop blur → 96px em CSS (mapeamento percentual → px).
+ * Dashboard: vidro translúcido (fill ~6–12% accent) + blur moderado (fosco elegante, não “sopa”).
  */
 
 :root {
   --accent-rgb: 0, 245, 160;
   /** Desfoque padrão em superfícies .glass (fora do canvas do Dashboard) */
-  --bv-liquid-glass-blur: 40px;
-  /** Desfoque dos cartões no canvas do Dashboard (96% → 96px) */
-  --bv-dashboard-backdrop-blur: 96px;
+  --bv-liquid-glass-blur: 28px;
+  /** Desfoque dos cartões no canvas do Dashboard — harmonioso com a referência liquid glass */
+  --bv-dashboard-backdrop-blur: 32px;
   /**
    * Opção 1 de contorno (brokervision-brand-context): cor padrão em conic-gradient,
    * opacidade 6% → 20% → 6% → 20% duas vezes ao longo do perímetro (8 trechos).
@@ -127,8 +127,8 @@ html.light {
   border-radius: 1rem;
   background: var(--card-bg);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
-  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.12);
+  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.12);
   transform: translateZ(0);
 }
 
@@ -143,8 +143,8 @@ html.light {
   border-radius: 1rem;
   background: var(--card-bg);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
-  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.12);
+  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.12);
   transform: translateZ(0);
 }
 
@@ -155,8 +155,8 @@ html.light {
   border-radius: 1rem;
   background: var(--glass-bg-blur);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
-  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.12);
+  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.12);
   transform: translateZ(0);
 }
 
@@ -166,8 +166,8 @@ html.light {
   border-radius: 1rem;
   background: var(--glass-bg-blur);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
-  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.12);
+  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.12);
   transform: translateZ(0);
 }
 
@@ -220,9 +220,9 @@ html.light {
  */
 @media (max-width: 767.98px) {
   :root {
-    --bv-liquid-glass-blur: 24px;
-    /** ~60% do blur desktop do Dashboard (96px → ~58px) */
-    --bv-dashboard-backdrop-blur: 58px;
+    --bv-liquid-glass-blur: 20px;
+    /** ~62% do blur desktop do Dashboard */
+    --bv-dashboard-backdrop-blur: 20px;
   }
 
   html.dark {
@@ -349,16 +349,25 @@ html.light {
   }
 
   /**
-   * Dashboard com imagem de fundo: 96% backdrop blur nos cartões (96px).
-   * Vinheta escura extra + blur forte para o vidro ler como fosco.
+   * Dashboard sobre imagem: liquid glass translúcido (referência brand).
+   * Fill leve + blur moderado; sem vinheta pesada — o fundo “respira” através do vidro.
    */
   [data-bv-dashboard-canvas] .glass,
   [data-bv-dashboard-canvas] .glass-card {
     background:
-      linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+      linear-gradient(
+        155deg,
+        rgba(0, 245, 160, 0.06) 0%,
+        rgba(0, 0, 0, 0.04) 45%,
+        rgba(0, 12, 10, 0.09) 100%
+      ),
       var(--card-bg);
-    backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.25);
-    -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.25);
+    backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.15) brightness(1.04);
+    -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.15) brightness(1.04);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.09),
+      0 0 0 1px rgba(var(--accent-rgb), 0.28),
+      0 12px 48px rgba(0, 0, 0, 0.32);
   }
 
   [data-bv-dashboard-canvas] .glass > *,
@@ -373,10 +382,15 @@ html.light {
     background:
       radial-gradient(
         ellipse 120% 90% at 50% 0%,
-        rgba(var(--accent-rgb), 0.22) 0%,
-        var(--card-bg) 55%
+        rgba(var(--accent-rgb), 0.2) 0%,
+        transparent 58%
       ),
-      linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+      linear-gradient(
+        155deg,
+        rgba(0, 245, 160, 0.08) 0%,
+        rgba(0, 0, 0, 0.05) 50%,
+        rgba(0, 12, 10, 0.1) 100%
+      ),
       var(--card-bg);
   }
 
@@ -387,8 +401,16 @@ html.light {
   html.light [data-bv-dashboard-canvas] .glass,
   html.light [data-bv-dashboard-canvas] .glass-card {
     background:
-      linear-gradient(rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.42)),
+      linear-gradient(
+        165deg,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(255, 255, 255, 0.08) 100%
+      ),
       var(--card-bg);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      0 0 0 1px rgba(var(--accent-rgb), 0.22),
+      0 12px 40px rgba(0, 0, 0, 0.08);
   }
 
   html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
@@ -396,10 +418,14 @@ html.light {
     background:
       radial-gradient(
         ellipse 120% 90% at 50% 0%,
-        rgba(var(--accent-rgb), 0.22) 0%,
-        var(--card-bg) 55%
+        rgba(var(--accent-rgb), 0.16) 0%,
+        transparent 58%
       ),
-      linear-gradient(rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.42)),
+      linear-gradient(
+        165deg,
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.1) 100%
+      ),
       var(--card-bg);
   }
 

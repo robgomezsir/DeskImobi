@@ -124,7 +124,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="glass bv-card-hover rounded-2xl p-5 sm:rounded-2xl sm:p-6"
+            className="glass bv-card-hover rounded-3xl p-5 sm:rounded-3xl sm:p-6"
           >
             <div className="mb-3 flex items-start gap-3">
               <card.icon size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-bv-text" />
@@ -143,7 +143,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
-          className="glass flex min-h-[300px] flex-col rounded-2xl p-4 sm:min-h-[360px] sm:rounded-2xl sm:p-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-8"
+          className="glass flex min-h-[300px] flex-col rounded-3xl p-4 sm:min-h-[360px] sm:rounded-3xl sm:p-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-8"
         >
           <div className="mb-4 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
@@ -198,7 +198,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
-          className="glass flex flex-col rounded-2xl p-4 sm:rounded-2xl sm:p-6 lg:p-8"
+          className="glass flex flex-col rounded-3xl p-4 sm:rounded-3xl sm:p-6 lg:p-8"
         >
           <div className="mb-6 flex items-center gap-3 sm:mb-8">
             <Lightbulb size={18} strokeWidth={2} className="shrink-0 text-bv-text" />
