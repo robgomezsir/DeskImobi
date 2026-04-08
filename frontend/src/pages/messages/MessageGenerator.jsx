@@ -53,7 +53,7 @@ export default function MessageGenerator() {
   };
 
   useRegisterAppToolbar(
-    () => <PageToolbar constrainWidth title={flow.officialName} subtitle={flow.tagline} />,
+    () => <PageToolbar title={flow.officialName} subtitle={flow.tagline} />,
     []
   );
 

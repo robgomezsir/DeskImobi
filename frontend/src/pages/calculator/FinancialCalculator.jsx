@@ -78,7 +78,6 @@ export default function FinancialCalculator() {
   useRegisterAppToolbar(
     () => (
       <PageToolbar
-        constrainWidth
         title={calc.officialName}
         subtitle={calc.tagline}
         actions={
