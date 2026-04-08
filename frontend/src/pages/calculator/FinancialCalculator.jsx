@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useTheme } from '../../contexts/ThemeContext';
 import { Calculator, Download, Home, Layers } from 'lucide-react';
 import { toast } from 'sonner';
 import { generateFlowPaymentPDF } from '../../services/pdf.service';
@@ -8,6 +7,8 @@ import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 import { useRegisterAppFab } from '../../contexts/AppFabContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
 import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
+import { BvModuleCanvas } from '../../components/layout/BvModuleCanvas';
+import { useGlassBackdropStyle } from '../../hooks/useGlassBackdropStyle';
 import {
   computeFlowBuckets,
   DEFAULT_FLOW_PAYMENT,
@@ -85,26 +86,7 @@ function FlowPhaseCard({
 }
 
 export default function FinancialCalculator() {
-  const { theme } = useTheme();
-  const isLight = theme === 'light';
-
-  const glassBackdropStyle = useMemo(
-    () =>
-      isLight
-        ? {
-            backdropFilter:
-              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02)',
-            WebkitBackdropFilter:
-              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02)',
-          }
-        : {
-            backdropFilter:
-              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03)',
-            WebkitBackdropFilter:
-              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03)',
-          },
-    [isLight]
-  );
+  const glassBackdropStyle = useGlassBackdropStyle();
 
   const [projectName, setProjectName] = useState('');
   const [unit, setUnit] = useState('');
@@ -257,11 +239,7 @@ export default function FinancialCalculator() {
   };
 
   return (
-    <div
-      className="relative -mx-4 min-w-0 sm:-mx-6 lg:-mx-8"
-      data-bv-dashboard-canvas
-    >
-      <div className="relative z-10 mx-auto w-full max-w-7xl space-y-6 px-4 pb-1 animate-in fade-in slide-in-from-bottom-4 duration-700 sm:px-6 lg:px-8">
+    <BvModuleCanvas innerClassName="relative z-10 mx-auto w-full max-w-7xl space-y-6 px-4 pb-1 animate-in fade-in slide-in-from-bottom-4 duration-700 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2 text-bv-muted">
         <Layers className="h-5 w-5 shrink-0 text-bv-green" aria-hidden />
         <p className="text-xs font-medium uppercase tracking-[0.12em]">Simulação de obra / lançamento</p>
@@ -406,7 +384,6 @@ export default function FinancialCalculator() {
         <p className="pb-8 text-center text-[10px] text-bv-muted">
           © {new Date().getFullYear()} BrokerVision. Todos os direitos reservados.
         </p>
-      </div>
-    </div>
+    </BvModuleCanvas>
   );
 }

@@ -1,26 +1,28 @@
 import { motion } from 'framer-motion';
-import { 
-  TrendingUp, 
-  Search, 
-  ChevronRight, 
+import {
+  TrendingUp,
+  Search,
+  ChevronRight,
   Info,
   MapPin,
   Clock,
   Zap,
-  Star
+  Star,
 } from 'lucide-react';
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer 
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
 } from 'recharts';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
+import { BvModuleCanvas } from '../../components/layout/BvModuleCanvas';
+import { useGlassBackdropStyle } from '../../hooks/useGlassBackdropStyle';
 
 const insights = BV_MODULES.insights;
 
@@ -34,6 +36,8 @@ const marketData = [
 ];
 
 export default function Insights() {
+  const glassBackdropStyle = useGlassBackdropStyle();
+
   useRegisterAppToolbar(
     () => (
       <PageToolbar
@@ -56,12 +60,13 @@ export default function Insights() {
   );
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <motion.div 
+    <BvModuleCanvas innerClassName="relative z-10 space-y-8 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 lg:col-span-2 lg:p-8"
+          className="glass bv-card-hover rounded-3xl p-4 sm:p-6 lg:col-span-2 lg:p-8"
+          style={glassBackdropStyle}
         >
           <div className="mb-4 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
@@ -84,85 +89,110 @@ export default function Insights() {
               <AreaChart data={marketData}>
                 <defs>
                   <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00F5A0" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="#00F5A0" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#00F5A0" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#00F5A0" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff03" />
-                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#9A9A9A', fontSize: 12}} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#9A9A9A', fontSize: 12}} />
-                <Tooltip 
-                  contentStyle={{backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)'}}
-                  itemStyle={{color: '#fff'}}
+                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#9A9A9A', fontSize: 12 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9A9A9A', fontSize: 12 }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#000',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                  }}
+                  itemStyle={{ color: '#fff' }}
                 />
-                <Area isAnimationActive={false} type="monotone" dataKey="price" stroke="#00F5A0" strokeWidth={3} fillOpacity={1} fill="url(#colorPrice)" />
+                <Area
+                  isAnimationActive={false}
+                  type="monotone"
+                  dataKey="price"
+                  stroke="#00F5A0"
+                  strokeWidth={3}
+                  fillOpacity={1}
+                  fill="url(#colorPrice)"
+                />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="flex flex-col rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 lg:p-8"
+          className="glass bv-card-hover flex flex-col rounded-3xl p-4 sm:p-6 lg:p-8"
+          style={glassBackdropStyle}
         >
           <div className="mb-6 flex items-center gap-3 sm:mb-8">
-            <div className="p-2 bg-bv-green/10 text-bv-green rounded-xl">
+            <div className="rounded-xl bg-bv-green/10 p-2 text-bv-green">
               <Star size={20} />
             </div>
             <h3 className="text-xl font-display font-bold">Oportunidades IA</h3>
           </div>
-          
-          <div className="space-y-4 flex-1">
-            <div className="p-5 bg-bv-surface-muted rounded-2xl border border-[var(--line-subtle)] hover:border-bv-green/30 transition-all group">
-              <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] bg-bv-green/10 text-bv-green px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Alta Demanda</span>
+
+          <div className="flex flex-1 flex-col space-y-4">
+            <div className="group rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-5 transition-all hover:border-bv-green/30">
+              <div className="mb-2 flex items-start justify-between">
+                <span className="rounded-full bg-bv-green/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-bv-green">
+                  Alta Demanda
+                </span>
                 <Clock size={14} className="text-bv-muted" />
               </div>
-              <h4 className="font-bold text-bv-text mb-1">Studios no Itaim Bibi</h4>
-              <p className="text-xs text-bv-muted leading-relaxed">
+              <h4 className="mb-1 font-bold text-bv-text">Studios no Itaim Bibi</h4>
+              <p className="text-xs leading-relaxed text-bv-muted">
                 A procura por aluguel subiu 15% nos últimos 14 dias. Ideal para investidores de yield recorrente.
               </p>
-              <button className="mt-4 flex items-center gap-1 text-xs text-bv-green font-bold group-hover:gap-2 transition-all">
+              <button
+                type="button"
+                className="mt-4 flex items-center gap-1 text-xs font-bold text-bv-green transition-all group-hover:gap-2"
+              >
                 Ver Análise Completa <ChevronRight size={14} />
               </button>
             </div>
 
-            <div className="p-5 bg-bv-surface-muted rounded-2xl border border-[var(--line-subtle)] hover:border-bv-green/30 transition-all group">
-              <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] bg-bv-surface-strong text-bv-text px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Preço Crítico</span>
+            <div className="group rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-5 transition-all hover:border-bv-green/30">
+              <div className="mb-2 flex items-start justify-between">
+                <span className="rounded-full bg-bv-surface-strong px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-bv-text">
+                  Preço Crítico
+                </span>
                 <MapPin size={14} className="text-bv-muted" />
               </div>
-              <h4 className="font-bold text-bv-text mb-1">Pinheiros: Queda no ticket</h4>
-              <p className="text-xs text-bv-muted leading-relaxed">
-                Residuais de revenda abaixo do m² médio. Momento de "buy-low" para estoque estratégico.
+              <h4 className="mb-1 font-bold text-bv-text">Pinheiros: Queda no ticket</h4>
+              <p className="text-xs leading-relaxed text-bv-muted">
+                Residuais de revenda abaixo do m² médio. Momento de &quot;buy-low&quot; para estoque estratégico.
               </p>
-              <button className="mt-4 flex items-center gap-1 text-xs text-bv-green font-bold group-hover:gap-2 transition-all">
+              <button
+                type="button"
+                className="mt-4 flex items-center gap-1 text-xs font-bold text-bv-green transition-all group-hover:gap-2"
+              >
                 Identificar leads <ChevronRight size={14} />
               </button>
             </div>
           </div>
 
-          <div className="mt-8 p-4 bg-bv-green/5 rounded-2xl border border-bv-green/10">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="mt-8 rounded-2xl border border-bv-green/10 bg-bv-green/5 p-4">
+            <div className="mb-2 flex items-center gap-2">
               <Zap size={16} className="text-bv-green" />
               <span className="text-xs font-bold text-bv-text">Próximo Insight em:</span>
             </div>
-            <div className="text-2xl font-display font-bold text-bv-green tracking-widest uppercase">
-              02:14:55
-            </div>
+            <div className="font-display text-2xl font-bold uppercase tracking-widest text-bv-green">02:14:55</div>
           </div>
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {[
           { label: 'Sentimento de Mercado', value: 'Otimista', color: 'text-bv-green' },
           { label: 'Taxa de Vacância Avg', value: '4.2%', color: 'text-bv-text' },
           { label: 'Lead Quality Score', value: 'A+', color: 'text-bv-green' },
         ].map((stat, i) => (
-          <div key={i} className="flex cursor-default items-center justify-between rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 group">
+          <div
+            key={i}
+            className="glass bv-card-hover group flex cursor-default items-center justify-between rounded-3xl p-4 sm:p-6"
+            style={glassBackdropStyle}
+          >
             <div className="min-w-0">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-bv-muted">{stat.label}</p>
               <p className={`font-display text-xl font-bold sm:text-2xl ${stat.color}`}>{stat.value}</p>
@@ -173,6 +203,6 @@ export default function Insights() {
           </div>
         ))}
       </div>
-    </div>
+    </BvModuleCanvas>
   );
 }

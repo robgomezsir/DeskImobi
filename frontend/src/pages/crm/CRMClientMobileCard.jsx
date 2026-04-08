@@ -9,6 +9,7 @@ export function CRMClientMobileCard({
   getStatusColor,
   classifyingId,
   onClassify,
+  glassBackdropStyle,
 }) {
   return (
     <motion.article
@@ -16,7 +17,8 @@ export function CRMClientMobileCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: reduceMotion ? 1 : 0, scale: reduceMotion ? 1 : 0.98 }}
       transition={{ duration: reduceMotion ? 0 : 0.2, delay: reduceMotion ? 0 : index * 0.04 }}
-      className="glass rounded-2xl border border-[var(--line-subtle)] p-4"
+      className="glass bv-card-hover rounded-3xl p-4"
+      style={glassBackdropStyle}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">
