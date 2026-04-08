@@ -9,6 +9,12 @@
 
 :root {
   --accent-rgb: 0, 245, 160;
+  /**
+   * Fallback antes de html.dark / html.light (evita background inválido no 1º paint).
+   * Alinhado a color_system.card_fill (accent 6%).
+   */
+  --card-bg: rgba(var(--accent-rgb), 0.06);
+  --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, #000000 94%);
   /** Desfoque padrão em superfícies .glass (fora do canvas do Dashboard) */
   --bv-liquid-glass-blur: 28px;
   /** `dashboard_special.blur`: 60% backdrop blur nos cartões sobre imagem */
@@ -435,15 +441,21 @@ html.light {
  * Camada `utilities` + especificidade para vencer só o @utility `.glass`.
  */
 @layer utilities {
+  /**
+   * translateZ(0) no @utility glass cria stacking context extra — em alguns Chrome/Fx com
+   * main overflow-y-auto o backdrop deixa de amostrar o fundo do canvas; removemos só aqui.
+   */
   [data-bv-dashboard-canvas] .glass,
   [data-bv-dashboard-canvas] .glass-card {
+    transform: none;
     background:
       linear-gradient(
         160deg,
-        rgba(0, 245, 160, 0.05) 0%,
-        rgba(0, 0, 0, 0.04) 48%,
-        rgba(0, 14, 10, 0.07) 100%
+        rgba(0, 245, 160, 0.07) 0%,
+        rgba(0, 0, 0, 0.06) 48%,
+        rgba(0, 14, 10, 0.1) 100%
       ),
+      rgba(0, 0, 0, 0.34),
       var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
@@ -456,23 +468,29 @@ html.light {
   /** card_system.hover_effect: clarão radial no topo, sem glow na borda */
   [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
   [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
-    background: radial-gradient(
-      ellipse 120% 90% at 50% 0%,
-      rgba(var(--accent-rgb), 0.26) 0%,
-      var(--card-bg) 55%
-    );
+    transform: none;
+    background:
+      radial-gradient(
+        ellipse 120% 90% at 50% 0%,
+        rgba(var(--accent-rgb), 0.26) 0%,
+        transparent 58%
+      ),
+      rgba(0, 0, 0, 0.3),
+      var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
   }
 
   html.light [data-bv-dashboard-canvas] .glass,
   html.light [data-bv-dashboard-canvas] .glass-card {
+    transform: none;
     background:
       linear-gradient(
         170deg,
-        rgba(255, 255, 255, 0.2) 0%,
-        rgba(255, 255, 255, 0.06) 100%
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.1) 100%
       ),
+      rgba(255, 255, 255, 0.52),
       var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
@@ -484,11 +502,15 @@ html.light {
 
   html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
   html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
-    background: radial-gradient(
-      ellipse 120% 90% at 50% 0%,
-      rgba(var(--accent-rgb), 0.2) 0%,
-      var(--card-bg) 55%
-    );
+    transform: none;
+    background:
+      radial-gradient(
+        ellipse 120% 90% at 50% 0%,
+        rgba(var(--accent-rgb), 0.2) 0%,
+        transparent 58%
+      ),
+      rgba(255, 255, 255, 0.45),
+      var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
   }

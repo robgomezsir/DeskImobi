@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -52,6 +52,28 @@ export default function Dashboard() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const dashboardBgUrl = isLight ? DASHBOARD_BG_LIGHT : DASHBOARD_BG_DARK;
+
+  /**
+   * O bundle (LightningCSS) pode omitir `backdrop-filter` standard e deixar só `-webkit-`.
+   * Firefox precisa da propriedade sem prefixo — aplicamos no DOM (Chrome usa ambas).
+   */
+  const glassBackdropStyle = useMemo(
+    () =>
+      isLight
+        ? {
+            backdropFilter:
+              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02)',
+            WebkitBackdropFilter:
+              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02)',
+          }
+        : {
+            backdropFilter:
+              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03)',
+            WebkitBackdropFilter:
+              'blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03)',
+          },
+    [isLight]
+  );
 
   useEffect(() => {
     const fetchMetrics = async () => {
@@ -121,10 +143,11 @@ export default function Dashboard() {
         {cards.map((card, i) => (
           <motion.div
             key={card.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: i * 0.1 }}
             className="glass bv-card-hover rounded-3xl p-5 sm:rounded-3xl sm:p-6"
+            style={glassBackdropStyle}
           >
             <div className="mb-3 flex items-start gap-3">
               <card.icon size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-bv-text" />
@@ -140,10 +163,11 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
           className="glass flex min-h-[300px] flex-col rounded-3xl p-4 sm:min-h-[360px] sm:rounded-3xl sm:p-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-8"
+          style={glassBackdropStyle}
         >
           <div className="mb-4 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
@@ -195,10 +219,11 @@ export default function Dashboard() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
           className="glass flex flex-col rounded-3xl p-4 sm:rounded-3xl sm:p-6 lg:p-8"
+          style={glassBackdropStyle}
         >
           <div className="mb-6 flex items-center gap-3 sm:mb-8">
             <Lightbulb size={18} strokeWidth={2} className="shrink-0 text-bv-text" />

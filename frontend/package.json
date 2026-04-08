@@ -3,6 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "browserslist": [
+    "Chrome >= 115",
+    "Firefox >= 115",
+    "Safari >= 16",
+    "Edge >= 115"
+  ],
   "scripts": {
     "dev": "vite",
     "icons": "node scripts/generate-favicons.mjs",
