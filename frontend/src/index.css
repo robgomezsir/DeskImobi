@@ -4,15 +4,15 @@
 /*
  * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
  * Accent: #00F5A0. Liquid glass: backdrop-filter + fill 6% (brokervision-brand-context.json).
- * Dashboard: `background_effects.dashboard_special` → 60% backdrop blur → 60px em CSS.
+ * Dashboard: cartões sobre imagem → 96% backdrop blur → 96px em CSS (mapeamento percentual → px).
  */
 
 :root {
   --accent-rgb: 0, 245, 160;
   /** Desfoque padrão em superfícies .glass (fora do canvas do Dashboard) */
   --bv-liquid-glass-blur: 40px;
-  /** Especificação explícita do brand para cartões sobre imagem no Dashboard */
-  --bv-dashboard-backdrop-blur: 60px;
+  /** Desfoque dos cartões no canvas do Dashboard (96% → 96px) */
+  --bv-dashboard-backdrop-blur: 96px;
   /**
    * Opção 1 de contorno (brokervision-brand-context): cor padrão em conic-gradient,
    * opacidade 6% → 20% → 6% → 20% duas vezes ao longo do perímetro (8 trechos).
@@ -221,8 +221,8 @@ html.light {
 @media (max-width: 767.98px) {
   :root {
     --bv-liquid-glass-blur: 24px;
-    /** ~60% do blur desktop do Dashboard */
-    --bv-dashboard-backdrop-blur: 36px;
+    /** ~60% do blur desktop do Dashboard (96px → ~58px) */
+    --bv-dashboard-backdrop-blur: 58px;
   }
 
   html.dark {
@@ -349,8 +349,8 @@ html.light {
   }
 
   /**
-   * Dashboard com imagem de fundo (brand: 60% backdrop blur nos cartões).
-   * Vinheta escura extra + blur 60px para o vidro ler como fosco, não como plástico transparente.
+   * Dashboard com imagem de fundo: 96% backdrop blur nos cartões (96px).
+   * Vinheta escura extra + blur forte para o vidro ler como fosco.
    */
   [data-bv-dashboard-canvas] .glass,
   [data-bv-dashboard-canvas] .glass-card {
