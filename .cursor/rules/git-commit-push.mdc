@@ -1,0 +1,15 @@
+---
+description: Ao concluir uma implementação de código, fazer commit e push para o remoto.
+alwaysApply: true
+---
+
+# Git ao finalizar implementação
+
+Quando uma tarefa de implementação estiver **concluída** (código funcional, build ok se aplicável):
+
+1. `git status` para confirmar ficheiros.
+2. `git add` apenas o que pertence ao pedido (não incluir ficheiros não relacionados sem confirmação).
+3. `git commit` com mensagem no estilo do projeto (`feat`, `fix`, `refactor`, etc.) e corpo explicativo quando fizer sentido.
+4. `git push origin` na branch atual (normalmente `main`).
+
+Se não houver credenciais ou o push falhar, reportar o erro e o que falta (ex.: autenticação).
