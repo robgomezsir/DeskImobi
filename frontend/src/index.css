@@ -16,6 +16,8 @@ html.dark {
   --bg-radial-a: rgba(0, 232, 122, 0.05);
   --bg-radial-b: rgba(0, 232, 122, 0.03);
   --glass-bg: rgba(255, 255, 255, 0.03);
+  /** Vidro com blur ativo (herói / superfície única); não recebe o override de blur do mobile em .glass */
+  --glass-bg-blur: rgba(255, 255, 255, 0.055);
   --glass-border: rgba(255, 255, 255, 0.06);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   --surface-muted: rgba(255, 255, 255, 0.05);
@@ -39,6 +41,7 @@ html.light {
   --bg-radial-a: rgba(0, 232, 122, 0.06);
   --bg-radial-b: rgba(0, 168, 84, 0.04);
   --glass-bg: rgba(0, 0, 0, 0.04);
+  --glass-bg-blur: rgba(0, 0, 0, 0.05);
   --glass-border: rgba(0, 0, 0, 0.08);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   --surface-muted: rgba(0, 0, 0, 0.04);
@@ -94,6 +97,24 @@ html.light {
   border-radius: 1.5rem;
 }
 
+/** Vidro com blur em qualquer breakpoint — usar em poucos elementos (herói) para não empilhar custo na rolagem. */
+@utility glass-blur {
+  background: var(--glass-bg-blur);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+@utility glass-card-blur {
+  background: var(--glass-bg-blur);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 1.5rem;
+}
+
 @utility bg-bv-page {
   background-color: var(--bg-page);
 }
@@ -115,18 +136,20 @@ html.light {
 }
 
 /*
- * Mobile: blur em camadas custa muito GPU e trava a rolagem. Fundo um pouco mais opaco compensa.
- * Desktop: mantém vidro com blur.
+ * Mobile: muitos .glass com blur empilhados travam a rolagem — só .glass / .glass-card perdem o blur
+ * (fundo mais opaco via --glass-bg). Para um herói com blur real, use .glass-blur ou .glass-card-blur.
  */
 @media (max-width: 767.98px) {
   html.dark {
     --glass-bg: rgba(255, 255, 255, 0.075);
     --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg-blur: rgba(255, 255, 255, 0.08);
   }
 
   html.light {
     --glass-bg: rgba(0, 0, 0, 0.065);
     --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-bg-blur: rgba(0, 0, 0, 0.075);
   }
 
   .glass,
@@ -138,7 +161,9 @@ html.light {
 
 @media (prefers-reduced-transparency: reduce) {
   .glass,
-  .glass-card {
+  .glass-card,
+  .glass-blur,
+  .glass-card-blur {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }

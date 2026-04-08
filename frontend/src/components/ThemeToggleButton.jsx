@@ -12,7 +12,7 @@ export function ThemeToggleButton() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="inline-flex shrink-0 items-center justify-center rounded-xl p-2.5 glass text-bv-muted hover:text-bv-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50"
+      className="inline-flex shrink-0 items-center justify-center rounded-xl p-2.5 glass-blur text-bv-muted hover:text-bv-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bv-green/50"
       aria-label={isDark ? 'Ativar tema claro' : 'Ativar tema escuro'}
       title={isDark ? 'Tema claro' : 'Tema escuro'}
     >

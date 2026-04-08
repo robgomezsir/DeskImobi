@@ -78,7 +78,7 @@ export function Sidebar({
       ref={swipeCloseRef}
       id="app-sidebar-nav"
       className={cn(
-        'glass fixed left-0 top-0 z-50 flex h-[100dvh] flex-col border-r border-[var(--line)] transition-[width,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:duration-0',
+        'glass-blur fixed left-0 top-0 z-50 flex h-[100dvh] flex-col border-r border-[var(--line)] transition-[width,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:duration-0',
         isMobileLayout
           ? cn(
               'w-[min(16rem,calc(100vw-1.5rem))] max-w-[85vw] p-4 pt-[max(1rem,env(safe-area-inset-top))]',

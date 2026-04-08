@@ -85,7 +85,7 @@ export default function Dashboard() {
         subtitle={dashboard.tagline}
         actions={
           <div className="hidden shrink-0 gap-2 sm:flex">
-            <div className="glass flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-bv-muted">
+            <div className="glass-blur flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-bv-muted">
               <Activity size={16} className="text-bv-green" />
               Tempo Real: Ativo
             </div>
