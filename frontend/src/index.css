@@ -41,11 +41,11 @@
 
 @layer components {
   /* Liquid Glass System */
-  .glass {
+  @utility glass {
     @apply bg-white/[0.03] backdrop-blur-[20px] border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.40)];
   }
 
-  .glass-green {
+  @utility glass-green {
     @apply border-bv-green/20 shadow-[0_0_24px_rgba(0,232,122,0.08),inset_0_1px_0_rgba(0,232,122,0.12)];
   }
 
