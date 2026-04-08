@@ -3,13 +3,16 @@
 
 /*
  * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
- * Accent: #00F5A0. Liquid glass: fill semitransparente + backdrop-filter 80px. Contorno: anel 1px (::before).
+ * Accent: #00F5A0. Liquid glass: backdrop-filter + fill 6% (brokervision-brand-context.json).
+ * Dashboard: `background_effects.dashboard_special` → 60% backdrop blur → 60px em CSS.
  */
 
 :root {
   --accent-rgb: 0, 245, 160;
-  /** Desfoque do plano por trás dos cartões (liquid glass) — 80px global */
-  --bv-liquid-glass-blur: 80px;
+  /** Desfoque padrão em superfícies .glass (fora do canvas do Dashboard) */
+  --bv-liquid-glass-blur: 40px;
+  /** Especificação explícita do brand para cartões sobre imagem no Dashboard */
+  --bv-dashboard-backdrop-blur: 60px;
   /**
    * Opção 1 de contorno (brokervision-brand-context): cor padrão em conic-gradient,
    * opacidade 6% → 20% → 6% → 20% duas vezes ao longo do perímetro (8 trechos).
@@ -115,57 +118,57 @@ html.light {
 }
 
 /**
- * Cartão liquid glass: preenchimento accent 6% semitransparente + desfoque 60px no plano de fundo.
- * Contorno só no ::before (anel 1px).
+ * Cartão liquid glass: fill accent 6% + backdrop-filter.
+ * Sem `isolation: isolate` — quebra amostragem do backdrop com imagem por trás (Chrome/WebKit).
  */
 @utility glass {
   position: relative;
-  isolation: isolate;
   border: none;
   border-radius: 1rem;
   background: var(--card-bg);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.15);
-  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  transform: translateZ(0);
 }
 
 /** Combine com `glass` — realce em `.glass.glass-green` (components) */
 @utility glass-green {
-  isolation: isolate;
+  position: relative;
 }
 
 @utility glass-card {
   position: relative;
-  isolation: isolate;
   border: none;
   border-radius: 1rem;
   background: var(--card-bg);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.15);
-  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  transform: translateZ(0);
 }
 
 /** Painéis elevados (modais, toggles): fill um pouco mais denso + mesmo desfoque */
 @utility glass-blur {
   position: relative;
-  isolation: isolate;
   border: none;
   border-radius: 1rem;
   background: var(--glass-bg-blur);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.15);
-  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  transform: translateZ(0);
 }
 
 @utility glass-card-blur {
   position: relative;
-  isolation: isolate;
   border: none;
   border-radius: 1rem;
   background: var(--glass-bg-blur);
   box-shadow: var(--glass-inset-highlight), var(--glass-shadow);
-  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.15);
-  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.2);
+  transform: translateZ(0);
 }
 
 /** Quando o gradiente de borda não for desejável (ex.: testes A/B) */
@@ -217,8 +220,9 @@ html.light {
  */
 @media (max-width: 767.98px) {
   :root {
-    /** ~60% do blur desktop para custo em GPU */
-    --bv-liquid-glass-blur: 48px;
+    --bv-liquid-glass-blur: 24px;
+    /** ~60% do blur desktop do Dashboard */
+    --bv-dashboard-backdrop-blur: 36px;
   }
 
   html.dark {
@@ -342,6 +346,38 @@ html.light {
   /** Sem anel gradiente — borda sólida (fallback) */
   .bv-card-outline-fallback::before {
     display: none !important;
+  }
+
+  /**
+   * Dashboard com imagem de fundo (brand: 60% backdrop blur nos cartões).
+   * Vinheta escura extra + blur 60px para o vidro ler como fosco, não como plástico transparente.
+   */
+  [data-bv-dashboard-canvas] .glass,
+  [data-bv-dashboard-canvas] .glass-card {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+      var(--card-bg);
+    backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.25);
+    -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.25);
+  }
+
+  [data-bv-dashboard-canvas] .glass > *,
+  [data-bv-dashboard-canvas] .glass-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /** Hover nos KPIs: mantém vinheta + stack para o vidro não “sumir” no hover */
+  [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
+  [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
+    background:
+      radial-gradient(
+        ellipse 120% 90% at 50% 0%,
+        rgba(var(--accent-rgb), 0.22) 0%,
+        var(--card-bg) 55%
+      ),
+      linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+      var(--card-bg);
   }
 
   /** green_highlight quando `glass glass-green` — contorno mantém gradiente; só sombras extra */

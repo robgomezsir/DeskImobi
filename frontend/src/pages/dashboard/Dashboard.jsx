@@ -95,7 +95,7 @@ export default function Dashboard() {
 
   return (
     <div
-      className="relative -mx-4 overflow-hidden sm:-mx-6 lg:-mx-8"
+      className="relative -mx-4 min-w-0 sm:-mx-6 lg:-mx-8"
       data-bv-dashboard-canvas
     >
       <div
