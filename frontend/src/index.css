@@ -440,6 +440,13 @@ html.light {
     -webkit-overflow-scrolling: touch;
   }
 
+  @media (max-width: 767.98px) {
+    .bv-scroll-root {
+      touch-action: pan-y;
+      scroll-behavior: auto;
+    }
+  }
+
   /**
    * Sidebar — brilho radial no hover / rota ativa (brokervision-hover-effect.json, alinhado ao dashboard).
    */
@@ -630,5 +637,76 @@ html.light {
       inset 0 1px 0 rgba(255, 255, 255, 0.55),
       0 0 0 1px rgba(var(--accent-rgb), 0.18),
       0 12px 40px rgba(0, 0, 0, 0.06);
+  }
+
+  /**
+   * Mobile — rolagem fluida: backdrop-filter por cartão é muito caro na GPU ao scrollar.
+   * Fill denso (--glass-fill-solid) + sombras ligeiras; mantém anel ::before.
+   */
+  @media (max-width: 767.98px) {
+    html.dark .glass,
+    html.dark .glass-card,
+    html.dark .glass-blur,
+    html.dark .glass-card-blur,
+    html.light .glass,
+    html.light .glass-card,
+    html.light .glass-blur,
+    html.light .glass-card-blur {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    /**
+     * Modais / auth: sem blur, fill mais denso (evita cartão “vazio”).
+     * Cartões .glass normais mantêm var(--card-bg) do @utility — sem !important
+     * para não esmagar utilitários tipo bg-bv-green/5.
+     */
+    html.dark .glass-blur,
+    html.dark .glass-card-blur {
+      background: var(--glass-fill-solid);
+    }
+
+    html.light .glass-blur,
+    html.light .glass-card-blur {
+      background: var(--glass-fill-solid);
+    }
+
+    html.dark [data-bv-dashboard-canvas] .glass,
+    html.dark [data-bv-dashboard-canvas] .glass-card,
+    html.dark [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
+    html.dark [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
+      background:
+        linear-gradient(180deg, rgba(0, 245, 160, 0.08) 0%, transparent 48%),
+        var(--glass-fill-solid) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 0 0 1px rgba(var(--accent-rgb), 0.2),
+        0 6px 20px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    html.light [data-bv-dashboard-canvas] .glass,
+    html.light [data-bv-dashboard-canvas] .glass-card,
+    html.light [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
+    html.light [data-bv-dashboard-canvas] .glass-card.bv-card-hover:hover {
+      background:
+        linear-gradient(180deg, rgba(0, 245, 160, 0.05) 0%, transparent 46%),
+        var(--glass-fill-solid) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        0 0 0 1px rgba(var(--accent-rgb), 0.14),
+        0 6px 18px rgba(0, 0, 0, 0.05) !important;
+    }
+  }
+
+  /** Touch: sem overlay de hover (::after) — menos camadas compostas ao scrollar. */
+  @media (hover: none) {
+    [data-bv-dashboard-canvas] .glass.bv-card-hover::after,
+    [data-bv-dashboard-canvas] .glass-card.bv-card-hover::after {
+      display: none !important;
+    }
+
+    #app-sidebar-nav nav a.bv-sidebar-nav-link::after {
+      display: none !important;
+    }
   }
 }

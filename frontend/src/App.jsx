@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useMediaQuery } from './hooks/useMediaQuery';
 import { Layout } from './components/layout/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Login from './pages/auth/Login';
@@ -13,12 +14,15 @@ import Settings from './pages/settings/Settings';
 
 function PageTransition({ children }) {
   const reduceMotion = useReducedMotion();
+  const isMobileViewport = useMediaQuery('(max-width: 767.98px)');
+  /** Mobile: sem animação de entrada/saída — menos trabalho de composição na rolagem. */
+  const instant = Boolean(reduceMotion || isMobileViewport);
   return (
     <motion.div
-      initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 10 }}
+      initial={{ opacity: instant ? 1 : 0, y: instant ? 0 : 10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : -10 }}
-      transition={{ duration: reduceMotion ? 0 : 0.22, ease: 'easeOut' }}
+      exit={{ opacity: instant ? 1 : 0, y: instant ? 0 : -10 }}
+      transition={{ duration: instant ? 0 : 0.22, ease: 'easeOut' }}
       className="h-full min-h-0 min-w-0 w-full"
     >
       {children}

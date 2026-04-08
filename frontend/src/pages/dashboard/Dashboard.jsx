@@ -23,6 +23,7 @@ import {
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { PageToolbar } from '../../components/layout/PageToolbar';
 
 const dashboard = BV_MODULES.dashboard;
@@ -52,6 +53,7 @@ export default function Dashboard() {
   const { user } = useAuth();
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const isMobileViewport = useMediaQuery('(max-width: 767.98px)');
   const dashboardBgUrl = isLight ? DASHBOARD_BG_LIGHT : DASHBOARD_BG_DARK;
 
   /**
@@ -202,7 +204,7 @@ export default function Dashboard() {
             key={card.title}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: i * 0.1 }}
+            transition={{ delay: isMobileViewport ? 0 : i * 0.1 }}
             className="glass bv-card-hover rounded-3xl p-5 sm:rounded-3xl sm:p-6"
             style={glassBackdropStyle}
           >
@@ -222,7 +224,7 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: isMobileViewport ? 0 : 0.4 }}
           className="glass bv-card-hover flex min-h-[300px] flex-col rounded-3xl p-4 sm:min-h-[360px] sm:rounded-3xl sm:p-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-8"
           style={glassBackdropStyle}
         >
@@ -278,7 +280,7 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: isMobileViewport ? 0 : 0.5 }}
           className="glass bv-card-hover flex flex-col rounded-3xl p-4 sm:rounded-3xl sm:p-6 lg:p-8"
           style={glassBackdropStyle}
         >
