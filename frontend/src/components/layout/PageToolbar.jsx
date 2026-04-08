@@ -1,5 +1,6 @@
 /**
  * Faixa padrão de título + subtítulo + área de ações para o header do layout autenticado.
+ * Em mobile (abaixo de md): só o título (uma linha, truncado); kicker e subtítulo ocultos.
  * Use dentro de useRegisterAppToolbar(() => <PageToolbar ... />, deps).
  */
 export function PageToolbar({
@@ -23,13 +24,15 @@ export function PageToolbar({
 
   const inner = (
     <div className={rowClass}>
-      <div className="min-w-0 text-left">
-        {kicker ? <div className="mb-1">{kicker}</div> : null}
-        <h1 className="text-left text-xl font-display font-bold uppercase tracking-[0.06em] text-bv-text sm:text-2xl md:text-3xl">
+      <div className="min-w-0 flex-1 text-left">
+        {kicker ? <div className="mb-1 hidden md:block">{kicker}</div> : null}
+        <h1 className="max-w-full truncate text-left font-display text-base font-bold uppercase leading-tight tracking-[0.06em] text-bv-text md:text-2xl md:leading-normal lg:text-3xl">
           {title}
         </h1>
         {subtitle != null && subtitle !== '' ? (
-          <p className="text-left line-clamp-2 max-w-full text-pretty text-sm text-bv-muted sm:line-clamp-none sm:truncate">{subtitle}</p>
+          <p className="mt-0.5 hidden max-w-full text-pretty text-sm text-bv-muted md:mt-1 md:block md:truncate">
+            {subtitle}
+          </p>
         ) : null}
       </div>
       {actions != null ? actions : null}
