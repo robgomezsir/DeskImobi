@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { 
-  Sparkles, 
   TrendingUp, 
   Search, 
   ChevronRight, 
@@ -39,15 +38,8 @@ export default function Insights() {
     () => (
       <PageToolbar
         stackBreakpoint="lg"
-        rowAlign="end"
         title={insights.officialName}
         subtitle={insights.tagline}
-        kicker={
-          <div className="flex items-center gap-2">
-            <Sparkles size={18} className="text-bv-green shadow-glow" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-bv-green">IA Ativa • Sovereign Analyst</span>
-          </div>
-        }
         actions={
           <div className="relative w-full shrink-0 lg:max-w-xs">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-bv-muted" size={18} />
