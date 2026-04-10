@@ -479,12 +479,13 @@ html.light {
   }
 
   /**
-   * Calculadora de fluxo: range com trilho preenchido (escuro → mint brand) até ao thumb.
-   * `--bv-flow-fill` é definido inline (ex.: 46%). Cores: accent #00F5A0, deep #00A854, fundo --bg-page.
+   * Calculadora de fluxo: range com trilho preenchido (verde base → mint brand) até ao thumb.
+   * Início do degradê: #33A467 (menos contraste com o trilho vazio que o preto puro).
    */
   .bv-flow-slider {
     --bv-flow-fill: 0%;
     --bv-flow-track-empty: var(--bg-page);
+    --bv-flow-gradient-start: #33a467;
     background: transparent;
   }
 
@@ -508,8 +509,8 @@ html.light {
     background-image:
       linear-gradient(
         to right,
-        var(--color-bv-black) 0%,
-        color-mix(in srgb, var(--color-bv-green-deep) 28%, var(--color-bv-black) 72%) 32%,
+        var(--bv-flow-gradient-start) 0%,
+        color-mix(in srgb, var(--color-bv-green-deep) 28%, var(--bv-flow-gradient-start) 72%) 32%,
         color-mix(in srgb, var(--color-bv-green-deep) 55%, var(--color-bv-green) 45%) 72%,
         var(--color-bv-green) 100%
       ),
@@ -548,8 +549,8 @@ html.light {
     border-radius: 9999px;
     background: linear-gradient(
       to right,
-      var(--color-bv-black) 0%,
-      color-mix(in srgb, var(--color-bv-green-deep) 28%, var(--color-bv-black) 72%) 32%,
+      var(--bv-flow-gradient-start) 0%,
+      color-mix(in srgb, var(--color-bv-green-deep) 28%, var(--bv-flow-gradient-start) 72%) 32%,
       color-mix(in srgb, var(--color-bv-green-deep) 55%, var(--color-bv-green) 45%) 72%,
       var(--color-bv-green) 100%
     );
