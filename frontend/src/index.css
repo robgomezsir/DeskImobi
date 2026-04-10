@@ -491,6 +491,8 @@ html.light {
   .bv-flow-slider {
     --bv-flow-fill: 0%;
     --bv-flow-track-empty: var(--bg-page);
+    /** Espessura do trilho: ~10% abaixo do padrão anterior (8px → 7.2px) */
+    --bv-flow-track-h: 7.2px;
     background: transparent;
   }
 
@@ -509,7 +511,7 @@ html.light {
    * Camada 1: gradiente com largura = --bv-flow-fill; camada 2: trilho vazio em toda a linha.
    */
   .bv-flow-slider::-webkit-slider-runnable-track {
-    height: 8px;
+    height: var(--bv-flow-track-h);
     border-radius: 9999px;
     background-image:
       linear-gradient(
@@ -530,7 +532,7 @@ html.light {
     appearance: none;
     width: 18px;
     height: 18px;
-    margin-top: -5px;
+    margin-top: calc((18px - var(--bv-flow-track-h)) / -2);
     border-radius: 50%;
     border: none;
     background: var(--color-bv-green);
@@ -542,13 +544,13 @@ html.light {
   }
 
   .bv-flow-slider::-moz-range-track {
-    height: 8px;
+    height: var(--bv-flow-track-h);
     border-radius: 9999px;
     background: var(--bv-flow-track-empty);
   }
 
   .bv-flow-slider::-moz-range-progress {
-    height: 8px;
+    height: var(--bv-flow-track-h);
     border-radius: 9999px;
     background: linear-gradient(
       to right in oklch,
