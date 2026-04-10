@@ -11,10 +11,6 @@ export const DEFAULT_FLOW_PAYMENT = {
   parcelasChaves: 1,
 };
 
-export function sumFlowPercentages(p) {
-  return p.pctEntrada + p.pctMensais + p.pctIntercaladas + p.pctChaves;
-}
-
 /** @param {Record<string, number>} state — percentagens e contagens de parcelas por fase */
 export function computeFlowBuckets(valorTotal, state) {
   const {

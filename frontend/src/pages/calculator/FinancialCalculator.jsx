@@ -9,11 +9,7 @@ import { PageToolbar } from '../../components/layout/PageToolbar';
 import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
 import { BvModuleCanvas } from '../../components/layout/BvModuleCanvas';
 import { useGlassBackdropStyle } from '../../hooks/useGlassBackdropStyle';
-import {
-  computeFlowBuckets,
-  DEFAULT_FLOW_PAYMENT,
-  sumFlowPercentages,
-} from './flowPaymentCalculations';
+import { computeFlowBuckets, DEFAULT_FLOW_PAYMENT } from './flowPaymentCalculations';
 
 const calc = BV_MODULES.calc;
 
@@ -39,7 +35,6 @@ function FlowPhaseCard({
   onParcelasChange,
   valorParcela,
   valorTotalOk,
-  pctOk,
   glassBackdropStyle,
 }) {
   return (
@@ -57,7 +52,8 @@ function FlowPhaseCard({
         max={100}
         value={pct}
         onChange={(e) => onPctChange(Number(e.target.value))}
-        className="bv-flow-slider h-2 w-full cursor-pointer appearance-none rounded-full bg-[var(--surface-muted)] accent-bv-green"
+        style={{ '--bv-flow-fill': `${pct}%` }}
+        className="bv-flow-slider h-2 w-full cursor-pointer appearance-none rounded-full accent-bv-green"
         aria-label={`Percentagem ${title}`}
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -77,7 +73,7 @@ function FlowPhaseCard({
             Valor por parcela
           </label>
           <p className="flex min-h-[42px] items-center rounded-md border border-[var(--line-subtle)] bg-bv-surface-muted/40 px-3 text-lg font-bold tabular-nums text-bv-green">
-            {valorTotalOk && pctOk ? formatCurrency(valorParcela) : 'R$ 0,00'}
+            {valorTotalOk ? formatCurrency(valorParcela) : 'R$ 0,00'}
           </p>
         </div>
       </div>
@@ -94,14 +90,12 @@ export default function FinancialCalculator() {
   const [flow, setFlow] = useState(() => ({ ...DEFAULT_FLOW_PAYMENT }));
   const [flowConfirmed, setFlowConfirmed] = useState(false);
 
-  const pctSum = useMemo(() => sumFlowPercentages(flow), [flow]);
-  const pctOk = Math.abs(pctSum - 100) < 0.01;
   const valorTotalOk = Number(valorTotal) > 0;
 
   const buckets = useMemo(() => {
-    if (!valorTotalOk || !pctOk) return null;
+    if (!valorTotalOk) return null;
     return computeFlowBuckets(Number(valorTotal), flow);
-  }, [valorTotal, flow, valorTotalOk, pctOk]);
+  }, [valorTotal, flow, valorTotalOk]);
 
   const setPct = (key, value) => {
     setFlow((prev) => ({ ...prev, [key]: value }));
@@ -122,10 +116,6 @@ export default function FinancialCalculator() {
     }
     if (!valorTotalOk) {
       toast.error('Indique o valor total do imóvel.');
-      return;
-    }
-    if (!pctOk) {
-      toast.error(`As percentagens devem somar 100%. Atualmente: ${pctSum.toFixed(1)}%.`);
       return;
     }
     setFlowConfirmed(true);
@@ -304,15 +294,11 @@ export default function FinancialCalculator() {
             </div>
 
             <div
-              className={`glass bv-card-hover rounded-2xl px-4 py-3 text-center text-sm font-medium ${
-                pctOk ? 'text-bv-green' : 'text-amber-700 dark:text-amber-200'
-              }`}
+              className="glass bv-card-hover rounded-2xl px-4 py-3 text-center text-sm font-medium text-bv-muted"
               style={glassBackdropStyle}
-              role="status"
+              role="note"
             >
-              Soma das percentagens:{' '}
-              <span className="tabular-nums">{pctSum.toFixed(1)}%</span>
-              {!pctOk ? ` — ajuste para 100% (referência: 10% + 60% + 10% + 20%).` : null}
+              Cada fase aplica a sua percentagem sobre o valor total do imóvel, de forma independente.
             </div>
           </div>
         </div>
@@ -328,7 +314,6 @@ export default function FinancialCalculator() {
               onParcelasChange={phaseProps[key].onParcelasChange}
               valorParcela={phaseProps[key].valorParcela}
               valorTotalOk={valorTotalOk}
-              pctOk={pctOk}
               glassBackdropStyle={glassBackdropStyle}
             />
           ))}

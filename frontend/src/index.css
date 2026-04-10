@@ -478,6 +478,76 @@ html.light {
     box-shadow: 0 0 0 4px rgba(0, 245, 160, 0.12);
   }
 
+  /**
+   * Calculadora de fluxo: range com trilho preenchido até ao thumb (gradiente brand).
+   * `--bv-flow-fill` é definido inline (ex.: 60%).
+   */
+  .bv-flow-slider {
+    --bv-flow-fill: 0%;
+    background: transparent;
+  }
+
+  .bv-flow-slider:focus {
+    outline: none;
+  }
+
+  .bv-flow-slider:focus-visible {
+    outline: 2px solid rgba(0, 245, 160, 0.45);
+    outline-offset: 4px;
+    border-radius: 9999px;
+  }
+
+  .bv-flow-slider::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      var(--color-bv-green-deep) 0%,
+      var(--color-bv-green) var(--bv-flow-fill),
+      var(--surface-muted) var(--bv-flow-fill),
+      var(--surface-muted) 100%
+    );
+  }
+
+  .bv-flow-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    margin-top: -5px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-bv-green);
+    box-shadow:
+      0 0 0 1px rgba(0, 245, 160, 0.35),
+      0 0 14px rgba(0, 245, 160, 0.45);
+    cursor: pointer;
+  }
+
+  .bv-flow-slider::-moz-range-track {
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--surface-muted);
+  }
+
+  .bv-flow-slider::-moz-range-progress {
+    height: 8px;
+    border-radius: 9999px;
+    background: linear-gradient(to right, var(--color-bv-green-deep), var(--color-bv-green));
+  }
+
+  .bv-flow-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: 50%;
+    background: var(--color-bv-green);
+    box-shadow:
+      0 0 0 1px rgba(0, 245, 160, 0.35),
+      0 0 14px rgba(0, 245, 160, 0.45);
+    cursor: pointer;
+  }
+
   .card-bv {
     @apply glass rounded-xl p-6 transition-all;
   }
