@@ -491,8 +491,8 @@ html.light {
   .bv-flow-slider {
     --bv-flow-fill: 0%;
     --bv-flow-track-empty: var(--bg-page);
-    /** Espessura do trilho: ~10% abaixo do padrão anterior (8px → 7.2px) */
-    --bv-flow-track-h: 7.2px;
+    /** Espessura do trilho: 7.2px − 15% ≈ 6.12px */
+    --bv-flow-track-h: 6.12px;
     background: transparent;
   }
 
