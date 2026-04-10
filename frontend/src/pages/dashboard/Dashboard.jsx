@@ -94,7 +94,10 @@ export default function Dashboard() {
   ];
 
   return (
-    <BvModuleCanvas innerClassName="relative z-10 space-y-8 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8">
+    <BvModuleCanvas
+      showDashboardBg
+      innerClassName="relative z-10 space-y-8 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8"
+    >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {cards.map((card, i) => (
           <motion.div

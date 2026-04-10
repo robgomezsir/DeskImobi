@@ -10,10 +10,10 @@ const DEFAULT_INNER =
   'relative z-10 space-y-6 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8';
 
 /**
- * Área de módulo com o mesmo canvas do Dashboard: fundo fixo à viewport de `<main>` + `data-bv-dashboard-canvas`
- * para liquid glass, anel e hover definidos em `index.css`.
+ * Área de módulo com canvas partilhado: `data-bv-dashboard-canvas` para liquid glass em `index.css`.
+ * A imagem artística (`public/dashboard-bg*.png`) só é mostrada quando `showDashboardBg` é true (módulo Dashboard).
  */
-export function BvModuleCanvas({ children, innerClassName }) {
+export function BvModuleCanvas({ children, innerClassName, showDashboardBg = false }) {
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const dashboardBgUrl = isLight ? DASHBOARD_BG_LIGHT : DASHBOARD_BG_DARK;
@@ -21,6 +21,10 @@ export function BvModuleCanvas({ children, innerClassName }) {
   const [mainViewport, setMainViewport] = useState(null);
 
   useLayoutEffect(() => {
+    if (!showDashboardBg) {
+      setMainViewport(null);
+      return undefined;
+    }
     const el = canvasRef.current;
     if (!el) return undefined;
     const main = el.closest('main');
@@ -47,10 +51,10 @@ export function BvModuleCanvas({ children, innerClassName }) {
       window.removeEventListener('resize', sync);
       window.visualViewport?.removeEventListener('resize', sync);
     };
-  }, []);
+  }, [showDashboardBg]);
 
   const fixedBackdrop =
-    mainViewport != null ? (
+    showDashboardBg && mainViewport != null ? (
       <>
         <div
           className="pointer-events-none fixed z-0 bg-cover bg-center bg-no-repeat"
