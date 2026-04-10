@@ -10,8 +10,9 @@ const DEFAULT_INNER =
   'relative z-10 space-y-6 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8';
 
 /**
- * Área de módulo: `data-bv-module-canvas` em todos; `data-bv-dashboard-canvas` só com `showDashboardBg`
- * (liquid glass especial em `index.css` — restantes usam o molde de cartão verde floresta).
+ * Área de módulo partilhada: `data-bv-dashboard-canvas` em todos os módulos.
+ * `data-bv-dashboard-immersive` só quando `showDashboardBg` (página Dashboard) — liquid glass + fundo artístico em `index.css`.
+ * Módulos sem immersive usam o molde de cartão escuro (fora do Dashboard).
  */
 export function BvModuleCanvas({ children, innerClassName, showDashboardBg = false }) {
   const { theme } = useTheme();
@@ -92,8 +93,8 @@ export function BvModuleCanvas({ children, innerClassName, showDashboardBg = fal
       <div
         ref={canvasRef}
         className="relative -mx-4 min-w-0 sm:-mx-6 lg:-mx-8"
-        data-bv-module-canvas
-        {...(showDashboardBg ? { 'data-bv-dashboard-canvas': '' } : {})}
+        data-bv-dashboard-canvas
+        {...(showDashboardBg ? { 'data-bv-dashboard-immersive': '' } : {})}
       >
         <div className={innerClassName ?? DEFAULT_INNER}>{children}</div>
       </div>
