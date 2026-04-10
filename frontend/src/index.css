@@ -36,13 +36,10 @@
     rgba(var(--accent-rgb), 0.06) 360deg
   );
   /**
-   * Calculadora de fluxo — trilho do range: hex fixos em :root para o WebKit aplicar no
-   * ::-webkit-slider-runnable-track (não herda bem variáveis definidas só no input).
-   * Referência: ~#062016 (floresta) → #00A854 → #00F5A0 (mint brand).
+   * Calculadora de fluxo — trilho do range: âncoras em :root (WebKit resolve bem no pseudo).
+   * Degradê: interpolação em OKLCH (perceptualmente uniforme, sem “cortes” entre stops em sRGB).
    */
   --bv-flow-track-edge: #062016;
-  --bv-flow-track-shade: #0c3026;
-  --bv-flow-track-deep: #00a854;
   --bv-flow-track-mint: #00f5a0;
 }
 
@@ -516,10 +513,8 @@ html.light {
     border-radius: 9999px;
     background-image:
       linear-gradient(
-        to right,
+        to right in oklch,
         var(--bv-flow-track-edge) 0%,
-        var(--bv-flow-track-shade) 28%,
-        var(--bv-flow-track-deep) 62%,
         var(--bv-flow-track-mint) 100%
       ),
       linear-gradient(var(--bv-flow-track-empty), var(--bv-flow-track-empty));
@@ -556,10 +551,8 @@ html.light {
     height: 8px;
     border-radius: 9999px;
     background: linear-gradient(
-      to right,
+      to right in oklch,
       var(--bv-flow-track-edge) 0%,
-      var(--bv-flow-track-shade) 28%,
-      var(--bv-flow-track-deep) 62%,
       var(--bv-flow-track-mint) 100%
     );
   }
