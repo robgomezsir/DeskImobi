@@ -35,6 +35,15 @@
     rgba(var(--accent-rgb), 0.2) 315deg,
     rgba(var(--accent-rgb), 0.06) 360deg
   );
+  /**
+   * Calculadora de fluxo — trilho do range: hex fixos em :root para o WebKit aplicar no
+   * ::-webkit-slider-runnable-track (não herda bem variáveis definidas só no input).
+   * Referência: ~#062016 (floresta) → #00A854 → #00F5A0 (mint brand).
+   */
+  --bv-flow-track-edge: #062016;
+  --bv-flow-track-shade: #0c3026;
+  --bv-flow-track-deep: #00a854;
+  --bv-flow-track-mint: #00f5a0;
 }
 
 /* —— escuro (primário) —— */
@@ -480,17 +489,11 @@ html.light {
 
   /**
    * Calculadora de fluxo: range com trilho preenchido (escuro → mint brand) até ao thumb.
-   * `--bv-flow-fill` é definido inline (ex.: 46%). Início: verde floresta (nunca preto absoluto).
+   * `--bv-flow-fill` é definido inline. Cores do gradiente: ver `--bv-flow-track-*` em `:root`.
    */
   .bv-flow-slider {
     --bv-flow-fill: 0%;
     --bv-flow-track-empty: var(--bg-page);
-    /** Verde muito escuro (#00A854 + base suave); alinhado à referência “forest”, não #000 */
-    --bv-flow-gradient-start: color-mix(
-      in srgb,
-      var(--color-bv-green-deep) 52%,
-      var(--color-bv-black-soft) 48%
-    );
     background: transparent;
   }
 
@@ -514,10 +517,10 @@ html.light {
     background-image:
       linear-gradient(
         to right,
-        var(--bv-flow-gradient-start) 0%,
-        color-mix(in srgb, var(--color-bv-green-deep) 34%, var(--bv-flow-gradient-start) 66%) 32%,
-        color-mix(in srgb, var(--color-bv-green-deep) 55%, var(--color-bv-green) 45%) 72%,
-        var(--color-bv-green) 100%
+        var(--bv-flow-track-edge) 0%,
+        var(--bv-flow-track-shade) 28%,
+        var(--bv-flow-track-deep) 62%,
+        var(--bv-flow-track-mint) 100%
       ),
       linear-gradient(var(--bv-flow-track-empty), var(--bv-flow-track-empty));
     background-size: var(--bv-flow-fill) 100%, 100% 100%;
@@ -554,10 +557,10 @@ html.light {
     border-radius: 9999px;
     background: linear-gradient(
       to right,
-      var(--bv-flow-gradient-start) 0%,
-      color-mix(in srgb, var(--color-bv-green-deep) 34%, var(--bv-flow-gradient-start) 66%) 32%,
-      color-mix(in srgb, var(--color-bv-green-deep) 55%, var(--color-bv-green) 45%) 72%,
-      var(--color-bv-green) 100%
+      var(--bv-flow-track-edge) 0%,
+      var(--bv-flow-track-shade) 28%,
+      var(--bv-flow-track-deep) 62%,
+      var(--bv-flow-track-mint) 100%
     );
   }
 
