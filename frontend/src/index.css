@@ -479,11 +479,15 @@ html.light {
   }
 
   /**
-   * Calculadora de fluxo: range com trilho preenchido até ao thumb (gradiente brand).
+   * Calculadora de fluxo: range com trilho preenchido até ao thumb.
+   * Gradiente brand: verde floresta escuro → #00a854 → mistura → néon #00f5a0 junto ao thumb.
    * `--bv-flow-fill` é definido inline (ex.: 60%).
    */
   .bv-flow-slider {
     --bv-flow-fill: 0%;
+    /** Tom mais escuro que o deep (floresta), alinhado à marca */
+    --bv-flow-green-forest: color-mix(in srgb, var(--color-bv-green-deep) 50%, #050a08 50%);
+    --bv-flow-green-mid: color-mix(in srgb, var(--color-bv-green-deep) 40%, var(--color-bv-green) 60%);
     background: transparent;
   }
 
@@ -502,7 +506,9 @@ html.light {
     border-radius: 9999px;
     background: linear-gradient(
       to right,
-      var(--color-bv-green-deep) 0%,
+      var(--bv-flow-green-forest) 0%,
+      var(--color-bv-green-deep) 20%,
+      var(--bv-flow-green-mid) 52%,
       var(--color-bv-green) var(--bv-flow-fill),
       var(--surface-muted) var(--bv-flow-fill),
       var(--surface-muted) 100%
@@ -533,7 +539,13 @@ html.light {
   .bv-flow-slider::-moz-range-progress {
     height: 8px;
     border-radius: 9999px;
-    background: linear-gradient(to right, var(--color-bv-green-deep), var(--color-bv-green));
+    background: linear-gradient(
+      to right,
+      var(--bv-flow-green-forest) 0%,
+      var(--color-bv-green-deep) 22%,
+      var(--bv-flow-green-mid) 58%,
+      var(--color-bv-green) 100%
+    );
   }
 
   .bv-flow-slider::-moz-range-thumb {
