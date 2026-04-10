@@ -46,7 +46,7 @@ export default function Dashboard() {
     closedDeals: 0,
   });
   const { user } = useAuth();
-  const glassBackdropStyle = useGlassBackdropStyle();
+  const glassBackdropStyle = useGlassBackdropStyle({ dashboard: true });
 
   useEffect(() => {
     const fetchMetrics = async () => {

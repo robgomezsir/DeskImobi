@@ -74,6 +74,14 @@ html.dark {
   --input-bg: rgba(255, 255, 255, 0.03);
   --input-border: rgba(255, 255, 255, 0.06);
   --selection: rgba(0, 245, 160, 0.3);
+  /**
+   * Molde de cartão (módulos fora do Dashboard): verde floresta muito escuro, bordo fino,
+   * desfoque do fundo = 10% de `--bv-liquid-glass-blur` (ex.: 28px → 2.8px).
+   */
+  --bv-module-card-fill: color-mix(in srgb, #0d1a14 94%, #000000 6%);
+  --bv-module-card-border: rgba(0, 245, 160, 0.15);
+  --bv-module-card-blur: calc(var(--bv-liquid-glass-blur) * 0.1);
+  --bv-module-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.42);
 }
 
 /* —— claro (secundário) —— */
@@ -106,6 +114,10 @@ html.light {
   --input-bg: rgba(0, 0, 0, 0.03);
   --input-border: rgba(0, 0, 0, 0.12);
   --selection: rgba(0, 245, 160, 0.25);
+  --bv-module-card-fill: color-mix(in srgb, rgb(var(--accent-rgb)) 8%, #ffffff 92%);
+  --bv-module-card-border: rgba(var(--accent-rgb), 0.13);
+  --bv-module-card-blur: calc(var(--bv-liquid-glass-blur) * 0.1);
+  --bv-module-card-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
 }
 
 @theme {
@@ -272,8 +284,8 @@ html.light {
   html.dark .glass-card-blur {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border: 1px solid var(--card-border) !important;
-    background: rgba(17, 17, 17, 0.94) !important;
+    border: 1px solid var(--bv-module-card-border) !important;
+    background: var(--bv-module-card-fill) !important;
     box-shadow: var(--glass-shadow) !important;
   }
 
@@ -420,6 +432,12 @@ html.light {
 
   [data-bv-dashboard-canvas] .glass > *,
   [data-bv-dashboard-canvas] .glass-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  [data-bv-module-canvas] .glass > *,
+  [data-bv-module-canvas] .glass-card > * {
     position: relative;
     z-index: 1;
   }
@@ -638,6 +656,68 @@ html.light {
  */
 @layer utilities {
   /**
+   * Molde de cartão (toda a app exceto Dashboard): verde floresta, bordo fino,
+   * desfoque do fundo = 10% do liquid glass. Anel em ::before (conic) desligado aqui.
+   */
+  html.dark .glass,
+  html.dark .glass-card,
+  html.dark .glass-blur,
+  html.dark .glass-card-blur {
+    transform: none;
+    border: 1px solid var(--bv-module-card-border);
+    background: var(--bv-module-card-fill);
+    box-shadow: var(--glass-inset-highlight), var(--bv-module-card-shadow);
+    backdrop-filter: blur(var(--bv-module-card-blur)) saturate(1.06) brightness(1.01);
+    -webkit-backdrop-filter: blur(var(--bv-module-card-blur)) saturate(1.06) brightness(1.01);
+  }
+
+  html.dark .glass::before,
+  html.dark .glass-card::before,
+  html.dark .glass-blur::before,
+  html.dark .glass-card-blur::before {
+    display: none !important;
+  }
+
+  html.light .glass,
+  html.light .glass-card,
+  html.light .glass-blur,
+  html.light .glass-card-blur {
+    transform: none;
+    border: 1px solid var(--bv-module-card-border);
+    background: var(--bv-module-card-fill);
+    box-shadow: var(--glass-inset-highlight), var(--bv-module-card-shadow);
+    backdrop-filter: blur(var(--bv-module-card-blur)) saturate(1.04) brightness(1.01);
+    -webkit-backdrop-filter: blur(var(--bv-module-card-blur)) saturate(1.04) brightness(1.01);
+  }
+
+  html.light .glass::before,
+  html.light .glass-card::before,
+  html.light .glass-blur::before,
+  html.light .glass-card-blur::before {
+    display: none !important;
+  }
+
+  html.dark .glass.bv-card-hover:hover,
+  html.dark .glass-card.bv-card-hover:hover {
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      rgba(var(--accent-rgb), 0.14) 0%,
+      var(--bv-module-card-fill) 58%
+    );
+    border-color: rgba(var(--accent-rgb), 0.22);
+  }
+
+  html.light .glass.bv-card-hover:hover,
+  html.light .glass-card.bv-card-hover:hover {
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 0%,
+      rgba(var(--accent-rgb), 0.1) 0%,
+      var(--bv-module-card-fill) 58%
+    );
+    border-color: rgba(var(--accent-rgb), 0.2);
+  }
+
+  /**
    * translateZ(0) no @utility glass cria stacking context extra — em alguns Chrome/Fx com
    * main overflow-y-auto o backdrop deixa de amostrar o fundo do canvas; removemos só aqui.
    */
@@ -671,8 +751,11 @@ html.light {
    * Brilho radial no hover (brokervision-hover-effect.json): overlay em ::after.
    * O ::before fica reservado ao anel 1px (máscara); z-index maior para o anel ficar por cima.
    */
-  [data-bv-dashboard-canvas] .glass::before,
-  [data-bv-dashboard-canvas] .glass-card::before {
+  html.dark [data-bv-dashboard-canvas] .glass::before,
+  html.dark [data-bv-dashboard-canvas] .glass-card::before,
+  html.light [data-bv-dashboard-canvas] .glass::before,
+  html.light [data-bv-dashboard-canvas] .glass-card::before {
+    display: block !important;
     z-index: 2;
   }
 
@@ -789,9 +872,25 @@ html.light {
   }
 
   /**
-   * Mobile: saturate mais baixo no backdrop (menos trabalho por frame) + overlay de hover só onde há hover real.
+   * Mobile: saturate mais baixo no backdrop; molde módulo com blur 10%; Dashboard repõe blur 60px.
    */
   @media (max-width: 767.98px) {
+    html.dark .glass,
+    html.dark .glass-card,
+    html.dark .glass-blur,
+    html.dark .glass-card-blur {
+      backdrop-filter: blur(var(--bv-module-card-blur)) saturate(1.05) brightness(1.01);
+      -webkit-backdrop-filter: blur(var(--bv-module-card-blur)) saturate(1.05) brightness(1.01);
+    }
+
+    html.light .glass,
+    html.light .glass-card,
+    html.light .glass-blur,
+    html.light .glass-card-blur {
+      backdrop-filter: blur(var(--bv-module-card-blur)) saturate(1.03) brightness(1.01);
+      -webkit-backdrop-filter: blur(var(--bv-module-card-blur)) saturate(1.03) brightness(1.01);
+    }
+
     [data-bv-dashboard-canvas] .glass,
     [data-bv-dashboard-canvas] .glass-card,
     [data-bv-dashboard-canvas] .glass.bv-card-hover:hover,
@@ -813,19 +912,6 @@ html.light {
     [data-bv-dashboard-canvas] .glass.bv-card-hover::after,
     [data-bv-dashboard-canvas] .glass-card.bv-card-hover::after {
       display: none;
-    }
-  }
-
-  /**
-   * CRM / restantes: saturate mais baixo no mobile no backdrop padrão (menos custo ao rolar).
-   */
-  @media (max-width: 767.98px) {
-    .glass,
-    .glass-card,
-    .glass-blur,
-    .glass-card-blur {
-      backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.05);
-      -webkit-backdrop-filter: blur(var(--bv-liquid-glass-blur)) saturate(1.05);
     }
   }
 }
