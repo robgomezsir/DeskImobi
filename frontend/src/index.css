@@ -499,21 +499,26 @@ html.light {
   }
 
   /**
-   * Preenchido: preto → verde muito escuro (mistura brand) → mint no limite do thumb.
-   * Vazio: fundo da página (como o cartão escuro), não cinza de --surface-muted.
+   * Preenchido só até ao valor atual: gradiente (0→100% *dessa faixa*), não da largura total.
+   * Camada 1: gradiente com largura = --bv-flow-fill; camada 2: trilho vazio em toda a linha.
    */
   .bv-flow-slider::-webkit-slider-runnable-track {
     height: 8px;
     border-radius: 9999px;
-    background: linear-gradient(
-      to right,
-      var(--color-bv-black) 0%,
-      color-mix(in srgb, var(--color-bv-green-deep) 28%, var(--color-bv-black) 72%) 22%,
-      color-mix(in srgb, var(--color-bv-green-deep) 62%, var(--color-bv-green) 38%) 58%,
-      var(--color-bv-green) var(--bv-flow-fill),
-      var(--bv-flow-track-empty) var(--bv-flow-fill),
-      var(--bv-flow-track-empty) 100%
-    );
+    background-image:
+      linear-gradient(
+        to right,
+        var(--color-bv-black) 0%,
+        color-mix(in srgb, var(--color-bv-green-deep) 28%, var(--color-bv-black) 72%) 32%,
+        color-mix(in srgb, var(--color-bv-green-deep) 55%, var(--color-bv-green) 45%) 72%,
+        var(--color-bv-green) 100%
+      ),
+      linear-gradient(var(--bv-flow-track-empty), var(--bv-flow-track-empty));
+    background-size: var(--bv-flow-fill) 100%, 100% 100%;
+    background-repeat: no-repeat;
+    background-position:
+      left center,
+      left center;
   }
 
   .bv-flow-slider::-webkit-slider-thumb {
@@ -543,10 +548,10 @@ html.light {
     border-radius: 9999px;
     background: linear-gradient(
       to right,
-      var(--color-bv-black),
-      color-mix(in srgb, var(--color-bv-green-deep) 28%, var(--color-bv-black) 72%) 28%,
-      color-mix(in srgb, var(--color-bv-green-deep) 62%, var(--color-bv-green) 38%) 65%,
-      var(--color-bv-green)
+      var(--color-bv-black) 0%,
+      color-mix(in srgb, var(--color-bv-green-deep) 28%, var(--color-bv-black) 72%) 32%,
+      color-mix(in srgb, var(--color-bv-green-deep) 55%, var(--color-bv-green) 45%) 72%,
+      var(--color-bv-green) 100%
     );
   }
 
