@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import "tailwindcss";
 
 /*
@@ -301,10 +301,13 @@ html.light {
 
   html {
     scroll-behavior: auto;
+    font-family: var(--font-sans);
+    font-optical-sizing: auto;
   }
 
   body {
     @apply font-sans antialiased overflow-x-hidden;
+    font-optical-sizing: auto;
     background-color: var(--bg-page);
     color: var(--text-primary);
     background-image:
@@ -325,8 +328,52 @@ html.light {
   h5,
   h6 {
     @apply font-display font-bold tracking-tight;
+    font-optical-sizing: auto;
+    font-style: normal;
     color: var(--text-primary);
   }
+}
+
+/**
+ * Nunito (Google Fonts): família + optical sizing + peso explícito quando precisar fora do Tailwind.
+ * Ex.: className="nunito-bv nunito-bv-600"
+ */
+.nunito-bv {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.nunito-bv-200 {
+  font-weight: 200;
+}
+
+.nunito-bv-300 {
+  font-weight: 300;
+}
+
+.nunito-bv-400 {
+  font-weight: 400;
+}
+
+.nunito-bv-500 {
+  font-weight: 500;
+}
+
+.nunito-bv-600 {
+  font-weight: 600;
+}
+
+.nunito-bv-700 {
+  font-weight: 700;
+}
+
+.nunito-bv-800 {
+  font-weight: 800;
+}
+
+.nunito-bv-900 {
+  font-weight: 900;
 }
 
 @layer components {
