@@ -2,8 +2,8 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 
-/** Fundo artístico do Dashboard — `public/dashboard-bg.png` (fonte: `logo/bg 01.png`). */
-const DASHBOARD_BG = '/dashboard-bg.png?v=2';
+/** Fundo artístico do Dashboard — `public/dashboard-bg.png` (fonte: `logo/22.png`). */
+const DASHBOARD_BG = '/dashboard-bg.png?v=3';
 
 const DEFAULT_INNER =
   'relative z-10 space-y-6 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8';
