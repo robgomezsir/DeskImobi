@@ -269,7 +269,7 @@ export default function MessageGenerator() {
         {/* Results Column */}
         <div className="lg:col-span-2 space-y-6">
           {!result ? (
-            <div className="glass-card h-[600px] flex flex-col items-center justify-center text-center p-card-8 border-dashed border-2 border-[var(--line-subtle)]">
+            <div className="glass-card h-[600px] flex flex-col items-center justify-center text-center p-card-8 border-[1px] border-dashed border-[var(--line-subtle)]">
               <div className="w-16 h-16 rounded-card-2xl bg-bv-surface-muted flex items-center justify-center text-bv-muted mb-4">
                 <Send size={32} />
               </div>
@@ -279,7 +279,7 @@ export default function MessageGenerator() {
           ) : (
             <div className="space-y-6 animate-in fade-in zoom-in duration-500">
               {/* WhatsApp Card */}
-              <div className="glass-card p-card-6 border-l-4 border-bv-green">
+              <div className="glass-card p-card-6 border-l-2 border-bv-green">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center gap-2 text-bv-green font-bold">
                     <MessageCircle size={20} />
@@ -293,7 +293,7 @@ export default function MessageGenerator() {
               </div>
 
               {/* Call Script Card */}
-              <div className="glass-card p-card-6 border-l-4 border-[var(--line)]">
+              <div className="glass-card p-card-6 border-l-2 border-[var(--line)]">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center gap-2 text-bv-muted font-bold">
                     <PhoneCall size={20} />
@@ -307,7 +307,7 @@ export default function MessageGenerator() {
               </div>
 
               {/* Objection Killer Card */}
-              <div className="glass-card p-card-6 border-l-4 border-bv-green">
+              <div className="glass-card p-card-6 border-l-2 border-bv-green">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center gap-2 text-bv-green font-bold">
                     <AlertCircle size={20} />

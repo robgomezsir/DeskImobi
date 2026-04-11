@@ -49,6 +49,10 @@
    */
   --bv-flow-track-edge: #4a4034;
   --bv-flow-track-mint: #d1b993;
+  /**
+   * Contorno dos cartões: metade da espessura típica de 1px (anel gradiente, moldura, `border` em cartões).
+   */
+  --bv-card-border-width: 0.5px;
 }
 
 /* —— escuro (primário) —— */
@@ -99,8 +103,8 @@ html.dark {
   --bv-card-mold-blur: 5px;
   --bv-card-mold-radius: 0.75rem;
   --bv-card-mold-shadow:
-    inset 0 1px 0 0 rgba(var(--accent-rgb), 0.2),
-    inset 1px 0 0 0 rgba(var(--accent-rgb), 0.08),
+    inset 0 var(--bv-card-border-width) 0 0 rgba(var(--accent-rgb), 0.2),
+    inset var(--bv-card-border-width) 0 0 0 rgba(var(--accent-rgb), 0.08),
     0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
@@ -150,7 +154,7 @@ html.light {
   --bv-card-mold-blur: 5px;
   --bv-card-mold-radius: 0.75rem;
   --bv-card-mold-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 var(--bv-card-border-width) 0 0 rgba(255, 255, 255, 0.5),
     0 8px 28px rgba(0, 0, 0, 0.08);
 }
 
@@ -246,7 +250,7 @@ html.light {
 
 /** Quando o gradiente de borda não for desejável (ex.: testes A/B) */
 @utility bv-card-outline-fallback {
-  border: 1px solid var(--card-border);
+  border: var(--bv-card-border-width) solid var(--card-border);
   background: var(--card-fill-solid);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -333,7 +337,7 @@ html.light {
   html.dark .glass-card-blur {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border: 1px solid var(--card-border) !important;
+    border: var(--bv-card-border-width) solid var(--card-border) !important;
     background: #141414 !important;
     box-shadow: var(--glass-shadow) !important;
   }
@@ -344,7 +348,7 @@ html.light {
   html.light .glass-card-blur {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border: 1px solid var(--card-border) !important;
+    border: var(--bv-card-border-width) solid var(--card-border) !important;
     background: rgba(255, 255, 255, 0.94) !important;
     box-shadow: var(--glass-shadow) !important;
   }
@@ -445,7 +449,7 @@ html.light {
 
 @layer components {
   /**
-   * Contorno opção 1: apenas anel de 1px (gradiente não afeta o interior).
+   * Contorno opção 1: anel fino (gradiente não afeta o interior).
    * mask composite exclui o content-box — vê-se só a “moldura”.
    */
   .glass::before,
@@ -457,7 +461,7 @@ html.light {
     inset: 0;
     z-index: 0;
     border-radius: inherit;
-    padding: 1px;
+    padding: var(--bv-card-border-width);
     background: var(--bv-card-outline-gradient);
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
@@ -490,8 +494,21 @@ html.light {
     box-shadow:
       var(--glass-inset-highlight),
       0 0 24px rgba(var(--accent-rgb), 0.08),
-      inset 0 1px 0 rgba(var(--accent-rgb), 0.12),
+      inset 0 var(--bv-card-border-width) 0 rgba(var(--accent-rgb), 0.12),
       var(--glass-shadow);
+  }
+
+  /**
+   * Bordas explícitas (`border`) em superfícies de cartão: metade do 1px padrão do Tailwind.
+   */
+  :is(
+      .rounded-card-2xl,
+      .rounded-card-3xl,
+      .rounded-t-card-3xl,
+      .sm\:rounded-card-3xl
+    ).border,
+  :is(.glass, .glass-card, .glass-blur, .glass-card-blur).border {
+    border-width: var(--bv-card-border-width);
   }
 
   /** Hover cartão: brilho radial no interior (brand card_system.hover_effect — não “acender” só a borda) */
@@ -704,7 +721,7 @@ html.light {
   [data-bv-dashboard-canvas]:not([data-bv-dashboard-immersive]) .glass,
   [data-bv-dashboard-canvas]:not([data-bv-dashboard-immersive]) .glass-card {
     transform: none;
-    border: 1px solid var(--bv-card-mold-border);
+    border: var(--bv-card-border-width) solid var(--bv-card-mold-border);
     border-radius: var(--bv-card-mold-radius);
     background: var(--bv-card-mold-bg);
     backdrop-filter: blur(var(--bv-card-mold-blur)) saturate(1.08);
@@ -784,14 +801,14 @@ html.light {
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 0 0 1px rgba(var(--accent-rgb), 0.22),
+      inset 0 var(--bv-card-border-width) 0 rgba(255, 255, 255, 0.08),
+      0 0 0 var(--bv-card-border-width) rgba(var(--accent-rgb), 0.22),
       0 12px 48px rgba(0, 0, 0, 0.28);
   }
 
   /**
    * Brilho radial no hover (brokervision-hover-effect.json): overlay em ::after.
-   * O ::before fica reservado ao anel 1px (máscara); z-index maior para o anel ficar por cima.
+   * O ::before fica reservado ao anel (máscara); z-index maior para o anel ficar por cima.
    */
   [data-bv-dashboard-canvas][data-bv-dashboard-immersive] .glass::before,
   [data-bv-dashboard-canvas][data-bv-dashboard-immersive] .glass-card::before {
@@ -845,8 +862,8 @@ html.light {
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 0 0 1px rgba(var(--accent-rgb), 0.22),
+      inset 0 var(--bv-card-border-width) 0 rgba(255, 255, 255, 0.08),
+      0 0 0 var(--bv-card-border-width) rgba(var(--accent-rgb), 0.22),
       0 12px 48px rgba(0, 0, 0, 0.28);
   }
 
@@ -870,8 +887,8 @@ html.light {
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 0 0 1px rgba(var(--accent-rgb), 0.18),
+      inset 0 var(--bv-card-border-width) 0 rgba(255, 255, 255, 0.55),
+      0 0 0 var(--bv-card-border-width) rgba(var(--accent-rgb), 0.18),
       0 12px 40px rgba(0, 0, 0, 0.06);
   }
 
@@ -905,8 +922,8 @@ html.light {
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.08) brightness(1.02);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 0 0 1px rgba(var(--accent-rgb), 0.18),
+      inset 0 var(--bv-card-border-width) 0 rgba(255, 255, 255, 0.55),
+      0 0 0 var(--bv-card-border-width) rgba(var(--accent-rgb), 0.18),
       0 12px 40px rgba(0, 0, 0, 0.06);
   }
 

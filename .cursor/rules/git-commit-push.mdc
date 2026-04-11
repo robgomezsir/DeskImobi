@@ -1,11 +1,13 @@
 ---
-description: Sempre que possível, ao concluir implementações, fazer commit completo e push automaticamente (sem esperar pedido explícito).
+description: OBRIGATÓRIO ao concluir implementações — commit + push automáticos (sem esperar pedido explícito).
 alwaysApply: true
 ---
 
 # Commit + push completo e automático ao finalizar implementação
 
-**O utilizador espera que isto aconteça automaticamente** — não é preciso pedir «faz commit»; ao terminar o trabalho, executar o fluxo abaixo **de imediato**.
+**Regra do utilizador:** **sempre** executar **commit e push** ao terminar implementações — **automaticamente**, sem perguntar se deve commitar.
+
+**O utilizador espera que isto aconteça por defeito** — não é preciso pedir «faz commit»; ao terminar o trabalho, executar o fluxo abaixo **de imediato**.
 
 Quando uma tarefa de implementação estiver **concluída** (código funcional, build ok se aplicável):
 
