@@ -104,7 +104,7 @@ export function Sidebar({
         >
           {effectiveCollapsed ? (
             <img
-              src={BRAND_ICON_URLS.symbolGreen32}
+              src={BRAND_ICON_URLS.symbolSvg}
               alt=""
               className="h-8 w-8 shrink-0"
               width={32}
