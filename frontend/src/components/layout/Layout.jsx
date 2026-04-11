@@ -1,11 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { SetAppToolbarContext } from '../../contexts/AppToolbarContext';
 import { SetAppFabContext } from '../../contexts/AppFabContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { ThemeToggleButton } from '../ThemeToggleButton';
 import { Sidebar } from './Sidebar';
+
+function displayNameFromUser(user) {
+  if (!user) return '';
+  const meta = user.user_metadata || {};
+  const raw = String(meta.name || meta.full_name || '').trim();
+  if (raw) return raw;
+  const email = user.email || '';
+  const local = email.split('@')[0];
+  return local || '—';
+}
 
 const STORAGE_KEY = 'bv-sidebar-collapsed';
 
@@ -18,8 +29,10 @@ function readStoredCollapsed() {
 }
 
 export function Layout() {
+  const { user } = useAuth();
   const isMdUp = useMediaQuery('(min-width: 768px)');
   const location = useLocation();
+  const dashboardGreeting = useMemo(() => displayNameFromUser(user), [user]);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(readStoredCollapsed);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [toolbarLeading, setToolbarLeading] = useState(null);
@@ -91,7 +104,16 @@ export function Layout() {
               </button>
             ) : null}
             <div className="flex min-h-11 min-w-0 flex-1 items-center gap-2 sm:gap-3">{toolbarLeading}</div>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
+              {location.pathname === '/dashboard' && dashboardGreeting ? (
+                <p
+                  className="max-w-[min(46vw,8.75rem)] truncate text-right text-[10px] leading-tight text-bv-muted sm:max-w-[14rem] sm:text-sm sm:leading-normal"
+                  title={`Bem-vindo, ${dashboardGreeting}`}
+                >
+                  Bem-vindo,{' '}
+                  <span className="font-semibold text-bv-text">{dashboardGreeting}</span>!
+                </p>
+              ) : null}
               <ThemeToggleButton />
             </div>
           </header>
