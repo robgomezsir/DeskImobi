@@ -4,7 +4,7 @@
   "description": "A visão que faltava.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
+  "background_color": "#141414",
   "theme_color": "#af9f82",
   "icons": [
     {

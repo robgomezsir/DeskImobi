@@ -10,9 +10,9 @@ export default {
         bv: {
           green: 'var(--bv-accent)',
           'green-deep': 'var(--bv-accent-deep)',
-          black: '#000000',
-          'black-soft': '#0A0A0A',
-          card: '#111111',
+          black: '#141414',
+          'black-soft': '#1A1A1A',
+          card: '#161616',
           white: '#FFFFFF',
           'white-soft': '#E8E8E8',
           'white-ghost': '#9A9A9A',

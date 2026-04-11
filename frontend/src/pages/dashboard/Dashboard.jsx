@@ -151,7 +151,7 @@ export default function Dashboard() {
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9A9A9A', fontSize: 12 }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9A9A9A', fontSize: 12 }} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}
+                  contentStyle={{ backgroundColor: '#141414', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}
                   itemStyle={{ color: '#fff' }}
                 />
                 <Area

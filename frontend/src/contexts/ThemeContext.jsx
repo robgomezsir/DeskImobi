@@ -42,7 +42,7 @@ export function ThemeProvider({ children }) {
     }
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) {
-      meta.setAttribute('content', theme === 'dark' ? '#000000' : '#ffffff');
+      meta.setAttribute('content', theme === 'dark' ? '#141414' : '#ffffff');
     }
   }, [theme]);
 

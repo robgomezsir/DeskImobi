@@ -61,7 +61,7 @@ export function Layout() {
       {!isMdUp && mobileDrawerOpen ? (
         <button
           type="button"
-          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-none md:hidden"
+          className="fixed inset-0 z-40 bg-[#141414]/70 backdrop-blur-none md:hidden"
           aria-label="Fechar menu"
           onClick={closeMobileDrawer}
         />

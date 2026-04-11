@@ -4,6 +4,7 @@
 /*
  * Tokens BrokerVision — accent ouro:
  *   escuro (html.dark): #af9f82 · claro (html.light): #d1b993
+ * Fundo escuro (app): #141414
  * Liquid glass: backdrop-filter + fill 6%.
  */
 
@@ -11,12 +12,14 @@
   --accent-rgb: 175, 159, 130;
   --bv-accent: #af9f82;
   --bv-accent-deep: #8a7a62;
+  /** Base neutra do modo escuro (body, mixes) */
+  --bv-bg-dark: #141414;
   /**
    * Fallback antes de html.dark / html.light (evita background inválido no 1º paint).
    * Alinhado a color_system.card_fill (accent 6%).
    */
   --card-bg: rgba(var(--accent-rgb), 0.06);
-  --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, #000000 94%);
+  --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, var(--bv-bg-dark) 94%);
   /** Desfoque padrão em superfícies .glass (fora do canvas do Dashboard) */
   --bv-liquid-glass-blur: 28px;
   /** `dashboard_special.blur`: 60% backdrop blur nos cartões sobre imagem */
@@ -48,6 +51,7 @@
 /* —— escuro (primário) —— */
 html.dark {
   color-scheme: dark;
+  --bv-bg-dark: #141414;
   --accent-rgb: 175, 159, 130;
   --bv-accent: #af9f82;
   --bv-accent-deep: #8a7a62;
@@ -57,16 +61,16 @@ html.dark {
   --text-soft: #e8e8e8;
   --text-muted: #9a9a9a;
   --text-secondary: rgba(255, 255, 255, 0.6);
-  --bg-page: #000000;
+  --bg-page: #141414;
   --bg-radial-a: rgba(var(--accent-rgb), 0.06);
   --bg-radial-b: rgba(var(--accent-rgb), 0.04);
   --card-bg: rgba(var(--accent-rgb), 0.06);
-  --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, #000000 94%);
+  --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, var(--bv-bg-dark) 94%);
   --card-border: rgba(var(--accent-rgb), 0.1);
   /** Superfícies tipo painel / sidebar (sem blur; brand: blur só no dashboard) */
   --glass-bg: var(--card-bg);
   --glass-bg-blur: rgba(var(--accent-rgb), 0.09);
-  --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 9%, #000000 91%);
+  --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 9%, var(--bv-bg-dark) 91%);
   --glass-border: var(--card-border);
   --glass-border-strong: rgba(var(--accent-rgb), 0.14);
   --glass-border-green: rgba(var(--accent-rgb), 0.12);
@@ -85,7 +89,7 @@ html.dark {
    * Molde de cartão (módulos fora do Dashboard): preto com nuance do accent ouro + borda + blur leve.
    * Desfouque 5% → `blur(5px)` sobre o fundo (backdrop).
    */
-  --bv-card-mold-bg: color-mix(in srgb, #000000 90%, rgb(var(--accent-rgb)) 10%);
+  --bv-card-mold-bg: color-mix(in srgb, var(--bv-bg-dark) 90%, rgb(var(--accent-rgb)) 10%);
   --bv-card-mold-border: color-mix(in srgb, #141210 92%, rgb(var(--accent-rgb)) 8%);
   --bv-card-mold-blur: 5px;
   --bv-card-mold-radius: 2.5rem;
@@ -142,9 +146,9 @@ html.light {
 @theme {
   --color-bv-green: var(--bv-accent);
   --color-bv-green-deep: var(--bv-accent-deep);
-  --color-bv-black: #000000;
-  --color-bv-black-soft: #0a0a0a;
-  --color-bv-card: #111111;
+  --color-bv-black: #141414;
+  --color-bv-black-soft: #1a1a1a;
+  --color-bv-card: #161616;
   --color-bv-white: #ffffff;
   --color-bv-white-soft: #e8e8e8;
   --color-bv-white-ghost: #9a9a9a;
@@ -269,9 +273,9 @@ html.light {
 
   html.dark {
     --card-bg: rgba(var(--accent-rgb), 0.09);
-    --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 9%, #000000 91%);
+    --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 9%, var(--bv-bg-dark) 91%);
     --glass-bg-blur: rgba(var(--accent-rgb), 0.12);
-    --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 12%, #000000 88%);
+    --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 12%, var(--bv-bg-dark) 88%);
   }
 
   html.light {
@@ -304,7 +308,7 @@ html.light {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     border: 1px solid var(--card-border) !important;
-    background: rgba(17, 17, 17, 0.94) !important;
+    background: #141414 !important;
     box-shadow: var(--glass-shadow) !important;
   }
 
@@ -749,7 +753,7 @@ html.light {
         rgba(0, 0, 0, 0.055) 46%,
         rgba(var(--accent-rgb), 0.07) 100%
       ),
-      rgba(0, 0, 0, 0.34),
+      rgba(20, 20, 20, 0.4),
       var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
@@ -810,7 +814,7 @@ html.light {
         rgba(0, 0, 0, 0.055) 46%,
         rgba(var(--accent-rgb), 0.07) 100%
       ),
-      rgba(0, 0, 0, 0.34),
+      rgba(20, 20, 20, 0.4),
       var(--card-bg);
     backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);
     -webkit-backdrop-filter: blur(var(--bv-dashboard-backdrop-blur)) saturate(1.14) brightness(1.03);

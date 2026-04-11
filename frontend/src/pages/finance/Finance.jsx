@@ -135,7 +135,7 @@ export default function Finance() {
                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#9A9A9A', fontSize: 12}} />
                 <Tooltip 
                   cursor={{fill: 'rgba(255,255,255,0.03)'}}
-                  contentStyle={{backgroundColor: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)'}}
+                  contentStyle={{ backgroundColor: '#141414', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}
                   itemStyle={{color: '#fff'}}
                 />
                 <Bar isAnimationActive={false} dataKey="comissao" radius={[6, 6, 0, 0]}>

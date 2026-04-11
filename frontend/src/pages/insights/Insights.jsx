@@ -98,7 +98,7 @@ export default function Insights() {
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9A9A9A', fontSize: 12 }} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#000',
+                    backgroundColor: '#141414',
                     borderRadius: '12px',
                     border: '1px solid rgba(255,255,255,0.06)',
                   }}
