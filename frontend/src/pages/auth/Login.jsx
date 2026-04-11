@@ -5,7 +5,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { ThemeToggleButton } from '../../components/ThemeToggleButton';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
-import logoWhite from '../../assets/logo-white.png';
+import logoHorizontalBranca from '../../assets/logo-horizontal-branca.svg';
 import logoHorizontalDark from '../../assets/logo-horizontal-dark.png';
 
 export default function Login() {
@@ -46,7 +46,7 @@ export default function Login() {
         <div className="w-full max-w-md space-y-6 rounded-2xl glass-blur p-6 sm:space-y-8 sm:rounded-3xl sm:p-10 animate-in fade-in zoom-in duration-500">
         <div className="text-center space-y-4">
           <img
-            src={isDark ? logoWhite : logoHorizontalDark}
+            src={isDark ? logoHorizontalBranca : logoHorizontalDark}
             alt="BrokerVision"
             className="h-12 w-auto mx-auto mb-6"
           />

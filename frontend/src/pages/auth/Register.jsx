@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Loader2, Mail, Lock, User } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { ThemeToggleButton } from '../../components/ThemeToggleButton';
+import logoHorizontalBranca from '../../assets/logo-horizontal-branca.svg';
 import logoHorizontalDark from '../../assets/logo-horizontal-dark.png';
 
 export default function Register() {
@@ -57,7 +58,7 @@ export default function Register() {
         <div className="text-center space-y-3">
           <div className="mx-auto w-20 h-20 bg-bv-surface-muted rounded-2xl flex items-center justify-center mb-6 border border-[var(--line)] p-4">
             <img
-              src={isDark ? '/logo-horizontal-branca.png' : logoHorizontalDark}
+              src={isDark ? logoHorizontalBranca : logoHorizontalDark}
               alt="BrokerVision"
               className="w-full h-auto object-contain"
             />

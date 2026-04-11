@@ -14,7 +14,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import logoWhite from '../../assets/logo-white.png';
+import logoHorizontalBranca from '../../assets/logo-horizontal-branca.svg';
 import logoHorizontalDark from '../../assets/logo-horizontal-dark.png';
 import { BV_MODULE_KEYS, BV_MODULES } from '../../constants/brandModules';
 import { BRAND_ICON_URLS } from '../../constants/brandIconUrls';
@@ -112,7 +112,7 @@ export function Sidebar({
               aria-hidden
             />
           ) : isDark ? (
-            <img src={logoWhite} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
+            <img src={logoHorizontalBranca} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
           ) : (
             <img src={logoHorizontalDark} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
           )}
