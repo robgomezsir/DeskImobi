@@ -110,8 +110,12 @@ html.light {
   --accent-rgb: 209, 185, 147;
   --bv-accent: #d1b993;
   --bv-accent-deep: #b5a485;
-  --bv-flow-track-edge: #7d6d57;
-  --bv-flow-track-mint: #efe6dc;
+  /**
+   * Calculadora de fluxo (trilho preenchido): início à esquerda → #ffffff, transição suave até #af9f82 na ponta do preenchimento.
+   * Ver `.bv-flow-slider` (linear-gradient to right: --bv-flow-track-edge → --bv-flow-track-mint).
+   */
+  --bv-flow-track-edge: #ffffff;
+  --bv-flow-track-mint: #af9f82;
   --text-primary: #1e1e1e;
   --text-soft: #0a0a0a;
   /** Descrições, legendas, texto auxiliar (ex.: blocos explicativos na calculadora) */
