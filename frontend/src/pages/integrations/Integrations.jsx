@@ -21,7 +21,7 @@ export default function Integrations() {
           Em breve você poderá conectar portais, CRMs e ferramentas em um só lugar.
         </p>
         <div
-          className="glass bv-card-hover rounded-3xl p-6 sm:p-8"
+          className="glass bv-card-hover rounded-card-3xl p-card-6 sm:p-card-8"
           style={glassBackdropStyle}
         >
           <p className="text-sm text-bv-text-soft">

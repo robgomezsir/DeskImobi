@@ -65,7 +65,7 @@ export default function Insights() {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="glass bv-card-hover rounded-3xl p-4 sm:p-6 lg:col-span-2 lg:p-8"
+          className="glass bv-card-hover rounded-card-3xl p-card-4 sm:p-card-6 lg:col-span-2 lg:p-card-8"
           style={glassBackdropStyle}
         >
           <div className="mb-4 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
@@ -122,7 +122,7 @@ export default function Insights() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass bv-card-hover flex flex-col rounded-3xl p-4 sm:p-6 lg:p-8"
+          className="glass bv-card-hover flex flex-col rounded-card-3xl p-card-4 sm:p-card-6 lg:p-card-8"
           style={glassBackdropStyle}
         >
           <div className="mb-6 flex items-center gap-3 sm:mb-8">
@@ -133,7 +133,7 @@ export default function Insights() {
           </div>
 
           <div className="flex flex-1 flex-col space-y-4">
-            <div className="group rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-5 transition-all hover:border-bv-green/30">
+            <div className="group rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-5 transition-all hover:border-bv-green/30">
               <div className="mb-2 flex items-start justify-between">
                 <span className="rounded-full bg-bv-green/10 px-2 py-0.5 text-[10px] font-bold text-bv-green">
                   Alta demanda
@@ -152,7 +152,7 @@ export default function Insights() {
               </button>
             </div>
 
-            <div className="group rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-5 transition-all hover:border-bv-green/30">
+            <div className="group rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-5 transition-all hover:border-bv-green/30">
               <div className="mb-2 flex items-start justify-between">
                 <span className="rounded-full bg-bv-surface-strong px-2 py-0.5 text-[10px] font-bold text-bv-text">
                   Preço crítico
@@ -172,7 +172,7 @@ export default function Insights() {
             </div>
           </div>
 
-          <div className="mt-8 rounded-2xl border border-bv-green/10 bg-bv-green/5 p-4">
+          <div className="mt-8 rounded-card-2xl border border-bv-green/10 bg-bv-green/5 p-card-4">
             <div className="mb-2 flex items-center gap-2">
               <Zap size={16} className="text-bv-green" />
               <span className="text-xs font-bold text-bv-text">Próximo Insight em:</span>
@@ -190,7 +190,7 @@ export default function Insights() {
         ].map((stat, i) => (
           <div
             key={i}
-            className="glass bv-card-hover group flex cursor-default items-center justify-between rounded-3xl p-4 sm:p-6"
+            className="glass bv-card-hover group flex cursor-default items-center justify-between rounded-card-3xl p-card-4 sm:p-card-6"
             style={glassBackdropStyle}
           >
             <div className="min-w-0">

@@ -124,7 +124,7 @@ export default function MessageGenerator() {
     if (loadingClient) {
       return (
         <div
-          className="mb-6 flex items-center gap-3 rounded-2xl border border-[var(--line)] px-4 py-3 text-sm text-bv-muted"
+          className="mb-6 flex items-center gap-3 rounded-card-2xl border border-[var(--line)] px-4 py-3 text-sm text-bv-muted"
           style={glassBackdropStyle}
         >
           <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
@@ -135,7 +135,7 @@ export default function MessageGenerator() {
     if (!linkedClient) {
       return (
         <div
-          className="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-bv-text"
+          className="mb-6 rounded-card-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-bv-text"
           style={glassBackdropStyle}
         >
           Lead não encontrado ou sem permissão. Ajuste os parâmetros manualmente.
@@ -144,7 +144,7 @@ export default function MessageGenerator() {
     }
     return (
       <div
-        className="mb-6 flex flex-col gap-2 rounded-2xl border border-bv-green/30 bg-bv-green/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+        className="mb-6 flex flex-col gap-2 rounded-card-2xl border border-bv-green/30 bg-bv-green/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
         style={glassBackdropStyle}
       >
         <div className="flex min-w-0 items-center gap-2 text-sm text-bv-text">
@@ -197,7 +197,7 @@ export default function MessageGenerator() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Form Column */}
         <div className="lg:col-span-1">
-          <div className="bv-scroll-root space-y-6 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto xl:top-24">
+          <div className="bv-scroll-root space-y-6 rounded-card-2xl border border-[var(--line)] glass p-card-4 sm:rounded-card-3xl sm:p-card-6 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto xl:top-24">
             <form onSubmit={handleGenerate} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-bv-muted">Etapa do Funil</label>
@@ -269,8 +269,8 @@ export default function MessageGenerator() {
         {/* Results Column */}
         <div className="lg:col-span-2 space-y-6">
           {!result ? (
-            <div className="glass-card h-[600px] flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-[var(--line-subtle)]">
-              <div className="w-16 h-16 rounded-2xl bg-bv-surface-muted flex items-center justify-center text-bv-muted mb-4">
+            <div className="glass-card h-[600px] flex flex-col items-center justify-center text-center p-card-8 border-dashed border-2 border-[var(--line-subtle)]">
+              <div className="w-16 h-16 rounded-card-2xl bg-bv-surface-muted flex items-center justify-center text-bv-muted mb-4">
                 <Send size={32} />
               </div>
               <h3 className="text-xl font-medium mb-2 text-bv-text">Pronto para a Corrente de Vendas</h3>
@@ -279,7 +279,7 @@ export default function MessageGenerator() {
           ) : (
             <div className="space-y-6 animate-in fade-in zoom-in duration-500">
               {/* WhatsApp Card */}
-              <div className="glass-card p-6 border-l-4 border-bv-green">
+              <div className="glass-card p-card-6 border-l-4 border-bv-green">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center gap-2 text-bv-green font-bold">
                     <MessageCircle size={20} />
@@ -293,7 +293,7 @@ export default function MessageGenerator() {
               </div>
 
               {/* Call Script Card */}
-              <div className="glass-card p-6 border-l-4 border-[var(--line)]">
+              <div className="glass-card p-card-6 border-l-4 border-[var(--line)]">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center gap-2 text-bv-muted font-bold">
                     <PhoneCall size={20} />
@@ -307,7 +307,7 @@ export default function MessageGenerator() {
               </div>
 
               {/* Objection Killer Card */}
-              <div className="glass-card p-6 border-l-4 border-bv-green">
+              <div className="glass-card p-card-6 border-l-4 border-bv-green">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center gap-2 text-bv-green font-bold">
                     <AlertCircle size={20} />

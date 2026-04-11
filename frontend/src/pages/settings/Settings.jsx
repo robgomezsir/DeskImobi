@@ -16,7 +16,7 @@ export default function Settings() {
   return (
     <BvModuleCanvas>
       <div
-        className="glass bv-card-hover rounded-3xl p-8 text-center text-bv-muted sm:p-10"
+        className="glass bv-card-hover rounded-card-3xl p-card-8 text-center text-bv-muted sm:p-card-10"
         style={glassBackdropStyle}
       >
         <p className="text-sm text-bv-text sm:text-base">Área em construção.</p>

@@ -69,7 +69,7 @@ export default function EditClientModal({ client, isOpen, onClose, onSuccess }) 
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-[#141414]/85 p-0 backdrop-blur-none animate-in fade-in duration-300 sm:items-center sm:bg-[#141414]/80 sm:p-4 sm:backdrop-blur-md">
-      <div className="glass-blur max-h-[min(90dvh,100%)] w-full max-w-lg overflow-y-auto rounded-t-3xl border border-[var(--line)] shadow-2xl animate-in zoom-in duration-300 sm:rounded-3xl">
+      <div className="glass-blur max-h-[min(90dvh,100%)] w-full max-w-lg overflow-y-auto rounded-t-card-3xl border border-[var(--line)] shadow-2xl animate-in zoom-in duration-300 sm:rounded-card-3xl">
         <div className="flex justify-between items-center px-6 py-5 border-b border-[var(--line-subtle)] bg-bv-surface-muted">
           <h3 className="text-xl font-display font-bold tracking-tight text-bv-text">Editar cliente</h3>
           <button

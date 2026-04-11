@@ -38,7 +38,7 @@ export function CRMClientMobileCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: reduceMotion ? 1 : 0, scale: reduceMotion ? 1 : 0.98 }}
       transition={{ duration: reduceMotion ? 0 : 0.2, delay: reduceMotion ? 0 : index * 0.04 }}
-      className="glass bv-card-hover rounded-3xl p-4"
+      className="glass bv-card-hover rounded-card-3xl p-card-4"
       style={glassBackdropStyle}
     >
       <div className="flex items-start justify-between gap-3">

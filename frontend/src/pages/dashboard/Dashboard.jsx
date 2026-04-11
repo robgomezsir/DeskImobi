@@ -154,7 +154,7 @@ export default function Dashboard() {
     >
       {leadContext && clientIdFromNav && (
         <div
-          className="flex flex-col gap-3 rounded-3xl border border-bv-green/25 bg-bv-green/10 p-4 sm:flex-row sm:items-center sm:justify-between"
+          className="flex flex-col gap-3 rounded-card-3xl border border-bv-green/25 bg-bv-green/10 p-card-4 sm:flex-row sm:items-center sm:justify-between"
           style={glassBackdropStyle}
         >
           <div className="flex min-w-0 items-start gap-3">
@@ -203,7 +203,7 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: i * 0.1 }}
-            className="glass bv-card-hover rounded-3xl p-5 sm:rounded-3xl sm:p-6"
+            className="glass bv-card-hover rounded-card-3xl p-card-5 sm:rounded-card-3xl sm:p-card-6"
             style={glassBackdropStyle}
           >
             <div className="mb-3 flex items-start gap-3">
@@ -223,7 +223,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="glass bv-card-hover flex min-h-[300px] flex-col rounded-3xl p-4 sm:min-h-[360px] sm:rounded-3xl sm:p-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-8"
+          className="glass bv-card-hover flex min-h-[300px] flex-col rounded-card-3xl p-card-4 sm:min-h-[360px] sm:rounded-card-3xl sm:p-card-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-card-8"
           style={glassBackdropStyle}
         >
           <div className="mb-4 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
@@ -279,7 +279,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="glass bv-card-hover flex flex-col rounded-3xl p-4 sm:rounded-3xl sm:p-6 lg:p-8"
+          className="glass bv-card-hover flex flex-col rounded-card-3xl p-card-4 sm:rounded-card-3xl sm:p-card-6 lg:p-card-8"
           style={glassBackdropStyle}
         >
           <div className="mb-6 flex items-center gap-3 sm:mb-8">
@@ -288,7 +288,7 @@ export default function Dashboard() {
           </div>
 
           <div className="flex flex-1 flex-col space-y-6">
-            <div className="space-y-3 rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+            <div className="space-y-3 rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
               <p className="text-sm leading-relaxed text-bv-text">
                 Você tem <span className="font-bold text-bv-green">3 clientes</span> estagnados há mais de 10 dias.
               </p>
@@ -297,7 +297,7 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+            <div className="rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
               <p className="text-sm italic leading-relaxed text-bv-muted">
                 &ldquo;Sua taxa de conversão aumentou 5% este mês após começar a usar os scripts de objeção
                 personalizados.&rdquo;

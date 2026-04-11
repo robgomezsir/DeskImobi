@@ -197,7 +197,7 @@ export default function CRM() {
   return (
     <BvModuleCanvas>
       <div className="space-y-6">
-      <div className="glass bv-card-hover flex flex-col gap-3 rounded-3xl p-4 sm:flex-row sm:items-center sm:gap-4" style={glassBackdropStyle}>
+      <div className="glass bv-card-hover flex flex-col gap-3 rounded-card-3xl p-card-4 sm:flex-row sm:items-center sm:gap-4" style={glassBackdropStyle}>
         <div className="group relative min-w-0 flex-1">
           <Search
             className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted transition-colors group-focus-within:text-bv-green"
@@ -234,12 +234,12 @@ export default function CRM() {
       {/* Mobile: cartões (sem scroll horizontal) */}
       <div className="md:hidden">
         {loading ? (
-          <div className="glass bv-card-hover rounded-3xl py-14 text-center text-bv-muted" style={glassBackdropStyle}>
+          <div className="glass bv-card-hover rounded-card-3xl py-card-14 text-center text-bv-muted" style={glassBackdropStyle}>
             <Loader2 className="mx-auto mb-4 animate-spin text-bv-green" size={32} />
             Carregando leads...
           </div>
         ) : clients.length === 0 ? (
-          <div className="glass bv-card-hover rounded-3xl py-14 text-center text-bv-muted" style={glassBackdropStyle}>
+          <div className="glass bv-card-hover rounded-card-3xl py-card-14 text-center text-bv-muted" style={glassBackdropStyle}>
             <Users className="mx-auto mb-4 opacity-10" size={56} />
             <p className="font-display text-lg font-medium text-bv-text">Vácuo de Oportunidades</p>
             <p className="mx-auto mt-2 max-w-xs text-sm text-bv-muted">
@@ -247,7 +247,7 @@ export default function CRM() {
             </p>
           </div>
         ) : emptyFiltered ? (
-          <div className="glass bv-card-hover rounded-3xl py-14 text-center text-bv-muted" style={glassBackdropStyle}>
+          <div className="glass bv-card-hover rounded-card-3xl py-card-14 text-center text-bv-muted" style={glassBackdropStyle}>
             <Search className="mx-auto mb-4 opacity-20" size={40} />
             <p className="font-medium text-bv-text">Nenhum resultado</p>
             <p className="mt-1 text-sm">Ajuste a busca ou o filtro de status.</p>
@@ -277,7 +277,7 @@ export default function CRM() {
 
       {/* Desktop: tabela */}
       <div
-        className="glass bv-card-hover hidden overflow-hidden rounded-3xl md:block"
+        className="glass bv-card-hover hidden overflow-hidden rounded-card-3xl md:block"
         style={glassBackdropStyle}
       >
         <div className="overflow-x-auto">

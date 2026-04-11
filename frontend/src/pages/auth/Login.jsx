@@ -43,7 +43,7 @@ export default function Login() {
         <ThemeToggleButton />
       </header>
       <div className="flex flex-1 items-center justify-center p-4 pb-8">
-        <div className="w-full max-w-md space-y-6 rounded-2xl glass-blur p-6 sm:space-y-8 sm:rounded-3xl sm:p-10 animate-in fade-in zoom-in duration-500">
+        <div className="w-full max-w-md space-y-6 rounded-card-2xl glass-blur p-card-6 sm:space-y-8 sm:rounded-card-3xl sm:p-card-10 animate-in fade-in zoom-in duration-500">
         <div className="text-center space-y-4">
           <img
             src={isDark ? logoHorizontalBranca : logonamePreta}

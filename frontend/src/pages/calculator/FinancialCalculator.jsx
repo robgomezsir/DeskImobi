@@ -83,7 +83,7 @@ function FlowPhaseCard({
     valorTotalOk && totalPercent < 100 - SUM_EPS && roomInPhase > SUM_EPS;
   return (
     <div
-      className="glass bv-card-hover flex h-full min-h-0 flex-col items-center rounded-3xl p-5 sm:p-6"
+      className="glass bv-card-hover flex h-full min-h-0 flex-col items-center rounded-card-3xl p-card-5 sm:p-card-6"
       style={glassBackdropStyle}
     >
       {/*
@@ -379,7 +379,7 @@ export default function FinancialCalculator() {
         <div className="space-y-4 lg:col-span-4 lg:row-start-1 lg:self-start">
           <div className="space-y-4 lg:sticky lg:top-24 lg:space-y-4">
             <div
-              className="glass bv-card-hover space-y-4 rounded-3xl p-5 sm:p-6"
+              className="glass bv-card-hover space-y-4 rounded-card-3xl p-card-5 sm:p-card-6"
               style={glassBackdropStyle}
             >
               <h2 className="flex items-center gap-2 text-xs font-semibold text-bv-text">
@@ -431,56 +431,43 @@ export default function FinancialCalculator() {
             </div>
 
             <div
-              className="glass bv-card-hover space-y-3 rounded-2xl px-4 py-3 text-sm text-bv-muted"
+              className="glass bv-card-hover space-y-2 rounded-card-2xl px-card-4 py-card-3 text-center text-sm text-bv-muted"
               style={glassBackdropStyle}
-              role="note"
+              role="status"
             >
-              <p className="text-center text-xs leading-relaxed">
-                Em cada cartão, o <strong className="font-semibold text-bv-text">%</strong> é{' '}
-                <strong className="font-semibold text-bv-text">independente</strong> (0–100 sobre o valor total). O{' '}
-                <strong className="font-semibold text-bv-text">valor por parcela</strong> = montante da fase ÷ parcelas. O
-                bloco <strong className="font-semibold text-bv-text">consolidado</strong> abaixo mostra só a{' '}
-                <strong className="font-semibold text-bv-text">soma</strong> dos quatro % e o montante equivalente — não
-                altera os sliders.
+              <p className="text-[10px] font-semibold text-bv-muted">
+                Valor geral do percentual atingido (consolidado)
               </p>
-              <div
-                className="rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/30 px-3 py-2.5 text-center"
-                role="status"
-              >
-                <p className="text-[10px] font-semibold text-bv-muted">
-                  Valor geral do percentual atingido (consolidado)
+              <p className="text-xl font-bold tabular-nums text-bv-green">{pctConsolidado.toFixed(1)}%</p>
+              <p className="text-[11px] leading-snug text-bv-muted">
+                Soma aritmética dos quatro percentuais; o montante usa essa soma × valor total (informativo).
+              </p>
+              {valorTotalOk ? (
+                <p className="mt-2 border-t border-[var(--line-subtle)] pt-2 text-xs text-bv-text">
+                  Montante referente:{' '}
+                  <span className="font-semibold tabular-nums text-bv-green">
+                    {formatCurrency(valorConsolidadoPercentuais)}
+                  </span>
                 </p>
-                <p className="mt-1 text-xl font-bold tabular-nums text-bv-green">{pctConsolidado.toFixed(1)}%</p>
-                <p className="mt-1 text-[11px] leading-snug text-bv-muted">
-                  Soma aritmética dos quatro percentuais; o montante usa essa soma × valor total (informativo).
-                </p>
-                {valorTotalOk ? (
-                  <p className="mt-2 border-t border-[var(--line-subtle)] pt-2 text-xs text-bv-text">
-                    Montante referente:{' '}
-                    <span className="font-semibold tabular-nums text-bv-green">
-                      {formatCurrency(valorConsolidadoPercentuais)}
-                    </span>
-                  </p>
-                ) : (
-                  <p className="mt-2 text-[11px] text-bv-muted/90">Indique o valor total para ver o montante.</p>
-                )}
-                {valorTotalOk && !sumMatches100(flow) ? (
-                  <div className="mt-3 space-y-2 border-t border-[var(--line-subtle)] pt-3 lg:hidden" role="alert">
-                    <p className="text-[10px] font-semibold text-bv-muted">Meta 100%</p>
-                    {pctConsolidado > 100 + SUM_EPS ? (
-                      <p className="text-left text-xs leading-snug text-red-400">
-                        A soma ultrapassa 100% em <strong>{(pctConsolidado - 100).toFixed(1)}</strong> pontos
-                        percentuais. Reduza nos cartões abaixo.
-                      </p>
-                    ) : (
-                      <p className="text-left text-xs leading-snug text-amber-400/95">
-                        Faltam <strong>{(100 - pctConsolidado).toFixed(1)}%</strong> para totalizar 100%. Cada cartão
-                        mostra quanto ainda pode mover nesta fase.
-                      </p>
-                    )}
-                  </div>
-                ) : null}
-              </div>
+              ) : (
+                <p className="mt-2 text-[11px] text-bv-muted/90">Indique o valor total para ver o montante.</p>
+              )}
+              {valorTotalOk && !sumMatches100(flow) ? (
+                <div className="mt-3 space-y-2 border-t border-[var(--line-subtle)] pt-3 lg:hidden" role="alert">
+                  <p className="text-[10px] font-semibold text-bv-muted">Meta 100%</p>
+                  {pctConsolidado > 100 + SUM_EPS ? (
+                    <p className="text-left text-xs leading-snug text-red-400">
+                      A soma ultrapassa 100% em <strong>{(pctConsolidado - 100).toFixed(1)}</strong> pontos percentuais.
+                      Reduza nos cartões abaixo.
+                    </p>
+                  ) : (
+                    <p className="text-left text-xs leading-snug text-amber-400/95">
+                      Faltam <strong>{(100 - pctConsolidado).toFixed(1)}%</strong> para totalizar 100%. Cada cartão mostra
+                      quanto ainda pode mover nesta fase.
+                    </p>
+                  )}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -505,7 +492,7 @@ export default function FinancialCalculator() {
 
         {valorTotalOk ? (
           <div
-            className="glass bv-card-hover space-y-3 rounded-2xl border border-[var(--line-subtle)] p-4 text-sm lg:hidden"
+            className="glass bv-card-hover space-y-3 rounded-card-2xl border border-[var(--line-subtle)] p-card-4 text-sm lg:hidden"
             style={glassBackdropStyle}
             role="status"
             aria-live="polite"
@@ -546,7 +533,7 @@ export default function FinancialCalculator() {
 
         {flowConfirmed && buckets ? (
           <div
-            className="glass bv-card-hover rounded-3xl p-4 text-sm text-bv-muted sm:p-5 lg:p-6"
+            className="glass bv-card-hover rounded-card-3xl p-card-4 text-sm text-bv-muted sm:p-card-5 lg:p-card-6"
             style={glassBackdropStyle}
           >
             <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -561,28 +548,28 @@ export default function FinancialCalculator() {
               </button>
             </div>
             <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-              <li className="list-none rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+              <li className="list-none rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
                 <span className="text-xs font-bold text-bv-green">Entrada</span>
                 <p className="mt-1 text-bv-text">
                   {flow.parcelasEntrada} × {formatCurrency(buckets.entrada.valorParcela)}
                 </p>
                 <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.entrada.totalFase)}</p>
               </li>
-              <li className="list-none rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+              <li className="list-none rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
                 <span className="text-xs font-bold text-bv-green">Mensais</span>
                 <p className="mt-1 text-bv-text">
                   {flow.parcelasMensais} × {formatCurrency(buckets.mensais.valorParcela)}
                 </p>
                 <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.mensais.totalFase)}</p>
               </li>
-              <li className="list-none rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+              <li className="list-none rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
                 <span className="text-xs font-bold text-bv-green">Intercaladas</span>
                 <p className="mt-1 text-bv-text">
                   {flow.parcelasIntercaladas} × {formatCurrency(buckets.intercaladas.valorParcela)}
                 </p>
                 <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.intercaladas.totalFase)}</p>
               </li>
-              <li className="list-none rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-4">
+              <li className="list-none rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
                 <span className="text-xs font-bold text-bv-green">Chaves</span>
                 <p className="mt-1 text-bv-text">
                   {flow.parcelasChaves} × {formatCurrency(buckets.chaves.valorParcela)}
