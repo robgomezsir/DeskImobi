@@ -15,7 +15,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 import logoHorizontalBranca from '../../assets/logo-horizontal-branca.svg';
-import logoHorizontalDark from '../../assets/logo-horizontal-dark.png';
+import logonamePreta from '../../assets/logoname-preta.svg';
 import { BV_MODULE_KEYS, BV_MODULES } from '../../constants/brandModules';
 import { BRAND_ICON_URLS } from '../../constants/brandIconUrls';
 
@@ -114,7 +114,7 @@ export function Sidebar({
           ) : isDark ? (
             <img src={logoHorizontalBranca} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
           ) : (
-            <img src={logoHorizontalDark} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
+            <img src={logonamePreta} alt="BrokerVision" className="h-8 w-auto max-w-[180px]" />
           )}
         </button>
       </div>
