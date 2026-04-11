@@ -39,9 +39,11 @@ function FlowPhaseCard({
   parcelas,
   onParcelasChange,
   valorParcela,
+  montanteFase,
   valorTotalOk,
   glassBackdropStyle,
 }) {
+  const fillPct = `${pct}%`;
   return (
     <div
       className="glass bv-card-hover flex h-full min-h-0 flex-col items-center rounded-3xl p-5 sm:p-6"
@@ -50,24 +52,45 @@ function FlowPhaseCard({
       {/*
         Bloco centrado no cartão: mesmas 4 linhas (título/% · slider · rótulos · campos),
         largura máxima para não colar nas bordas em cards largos.
+        % e montante da fase derivam do valor total do imóvel; valor/parcela = montante ÷ parcelas.
       */}
       <div className="flex w-full max-w-md flex-col justify-center gap-4">
-        <div className="flex w-full items-center justify-between gap-4">
+        <div className="flex w-full items-start justify-between gap-4">
           <h3 className="min-w-0 text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">
             {title}
           </h3>
-          <span className="shrink-0 text-lg font-bold tabular-nums text-bv-text">{pct}%</span>
+          <div className="shrink-0 text-right">
+            <p className="text-lg font-bold tabular-nums text-bv-text">{pct}%</p>
+            <p className="mt-0.5 text-xs font-medium tabular-nums text-bv-green">
+              {valorTotalOk ? formatCurrency(montanteFase) : '—'}
+            </p>
+            <p className="mt-0.5 text-[10px] leading-tight text-bv-muted">sobre o valor total</p>
+          </div>
         </div>
-        <input
-          type="range"
-          min={0}
-          max={100}
-          value={pct}
-          onChange={(e) => onPctChange(Number(e.target.value))}
-          style={{ '--bv-flow-fill': `${pct}%` }}
-          className="bv-flow-slider h-2 w-full cursor-pointer appearance-none rounded-full accent-bv-green"
-          aria-label={`Percentagem ${title}`}
-        />
+        <div className="space-y-1.5">
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={pct}
+            disabled={!valorTotalOk}
+            onChange={(e) => onPctChange(Number(e.target.value))}
+            style={{ '--bv-flow-fill': fillPct }}
+            className={`bv-flow-slider h-2 w-full appearance-none rounded-full accent-bv-green ${
+              valorTotalOk ? 'cursor-pointer' : 'cursor-not-allowed opacity-45'
+            }`}
+            aria-label={`Percentagem ${title} sobre o valor total do imóvel`}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={pct}
+            aria-disabled={!valorTotalOk}
+          />
+          {!valorTotalOk ? (
+            <p className="text-[10px] leading-snug text-bv-muted">
+              Informe o valor total do imóvel à esquerda para o slider incidir sobre esse montante.
+            </p>
+          ) : null}
+        </div>
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-6">
           <div className="flex w-full flex-col space-y-2">
             <label className="text-xs font-medium uppercase tracking-wider text-bv-muted">Parcelas</label>
@@ -87,6 +110,11 @@ function FlowPhaseCard({
             <p className="flex min-h-[42px] w-full items-center justify-end rounded-md border border-[var(--line-subtle)] bg-bv-surface-muted/40 px-3 text-right text-lg font-bold tabular-nums text-bv-green">
               {valorTotalOk ? formatCurrency(valorParcela) : 'R$ 0,00'}
             </p>
+            {valorTotalOk ? (
+              <p className="text-[10px] leading-snug text-bv-muted">
+                {parcelas} parcela{parcelas !== 1 ? 's' : ''} × este valor cobre o montante da fase.
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
@@ -224,6 +252,7 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasEntrada,
       onParcelasChange: (n) => setParcelas('parcelasEntrada', n),
       valorParcela: buckets?.entrada.valorParcela ?? 0,
+      montanteFase: buckets?.entrada.totalFase ?? 0,
     },
     mensais: {
       pct: flow.pctMensais,
@@ -231,6 +260,7 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasMensais,
       onParcelasChange: (n) => setParcelas('parcelasMensais', n),
       valorParcela: buckets?.mensais.valorParcela ?? 0,
+      montanteFase: buckets?.mensais.totalFase ?? 0,
     },
     intercaladas: {
       pct: flow.pctIntercaladas,
@@ -238,6 +268,7 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasIntercaladas,
       onParcelasChange: (n) => setParcelas('parcelasIntercaladas', n),
       valorParcela: buckets?.intercaladas.valorParcela ?? 0,
+      montanteFase: buckets?.intercaladas.totalFase ?? 0,
     },
     chaves: {
       pct: flow.pctChaves,
@@ -245,6 +276,7 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasChaves,
       onParcelasChange: (n) => setParcelas('parcelasChaves', n),
       valorParcela: buckets?.chaves.valorParcela ?? 0,
+      montanteFase: buckets?.chaves.totalFase ?? 0,
     },
   };
 
@@ -319,20 +351,21 @@ export default function FinancialCalculator() {
               role="note"
             >
               <p className="text-center text-xs leading-relaxed">
-                Em cada fase: <strong className="font-semibold text-bv-text">valor por parcela</strong> ={' '}
-                <span className="whitespace-nowrap">(valor total do imóvel × % da fase) ÷ parcelas</span>.
-                O slider altera o %; as parcelas repartem o montante da fase.
+                O <strong className="font-semibold text-bv-text">% do slider</strong> incide sobre o{' '}
+                <strong className="font-semibold text-bv-text">valor total do imóvel</strong> (montante da fase). O{' '}
+                <strong className="font-semibold text-bv-text">valor por parcela</strong> = montante da fase ÷ número de
+                parcelas — atualiza ao mover o slider ou alterar as parcelas.
               </p>
               <div
                 className="rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/30 px-3 py-2.5 text-center"
                 role="status"
               >
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-bv-muted">
-                  Percentual consolidado
+                  Valor geral do percentual atingido (consolidado)
                 </p>
                 <p className="mt-1 text-xl font-bold tabular-nums text-bv-green">{pctConsolidado.toFixed(1)}%</p>
                 <p className="mt-1 text-[11px] leading-snug text-bv-muted">
-                  Soma dos % das quatro fases (cada um sobre o valor total).
+                  Soma dos percentuais das quatro fases; cada fase aplica o seu % sobre o valor total do imóvel.
                 </p>
                 {valorTotalOk ? (
                   <p className="mt-2 border-t border-[var(--line-subtle)] pt-2 text-xs text-bv-text">
@@ -359,6 +392,7 @@ export default function FinancialCalculator() {
               parcelas={phaseProps[key].parcelas}
               onParcelasChange={phaseProps[key].onParcelasChange}
               valorParcela={phaseProps[key].valorParcela}
+              montanteFase={phaseProps[key].montanteFase}
               valorTotalOk={valorTotalOk}
               glassBackdropStyle={glassBackdropStyle}
             />

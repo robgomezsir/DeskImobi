@@ -24,7 +24,12 @@ export function consolidatedAmountForPercentages(valorTotal, state) {
   return Number(valorTotal) * (sumFlowPercentages(state) / 100);
 }
 
-/** @param {Record<string, number>} state — percentagens e contagens de parcelas por fase */
+/**
+ * Para cada fase: totalFase = valorTotal × (pct/100); valorParcela = totalFase ÷ parcelas.
+ * Assim o slider (% sobre o imóvel) e o número de parcelas determinam o valor de cada parcela em tempo real.
+ *
+ * @param {Record<string, number>} state — percentagens e contagens de parcelas por fase
+ */
 export function computeFlowBuckets(valorTotal, state) {
   const {
     pctEntrada,
