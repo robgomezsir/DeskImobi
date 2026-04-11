@@ -9,7 +9,12 @@ import { PageToolbar } from '../../components/layout/PageToolbar';
 import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
 import { BvModuleCanvas } from '../../components/layout/BvModuleCanvas';
 import { useGlassBackdropStyle } from '../../hooks/useGlassBackdropStyle';
-import { computeFlowBuckets, DEFAULT_FLOW_PAYMENT } from './flowPaymentCalculations';
+import {
+  computeFlowBuckets,
+  consolidatedAmountForPercentages,
+  DEFAULT_FLOW_PAYMENT,
+  sumFlowPercentages,
+} from './flowPaymentCalculations';
 
 const calc = BV_MODULES.calc;
 
@@ -96,6 +101,13 @@ export default function FinancialCalculator() {
     if (!valorTotalOk) return null;
     return computeFlowBuckets(Number(valorTotal), flow);
   }, [valorTotal, flow, valorTotalOk]);
+
+  const pctConsolidado = useMemo(() => sumFlowPercentages(flow), [flow]);
+
+  const valorConsolidadoPercentuais = useMemo(
+    () => (valorTotalOk ? consolidatedAmountForPercentages(Number(valorTotal), flow) : 0),
+    [valorTotal, flow, valorTotalOk]
+  );
 
   const setPct = (key, value) => {
     setFlow((prev) => ({ ...prev, [key]: value }));
@@ -294,11 +306,37 @@ export default function FinancialCalculator() {
             </div>
 
             <div
-              className="glass bv-card-hover rounded-2xl px-4 py-3 text-center text-sm font-medium text-bv-muted"
+              className="glass bv-card-hover space-y-3 rounded-2xl px-4 py-3 text-sm text-bv-muted"
               style={glassBackdropStyle}
               role="note"
             >
-              Cada fase aplica a sua percentagem sobre o valor total do imóvel, de forma independente.
+              <p className="text-center text-xs leading-relaxed">
+                Em cada fase: <strong className="font-semibold text-bv-text">valor por parcela</strong> ={' '}
+                <span className="whitespace-nowrap">(valor total do imóvel × % da fase) ÷ parcelas</span>.
+                O slider altera o %; as parcelas repartem o montante da fase.
+              </p>
+              <div
+                className="rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/30 px-3 py-2.5 text-center"
+                role="status"
+              >
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-bv-muted">
+                  Percentual consolidado
+                </p>
+                <p className="mt-1 text-xl font-bold tabular-nums text-bv-green">{pctConsolidado.toFixed(1)}%</p>
+                <p className="mt-1 text-[11px] leading-snug text-bv-muted">
+                  Soma dos % das quatro fases (cada um sobre o valor total).
+                </p>
+                {valorTotalOk ? (
+                  <p className="mt-2 border-t border-[var(--line-subtle)] pt-2 text-xs text-bv-text">
+                    Montante referente:{' '}
+                    <span className="font-semibold tabular-nums text-bv-green">
+                      {formatCurrency(valorConsolidadoPercentuais)}
+                    </span>
+                  </p>
+                ) : (
+                  <p className="mt-2 text-[11px] text-bv-muted/90">Indique o valor total para ver o montante.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

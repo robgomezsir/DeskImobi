@@ -11,6 +11,19 @@ export const DEFAULT_FLOW_PAYMENT = {
   parcelasChaves: 1,
 };
 
+/** Soma dos percentuais das quatro fases (cada % incide sobre o valor total do imóvel). */
+export function sumFlowPercentages(state) {
+  return state.pctEntrada + state.pctMensais + state.pctIntercaladas + state.pctChaves;
+}
+
+/**
+ * Montante total referente à soma dos percentuais (cada fase: valorTotal × pct/100).
+ * Equivale à soma dos `totalFase` de `computeFlowBuckets` para o mesmo estado.
+ */
+export function consolidatedAmountForPercentages(valorTotal, state) {
+  return Number(valorTotal) * (sumFlowPercentages(state) / 100);
+}
+
 /** @param {Record<string, number>} state — percentagens e contagens de parcelas por fase */
 export function computeFlowBuckets(valorTotal, state) {
   const {
