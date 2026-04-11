@@ -203,7 +203,7 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: i * 0.1 }}
-            className="glass bv-card-hover rounded-card-3xl p-card-5 sm:rounded-card-3xl sm:p-card-6"
+            className="glass bv-card-hover rounded-card-3xl p-card-5 sm:p-card-6"
             style={glassBackdropStyle}
           >
             <div className="mb-3 flex items-start gap-3">
@@ -223,7 +223,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="glass bv-card-hover flex min-h-[300px] flex-col rounded-card-3xl p-card-4 sm:min-h-[360px] sm:rounded-card-3xl sm:p-card-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-card-8"
+          className="glass bv-card-hover flex min-h-[300px] flex-col rounded-card-3xl p-card-4 sm:min-h-[360px] sm:p-card-6 lg:col-span-2 lg:h-[400px] lg:min-h-0 lg:p-card-8"
           style={glassBackdropStyle}
         >
           <div className="mb-4 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
@@ -279,7 +279,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="glass bv-card-hover flex flex-col rounded-card-3xl p-card-4 sm:rounded-card-3xl sm:p-card-6 lg:p-card-8"
+          className="glass bv-card-hover flex flex-col rounded-card-3xl p-card-4 sm:p-card-6 lg:p-card-8"
           style={glassBackdropStyle}
         >
           <div className="mb-6 flex items-center gap-3 sm:mb-8">

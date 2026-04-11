@@ -293,26 +293,13 @@ html.light {
 }
 
 /*
- * Mobile: desfoque mais leve que o desktop — backdrop-filter é caro ao rolar; fills um pouco mais densos compensam o look glass.
+ * Mobile: desfoque mais leve (backdrop-filter é caro ao rolar).
+ * Mantém os mesmos tokens de preenchimento e contorno dos cartões que no desktop (--card-bg, --bv-card-border-width, etc.).
  */
 @media (max-width: 767.98px) {
   :root {
     --bv-liquid-glass-blur: 12px;
     --bv-dashboard-backdrop-blur: 18px;
-  }
-
-  html.dark {
-    --card-bg: rgba(var(--accent-rgb), 0.09);
-    --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 9%, var(--bv-bg-dark) 91%);
-    --glass-bg-blur: rgba(var(--accent-rgb), 0.12);
-    --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 12%, var(--bv-bg-dark) 88%);
-  }
-
-  html.light {
-    --card-bg: rgba(var(--accent-rgb), 0.08);
-    --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 8%, #ffffff 92%);
-    --glass-bg-blur: rgba(var(--accent-rgb), 0.11);
-    --glass-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 11%, #ffffff 89%);
   }
 }
 

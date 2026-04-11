@@ -72,7 +72,7 @@ export default function Finance() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-card-2xl border-bv-green/20 bg-bv-green/5 glass p-card-5 sm:rounded-card-3xl sm:p-card-6"
+          className="rounded-card-3xl border-bv-green/20 bg-bv-green/5 glass p-card-5 sm:p-card-6"
         >
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 rounded-card-2xl bg-bv-green/10 text-bv-green">
@@ -90,7 +90,7 @@ export default function Finance() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-card-2xl glass p-card-5 sm:rounded-card-3xl sm:p-card-6"
+          className="rounded-card-3xl glass p-card-5 sm:p-card-6"
         >
           <div className="mb-4 flex items-start justify-between">
             <div className="rounded-card-2xl bg-bv-surface-muted p-3 text-bv-text">
@@ -106,7 +106,7 @@ export default function Finance() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-card-2xl glass p-card-5 sm:rounded-card-3xl sm:p-card-6"
+          className="rounded-card-3xl glass p-card-5 sm:p-card-6"
         >
           <div className="mb-4 flex items-start justify-between">
             <div className="rounded-card-2xl bg-bv-surface-muted p-3 text-bv-text">
@@ -120,7 +120,7 @@ export default function Finance() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-card-2xl glass p-card-4 sm:rounded-card-3xl sm:p-card-6 lg:p-card-8">
+        <div className="rounded-card-3xl glass p-card-4 sm:p-card-6 lg:p-card-8">
           <div className="mb-6 flex items-center justify-between sm:mb-8">
             <div>
               <h3 className="text-xl font-display font-bold">Fluxo de comissões</h3>
@@ -148,7 +148,7 @@ export default function Finance() {
           </div>
         </div>
 
-        <div className="rounded-card-2xl glass p-card-4 sm:rounded-card-3xl sm:p-card-6 lg:p-card-8">
+        <div className="rounded-card-3xl glass p-card-4 sm:p-card-6 lg:p-card-8">
           <h3 className="mb-4 font-display text-lg font-bold sm:mb-6 sm:text-xl">Lançamentos recentes</h3>
           <div className="space-y-3 sm:space-y-4">
             {commissions.map((item) => (
