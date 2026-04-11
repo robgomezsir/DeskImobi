@@ -86,10 +86,11 @@ html.dark {
   --input-border: rgba(255, 255, 255, 0.06);
   --selection: rgba(var(--accent-rgb), 0.3);
   /**
-   * Molde de cartão (módulos fora do Dashboard): preto com nuance do accent ouro + borda + blur leve.
+   * Molde de cartão (módulos fora do Dashboard — sem data-bv-dashboard-immersive): fundo sólido #121212 + borda + blur leve.
+   * O Dashboard imersivo usa outro estilo (liquid glass + imagem).
    * Desfouque 5% → `blur(5px)` sobre o fundo (backdrop).
    */
-  --bv-card-mold-bg: color-mix(in srgb, var(--bv-bg-dark) 90%, rgb(var(--accent-rgb)) 10%);
+  --bv-card-mold-bg: #121212;
   --bv-card-mold-border: color-mix(in srgb, #141210 92%, rgb(var(--accent-rgb)) 8%);
   --bv-card-mold-blur: 5px;
   --bv-card-mold-radius: 2.5rem;
@@ -148,7 +149,7 @@ html.light {
   --color-bv-green-deep: var(--bv-accent-deep);
   --color-bv-black: #141414;
   --color-bv-black-soft: #1a1a1a;
-  --color-bv-card: #161616;
+  --color-bv-card: #121212;
   --color-bv-white: #ffffff;
   --color-bv-white-soft: #e8e8e8;
   --color-bv-white-ghost: #9a9a9a;

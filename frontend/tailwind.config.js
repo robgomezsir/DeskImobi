@@ -12,7 +12,7 @@ export default {
           'green-deep': 'var(--bv-accent-deep)',
           black: '#141414',
           'black-soft': '#1A1A1A',
-          card: '#161616',
+          card: '#121212',
           white: '#FFFFFF',
           'white-soft': '#E8E8E8',
           'white-ghost': '#9A9A9A',
