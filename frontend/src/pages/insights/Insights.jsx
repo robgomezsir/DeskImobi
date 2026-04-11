@@ -50,7 +50,7 @@ export default function Insights() {
             <input
               type="text"
               placeholder="Analisar bairro ou região..."
-              className="h-11 w-full rounded-xl border border-[var(--line)] bg-bv-surface-muted pl-10 pr-4 text-sm text-bv-text outline-none transition-all placeholder:text-bv-muted focus:border-bv-green/50"
+              className="h-11 w-full rounded-xl border border-[var(--line)] bg-bv-surface-muted pl-10 pr-4 text-sm text-bv-text outline-none transition-all placeholder:text-bv-placeholder focus:border-bv-green/50"
             />
           </div>
         }

@@ -5,6 +5,7 @@
  * Tokens BrokerVision — accent ouro:
  *   escuro (html.dark): #af9f82 · claro (html.light): #d1b993
  * Fundo escuro (app): #141414
+ * Texto secundário / descrições no claro: #414141 (`--text-muted` em html.light)
  * Liquid glass: backdrop-filter + fill 6%.
  */
 
@@ -14,6 +15,8 @@
   --bv-accent-deep: #8a7a62;
   /** Base neutra do modo escuro (body, mixes) */
   --bv-bg-dark: #141414;
+  /** Placeholders e cinza auxiliar (claro e escuro) */
+  --text-placeholder: #9a9a9a;
   /**
    * Fallback antes de html.dark / html.light (evita background inválido no 1º paint).
    * Alinhado a color_system.card_fill (accent 6%).
@@ -60,6 +63,7 @@ html.dark {
   --text-primary: #ffffff;
   --text-soft: #e8e8e8;
   --text-muted: #9a9a9a;
+  --text-placeholder: #9a9a9a;
   --text-secondary: rgba(255, 255, 255, 0.6);
   --bg-page: #141414;
   --bg-radial-a: rgba(var(--accent-rgb), 0.06);
@@ -110,7 +114,9 @@ html.light {
   --bv-flow-track-mint: #efe6dc;
   --text-primary: #1e1e1e;
   --text-soft: #0a0a0a;
-  --text-muted: #9a9a9a;
+  /** Descrições, legendas, texto auxiliar (ex.: blocos explicativos na calculadora) */
+  --text-muted: #414141;
+  --text-placeholder: #9a9a9a;
   --text-secondary: rgba(30, 30, 30, 0.6);
   --bg-page: #ffffff;
   --bg-radial-a: rgba(var(--accent-rgb), 0.06);
@@ -157,6 +163,7 @@ html.light {
   --color-bv-text: var(--text-primary);
   --color-bv-text-soft: var(--text-soft);
   --color-bv-muted: var(--text-muted);
+  --color-bv-placeholder: var(--text-placeholder);
 
   --color-primary: var(--bv-accent);
   --color-primary-foreground: #000000;
@@ -511,7 +518,7 @@ html.light {
   }
 
   .input-field::placeholder {
-    color: var(--text-muted);
+    color: var(--text-placeholder);
   }
 
   .input-field:focus {
