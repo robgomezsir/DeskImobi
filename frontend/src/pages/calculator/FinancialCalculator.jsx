@@ -13,10 +13,18 @@ import {
   computeFlowBuckets,
   consolidatedAmountForPercentages,
   DEFAULT_FLOW_PAYMENT,
+  maxPctForPhaseToTotal100,
   sumFlowPercentages,
 } from './flowPaymentCalculations';
 
 const calc = BV_MODULES.calc;
+
+/** Comparação para meta de 100% nos avisos (sugestões). */
+const SUM_EPS = 0.01;
+
+function sumMatches100(flowState) {
+  return Math.abs(sumFlowPercentages(flowState) - 100) <= SUM_EPS;
+}
 
 const FLOW_SECTIONS = [
   { key: 'entrada', label: 'Entrada' },
@@ -63,9 +71,16 @@ function FlowPhaseCard({
   onParcelasChange,
   valorParcela,
   valorTotalOk,
+  maxPctThisPhase,
+  totalPercent,
   glassBackdropStyle,
 }) {
   const fillPct = `${pct}%`;
+  const roomInPhase = maxPctThisPhase - pct;
+  const showOver =
+    valorTotalOk && totalPercent > 100 + SUM_EPS && pct > maxPctThisPhase + SUM_EPS;
+  const showUnderHint =
+    valorTotalOk && totalPercent < 100 - SUM_EPS && roomInPhase > SUM_EPS;
   return (
     <div
       className="glass bv-card-hover flex h-full min-h-0 flex-col items-center rounded-3xl p-5 sm:p-6"
@@ -105,6 +120,25 @@ function FlowPhaseCard({
             <p className="text-[10px] leading-snug text-bv-muted">
               Informe o valor total do imóvel à esquerda para o slider incidir sobre esse montante.
             </p>
+          ) : null}
+          {valorTotalOk ? (
+            <div className="space-y-1.5 lg:hidden" role="group" aria-label={`Sugestões para meta 100% — ${title}`}>
+              <p className="text-[10px] leading-snug text-bv-muted">
+                Máx. nesta fase para somar 100%:{' '}
+                <strong className="font-semibold text-bv-text">{maxPctThisPhase.toFixed(1)}%</strong>
+              </p>
+              {showOver ? (
+                <p className="text-[10px] leading-snug text-red-400">
+                  A soma das fases ultrapassa 100%. Reduza para no máximo{' '}
+                  <strong>{maxPctThisPhase.toFixed(1)}%</strong> aqui.
+                </p>
+              ) : null}
+              {showUnderHint ? (
+                <p className="text-[10px] leading-snug text-amber-400/95">
+                  Pode subir até mais <strong>{roomInPhase.toFixed(1)}%</strong> nesta fase para aproximar 100%.
+                </p>
+              ) : null}
+            </div>
           ) : null}
         </div>
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-6">
@@ -156,6 +190,16 @@ export default function FinancialCalculator() {
   }, [valorTotal, flow, valorTotalOk]);
 
   const pctConsolidado = useMemo(() => sumFlowPercentages(flow), [flow]);
+
+  const maxPctByPhase = useMemo(
+    () => ({
+      entrada: maxPctForPhaseToTotal100(flow, 'pctEntrada'),
+      mensais: maxPctForPhaseToTotal100(flow, 'pctMensais'),
+      intercaladas: maxPctForPhaseToTotal100(flow, 'pctIntercaladas'),
+      chaves: maxPctForPhaseToTotal100(flow, 'pctChaves'),
+    }),
+    [flow]
+  );
 
   const valorConsolidadoPercentuais = useMemo(
     () => (valorTotalOk ? consolidatedAmountForPercentages(Number(valorTotal), flow) : 0),
@@ -293,6 +337,7 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasEntrada,
       onParcelasChange: (n) => setParcelas('parcelasEntrada', n),
       valorParcela: buckets?.entrada.valorParcela ?? 0,
+      maxPctThisPhase: maxPctByPhase.entrada,
     },
     mensais: {
       pct: flow.pctMensais,
@@ -300,6 +345,7 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasMensais,
       onParcelasChange: (n) => setParcelas('parcelasMensais', n),
       valorParcela: buckets?.mensais.valorParcela ?? 0,
+      maxPctThisPhase: maxPctByPhase.mensais,
     },
     intercaladas: {
       pct: flow.pctIntercaladas,
@@ -307,6 +353,7 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasIntercaladas,
       onParcelasChange: (n) => setParcelas('parcelasIntercaladas', n),
       valorParcela: buckets?.intercaladas.valorParcela ?? 0,
+      maxPctThisPhase: maxPctByPhase.intercaladas,
     },
     chaves: {
       pct: flow.pctChaves,
@@ -314,6 +361,7 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasChaves,
       onParcelasChange: (n) => setParcelas('parcelasChaves', n),
       valorParcela: buckets?.chaves.valorParcela ?? 0,
+      maxPctThisPhase: maxPctByPhase.chaves,
     },
   };
 
@@ -416,6 +464,22 @@ export default function FinancialCalculator() {
                 ) : (
                   <p className="mt-2 text-[11px] text-bv-muted/90">Indique o valor total para ver o montante.</p>
                 )}
+                {valorTotalOk && !sumMatches100(flow) ? (
+                  <div className="mt-3 space-y-2 border-t border-[var(--line-subtle)] pt-3 lg:hidden" role="alert">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-bv-muted">Meta 100%</p>
+                    {pctConsolidado > 100 + SUM_EPS ? (
+                      <p className="text-left text-xs leading-snug text-red-400">
+                        A soma ultrapassa 100% em <strong>{(pctConsolidado - 100).toFixed(1)}</strong> pontos
+                        percentuais. Reduza nos cartões abaixo.
+                      </p>
+                    ) : (
+                      <p className="text-left text-xs leading-snug text-amber-400/95">
+                        Faltam <strong>{(100 - pctConsolidado).toFixed(1)}%</strong> para totalizar 100%. Cada cartão
+                        mostra quanto ainda pode mover nesta fase.
+                      </p>
+                    )}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -431,11 +495,46 @@ export default function FinancialCalculator() {
               parcelas={phaseProps[key].parcelas}
               onParcelasChange={phaseProps[key].onParcelasChange}
               valorParcela={phaseProps[key].valorParcela}
+              maxPctThisPhase={phaseProps[key].maxPctThisPhase}
+              totalPercent={pctConsolidado}
               valorTotalOk={valorTotalOk}
               glassBackdropStyle={glassBackdropStyle}
             />
           ))}
         </div>
+
+        {valorTotalOk ? (
+          <div
+            className="glass bv-card-hover space-y-3 rounded-2xl border border-[var(--line-subtle)] p-4 text-sm lg:hidden"
+            style={glassBackdropStyle}
+            role="status"
+            aria-live="polite"
+          >
+            <p className="text-center text-[10px] font-semibold uppercase tracking-wider text-bv-muted">
+              Consolidado — meta 100%
+            </p>
+            <div className="flex items-baseline justify-center gap-2">
+              <span className="text-2xl font-bold tabular-nums text-bv-green">{pctConsolidado.toFixed(1)}%</span>
+              <span className="text-xs text-bv-muted">soma das 4 fases</span>
+            </div>
+            <p className="text-center text-xs tabular-nums text-bv-text">
+              Montante: <span className="font-semibold text-bv-green">{formatCurrency(valorConsolidadoPercentuais)}</span>
+            </p>
+            {!sumMatches100(flow) ? (
+              pctConsolidado > 100 + SUM_EPS ? (
+                <p className="text-center text-xs leading-snug text-red-400">
+                  Ultrapassou 100% em {(pctConsolidado - 100).toFixed(1)} p.p. Ajuste os sliders acima.
+                </p>
+              ) : (
+                <p className="text-center text-xs leading-snug text-amber-400/95">
+                  Faltam {(100 - pctConsolidado).toFixed(1)}% para 100%. Veja a sugestão em cada cartão.
+                </p>
+              )
+            ) : (
+              <p className="text-center text-xs font-medium text-bv-green">Soma em 100%.</p>
+            )}
+          </div>
+        ) : null}
 
         <div className="lg:col-span-4 lg:row-start-2 lg:self-end">
           <button type="submit" className="btn btn-primary h-12 w-full font-bold text-black">

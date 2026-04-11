@@ -11,9 +11,20 @@ export const DEFAULT_FLOW_PAYMENT = {
   parcelasChaves: 1,
 };
 
+export const FLOW_PCT_KEYS = ['pctEntrada', 'pctMensais', 'pctIntercaladas', 'pctChaves'];
+
+/**
+ * Teto de % nesta fase para a soma das quatro ser 100% (com as outras fases fixas).
+ * Usado em avisos e sugestões (não altera o comportamento dos sliders).
+ */
+export function maxPctForPhaseToTotal100(state, pctFieldKey) {
+  const sumOthers = FLOW_PCT_KEYS.filter((k) => k !== pctFieldKey).reduce((s, k) => s + state[k], 0);
+  return Math.max(0, 100 - sumOthers);
+}
+
 /**
  * Soma aritmética dos quatro percentuais (cada fase define o seu % sobre o valor total, de forma independente).
- * Usada apenas no painel consolidado — não limita os sliders das fases.
+ * Usada no painel consolidado — não limita os sliders das fases.
  */
 export function sumFlowPercentages(state) {
   return state.pctEntrada + state.pctMensais + state.pctIntercaladas + state.pctChaves;
