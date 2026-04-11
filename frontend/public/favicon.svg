@@ -14,11 +14,10 @@
         fill: url(#bv-mark-gradient-dark-3);
       }
     </style>
-    <!-- Símbolo BrokerVision: floresta → verde → mint (favicon / ícone geral) -->
+    <!-- Accent: escuro #af9f82 → claro #d1b993 -->
     <linearGradient id="bv-mark-gradient-dark" data-name="BV mark" x1="43.34" y1="698.61" x2="1276.88" y2="334.15" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#062016"/>
-      <stop offset=".45" stop-color="#00a854"/>
-      <stop offset="1" stop-color="#00f5a0"/>
+      <stop offset="0" stop-color="#af9f82"/>
+      <stop offset="1" stop-color="#d1b993"/>
     </linearGradient>
     <linearGradient id="bv-mark-gradient-dark-2" data-name="BV mark 2" x1="705.27" y1="251.67" x2="1107.35" y2="82.75" xlink:href="#bv-mark-gradient-dark"/>
     <linearGradient id="bv-mark-gradient-dark-3" data-name="BV mark 3" x1="952.23" y1="282.41" x2="1111.2" y2="262.63" xlink:href="#bv-mark-gradient-dark"/>

@@ -8,8 +8,8 @@ export default {
     extend: {
       colors: {
         bv: {
-          green: '#00F5A0',
-          'green-deep': '#00A854',
+          green: 'var(--bv-accent)',
+          'green-deep': 'var(--bv-accent-deep)',
           black: '#000000',
           'black-soft': '#0A0A0A',
           card: '#111111',
@@ -18,7 +18,7 @@ export default {
           'white-ghost': '#9A9A9A',
         },
         primary: {
-          DEFAULT: '#00F5A0',
+          DEFAULT: 'var(--bv-accent)',
           foreground: '#000000',
         },
       },

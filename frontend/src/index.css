@@ -2,13 +2,14 @@
 @import "tailwindcss";
 
 /*
- * Tokens BrokerVision — `brokervision-brand-context.json` (color_system, card_system, liquid glass scope).
- * Accent: #00F5A0. Liquid glass: backdrop-filter + fill 6% (brokervision-brand-context.json).
- * Dashboard: `background_effects.dashboard_special` — glassmorphism + blur 60% → 60px; fill accent 6% (`color_system.card_fill`).
+ * Tokens BrokerVision — accent: tema escuro #af9f82, tema claro #d1b993.
+ * Liquid glass: backdrop-filter + fill 6%.
  */
 
 :root {
-  --accent-rgb: 0, 245, 160;
+  --accent-rgb: 175, 159, 130;
+  --bv-accent: #af9f82;
+  --bv-accent-deep: #8a7a62;
   /**
    * Fallback antes de html.dark / html.light (evita background inválido no 1º paint).
    * Alinhado a color_system.card_fill (accent 6%).
@@ -39,20 +40,25 @@
    * Calculadora de fluxo — trilho do range: âncoras em :root (WebKit resolve bem no pseudo).
    * Degradê: interpolação em OKLCH (perceptualmente uniforme, sem “cortes” entre stops em sRGB).
    */
-  --bv-flow-track-edge: #062016;
-  --bv-flow-track-mint: #00f5a0;
+  --bv-flow-track-edge: #4a4034;
+  --bv-flow-track-mint: #d1b993;
 }
 
 /* —— escuro (primário) —— */
 html.dark {
   color-scheme: dark;
+  --accent-rgb: 175, 159, 130;
+  --bv-accent: #af9f82;
+  --bv-accent-deep: #8a7a62;
+  --bv-flow-track-edge: #4a4034;
+  --bv-flow-track-mint: #d1b993;
   --text-primary: #ffffff;
   --text-soft: #e8e8e8;
   --text-muted: #9a9a9a;
   --text-secondary: rgba(255, 255, 255, 0.6);
   --bg-page: #000000;
-  --bg-radial-a: rgba(0, 245, 160, 0.06);
-  --bg-radial-b: rgba(0, 245, 160, 0.04);
+  --bg-radial-a: rgba(var(--accent-rgb), 0.06);
+  --bg-radial-b: rgba(var(--accent-rgb), 0.04);
   --card-bg: rgba(var(--accent-rgb), 0.06);
   --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, #000000 94%);
   --card-border: rgba(var(--accent-rgb), 0.1);
@@ -73,7 +79,7 @@ html.dark {
   --line-subtle: rgba(255, 255, 255, 0.06);
   --input-bg: rgba(255, 255, 255, 0.03);
   --input-border: rgba(255, 255, 255, 0.06);
-  --selection: rgba(0, 245, 160, 0.3);
+  --selection: rgba(var(--accent-rgb), 0.3);
   /**
    * Molde de cartão (módulos fora do Dashboard): verde floresta quase preto + borda + blur leve.
    * Desfouque 5% → `blur(5px)` sobre o fundo (backdrop).
@@ -91,13 +97,18 @@ html.dark {
 /* —— claro (secundário) —— */
 html.light {
   color-scheme: light;
+  --accent-rgb: 209, 185, 147;
+  --bv-accent: #d1b993;
+  --bv-accent-deep: #b5a485;
+  --bv-flow-track-edge: #7d6d57;
+  --bv-flow-track-mint: #efe6dc;
   --text-primary: #1e1e1e;
   --text-soft: #0a0a0a;
   --text-muted: #9a9a9a;
   --text-secondary: rgba(30, 30, 30, 0.6);
   --bg-page: #ffffff;
-  --bg-radial-a: rgba(0, 245, 160, 0.06);
-  --bg-radial-b: rgba(0, 200, 120, 0.04);
+  --bg-radial-a: rgba(var(--accent-rgb), 0.06);
+  --bg-radial-b: rgba(var(--accent-rgb), 0.04);
   --card-bg: rgba(var(--accent-rgb), 0.06);
   --card-fill-solid: color-mix(in srgb, rgb(var(--accent-rgb)) 6%, #ffffff 94%);
   --card-border: rgba(var(--accent-rgb), 0.1);
@@ -117,7 +128,7 @@ html.light {
   --line-subtle: rgba(0, 0, 0, 0.08);
   --input-bg: rgba(0, 0, 0, 0.03);
   --input-border: rgba(0, 0, 0, 0.12);
-  --selection: rgba(0, 245, 160, 0.25);
+  --selection: rgba(var(--accent-rgb), 0.25);
   --bv-card-mold-bg: color-mix(in srgb, #ffffff 94%, rgb(8, 45, 32) 6%);
   --bv-card-mold-border: rgba(10, 32, 21, 0.28);
   --bv-card-mold-blur: 5px;
@@ -128,8 +139,8 @@ html.light {
 }
 
 @theme {
-  --color-bv-green: #00f5a0;
-  --color-bv-green-deep: #00a854;
+  --color-bv-green: var(--bv-accent);
+  --color-bv-green-deep: var(--bv-accent-deep);
   --color-bv-black: #000000;
   --color-bv-black-soft: #0a0a0a;
   --color-bv-card: #111111;
@@ -141,7 +152,7 @@ html.light {
   --color-bv-text-soft: var(--text-soft);
   --color-bv-muted: var(--text-muted);
 
-  --color-primary: #00f5a0;
+  --color-primary: var(--bv-accent);
   --color-primary-foreground: #000000;
 
   --font-sans: "Nunito", "Inter", ui-sans-serif, system-ui;
@@ -447,8 +458,8 @@ html.light {
   .glass-card.glass-green {
     box-shadow:
       var(--glass-inset-highlight),
-      0 0 24px rgba(0, 245, 160, 0.08),
-      inset 0 1px 0 rgba(0, 245, 160, 0.12),
+      0 0 24px rgba(var(--accent-rgb), 0.08),
+      inset 0 1px 0 rgba(var(--accent-rgb), 0.12),
       var(--glass-shadow);
   }
 
@@ -473,7 +484,7 @@ html.light {
   }
 
   .btn-primary {
-    @apply bg-gradient-to-br from-[#00F5A0] to-[#00A854] text-black shadow-lg shadow-bv-green/20 hover:shadow-bv-green/30 hover:brightness-110;
+    @apply bg-gradient-to-br from-[var(--bv-accent)] to-[var(--bv-accent-deep)] text-black shadow-lg shadow-bv-green/20 hover:shadow-bv-green/30 hover:brightness-110;
   }
 
   .btn-outline {
@@ -498,8 +509,8 @@ html.light {
   }
 
   .input-field:focus {
-    border-color: rgba(0, 245, 160, 0.45);
-    box-shadow: 0 0 0 4px rgba(0, 245, 160, 0.12);
+    border-color: rgba(var(--accent-rgb), 0.45);
+    box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.12);
   }
 
   /**
@@ -519,7 +530,7 @@ html.light {
   }
 
   .bv-flow-slider:focus-visible {
-    outline: 2px solid rgba(0, 245, 160, 0.45);
+    outline: 2px solid rgba(var(--accent-rgb), 0.45);
     outline-offset: 4px;
     border-radius: 9999px;
   }
@@ -727,13 +738,13 @@ html.light {
     background:
       linear-gradient(
         180deg,
-        rgba(0, 245, 160, 0.065) 0%,
-        rgba(0, 245, 160, 0.018) 26%,
+        rgba(var(--accent-rgb), 0.065) 0%,
+        rgba(var(--accent-rgb), 0.018) 26%,
         transparent 52%
       ),
       linear-gradient(
         165deg,
-        rgba(0, 245, 160, 0.045) 0%,
+        rgba(var(--accent-rgb), 0.045) 0%,
         rgba(0, 0, 0, 0.055) 46%,
         rgba(0, 14, 10, 0.09) 100%
       ),
@@ -788,13 +799,13 @@ html.light {
     background:
       linear-gradient(
         180deg,
-        rgba(0, 245, 160, 0.065) 0%,
-        rgba(0, 245, 160, 0.018) 26%,
+        rgba(var(--accent-rgb), 0.065) 0%,
+        rgba(var(--accent-rgb), 0.018) 26%,
         transparent 52%
       ),
       linear-gradient(
         165deg,
-        rgba(0, 245, 160, 0.045) 0%,
+        rgba(var(--accent-rgb), 0.045) 0%,
         rgba(0, 0, 0, 0.055) 46%,
         rgba(0, 14, 10, 0.09) 100%
       ),
@@ -814,8 +825,8 @@ html.light {
     background:
       linear-gradient(
         180deg,
-        rgba(0, 245, 160, 0.055) 0%,
-        rgba(0, 245, 160, 0.012) 30%,
+        rgba(var(--accent-rgb), 0.055) 0%,
+        rgba(var(--accent-rgb), 0.012) 30%,
         transparent 52%
       ),
       linear-gradient(
@@ -849,8 +860,8 @@ html.light {
     background:
       linear-gradient(
         180deg,
-        rgba(0, 245, 160, 0.055) 0%,
-        rgba(0, 245, 160, 0.012) 30%,
+        rgba(var(--accent-rgb), 0.055) 0%,
+        rgba(var(--accent-rgb), 0.012) 30%,
         transparent 52%
       ),
       linear-gradient(

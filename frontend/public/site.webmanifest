@@ -5,7 +5,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#000000",
+  "theme_color": "#af9f82",
   "icons": [
     {
       "src": "/icons/bv-symbol-green-192.png",

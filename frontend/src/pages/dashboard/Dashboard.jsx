@@ -36,7 +36,7 @@ const data = [
   { name: 'Jun', leads: 239, sales: 38 },
 ];
 
-const ACCENT = '#00F5A0';
+const ACCENT = '#af9f82';
 
 export default function Dashboard() {
   const [metrics, setMetrics] = useState({

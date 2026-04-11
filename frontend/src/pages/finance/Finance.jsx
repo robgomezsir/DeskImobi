@@ -28,7 +28,7 @@ import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
 
 const finance = LEGACY_BV_MODULES.finance;
 
-const COLORS = ['#00F5A0', '#FFFFFF', '#9A9A9A', '#333333'];
+const COLORS = ['#af9f82', '#FFFFFF', '#9A9A9A', '#333333'];
 
 const data = [
   { name: 'Jan', comissao: 4000 },
@@ -140,7 +140,7 @@ export default function Finance() {
                 />
                 <Bar isAnimationActive={false} dataKey="comissao" radius={[6, 6, 0, 0]}>
                   {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 5 ? '#00F5A0' : 'rgba(255,255,255,0.1)'} />
+                    <Cell key={`cell-${index}`} fill={index === 5 ? '#af9f82' : 'rgba(255,255,255,0.1)'} />
                   ))}
                 </Bar>
               </BarChart>

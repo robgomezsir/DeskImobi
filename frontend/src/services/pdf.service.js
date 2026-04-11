@@ -15,7 +15,7 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   doc.text('BROKERVISION', 15, 25);
   
   doc.setFontSize(10);
-  doc.setTextColor(0, 245, 160); // BV accent (#00F5A0)
+  doc.setTextColor(175, 159, 130); // BV accent (#af9f82)
   doc.setFont('helvetica', 'normal');
   doc.text('RELATÓRIO DE VIABILIDADE SOBERANA', 15, 32);
   
@@ -42,7 +42,7 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   doc.text('VALOR DA PARCELA MENSAL', 20, 115);
   
   doc.setFontSize(24);
-  doc.setTextColor(0, 245, 160); // BV accent (#00F5A0)
+  doc.setTextColor(175, 159, 130); // BV accent (#af9f82)
   doc.text(formatCurrency(simulationResults.monthlyPayment), 20, 130);
   
   doc.setFontSize(10);
@@ -62,7 +62,7 @@ export const generateLeadProposalPDF = async (leadData, simulationResults) => {
   doc.text(`Total Geral Pago: ${formatCurrency(simulationResults.totalPaid)}`, 15, 192);
   
   // AI Insights
-  doc.setFillColor(240, 250, 245); // Very light Green
+  doc.setFillColor(245, 242, 236); // Fundo neutro quente (accent ouro)
   doc.rect(15, 210, pageWidth - 30, 40, 'F');
   
   doc.setTextColor(0, 168, 84); // BV Green (Darker)
@@ -100,7 +100,7 @@ export const generateFlowPaymentPDF = async (payload) => {
   doc.setTextColor(255, 255, 255);
   doc.text('BROKERVISION', 15, 18);
   doc.setFontSize(9);
-  doc.setTextColor(0, 245, 160);
+  doc.setTextColor(175, 159, 130);
   doc.setFont('helvetica', 'normal');
   doc.text('CALCULADORA DE FLUXO DE PAGAMENTO', 15, 28);
   y = 48;

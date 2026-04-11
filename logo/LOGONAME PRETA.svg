@@ -18,11 +18,10 @@
         fill: url(#bv-mark-gradient-light-3);
       }
     </style>
-    <!-- Tema claro: degradê verde BrokerVision (bom contraste em fundos claros) -->
+    <!-- Ícone: tons ouro #af9f82 → #d1b993 (fundo claro) -->
     <linearGradient id="bv-mark-gradient-light" data-name="BV mark light" x1="11.17" y1="180.03" x2="329.05" y2="86.11" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#005c3d"/>
-      <stop offset=".45" stop-color="#00a854"/>
-      <stop offset="1" stop-color="#00f5a0"/>
+      <stop offset="0" stop-color="#af9f82"/>
+      <stop offset="1" stop-color="#d1b993"/>
     </linearGradient>
     <linearGradient id="bv-mark-gradient-light-2" data-name="BV mark light 2" x1="181.74" y1="64.85" x2="285.36" y2="21.32" xlink:href="#bv-mark-gradient-light"/>
     <linearGradient id="bv-mark-gradient-light-3" data-name="BV mark light 3" x1="245.39" y1="72.77" x2="286.35" y2="67.68" xlink:href="#bv-mark-gradient-light"/>
