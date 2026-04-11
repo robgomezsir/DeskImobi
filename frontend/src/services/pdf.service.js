@@ -149,7 +149,7 @@ export const generateFlowPaymentPDF = async (payload) => {
   doc.setFontSize(8);
   doc.setTextColor(120, 120, 120);
   const note =
-    '* Valores por parcela = (valor total × percentagem da fase) ÷ número de parcelas. As percentagens devem somar 100%.';
+    '* Valores por parcela = (valor total × percentagem da fase) ÷ número de parcelas. Cada % é independente sobre o valor total.';
   doc.text(doc.splitTextToSize(note, pageWidth - 30), 15, y);
 
   doc.setFont('helvetica', 'normal');

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Calculator, Check, Copy, Download, Home, Layers } from 'lucide-react';
 import { toast } from 'sonner';
 import { generateFlowPaymentPDF } from '../../services/pdf.service';
@@ -10,12 +10,9 @@ import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
 import { BvModuleCanvas } from '../../components/layout/BvModuleCanvas';
 import { useGlassBackdropStyle } from '../../hooks/useGlassBackdropStyle';
 import {
-  clampAllPhasePercentages,
   computeFlowBuckets,
   consolidatedAmountForPercentages,
   DEFAULT_FLOW_PAYMENT,
-  FLOW_PCT_KEYS,
-  maxPctForPhaseToTotal100,
   sumFlowPercentages,
 } from './flowPaymentCalculations';
 
@@ -27,13 +24,6 @@ const FLOW_SECTIONS = [
   { key: 'intercaladas', label: 'Intercaladas' },
   { key: 'chaves', label: 'Chaves' },
 ];
-
-/** Alinhado à referência Lancaster Club: soma das fases = 100%. */
-const SUM_EPS = 0.01;
-
-function sumMatches100(flowState) {
-  return Math.abs(sumFlowPercentages(flowState) - 100) <= SUM_EPS;
-}
 
 function buildFlowClipboardText(projectName, unit, valorTotal, flow, buckets) {
   const fmt = (n) =>
@@ -73,15 +63,9 @@ function FlowPhaseCard({
   onParcelasChange,
   valorParcela,
   valorTotalOk,
-  maxPctThisPhase,
-  totalPercent,
   glassBackdropStyle,
 }) {
-  const rangeMax = Math.max(maxPctThisPhase, 1);
-  const fillPct = `${Math.min(100, (pct / rangeMax) * 100)}%`;
-  const roomInPhase = maxPctThisPhase - pct;
-  const showRoomHint =
-    valorTotalOk && totalPercent < 100 - SUM_EPS && roomInPhase > SUM_EPS;
+  const fillPct = `${pct}%`;
   return (
     <div
       className="glass bv-card-hover flex h-full min-h-0 flex-col items-center rounded-3xl p-5 sm:p-6"
@@ -90,7 +74,7 @@ function FlowPhaseCard({
       {/*
         Bloco centrado no cartão: mesmas 4 linhas (título/% · slider · rótulos · campos),
         largura máxima para não colar nas bordas em cards largos.
-        Montante da fase = valor total × %; valor/parcela = montante ÷ parcelas.
+        Cada fase: % independente (0–100) sobre o valor total; valor/parcela = montante ÷ parcelas.
       */}
       <div className="flex w-full max-w-md flex-col justify-center gap-4">
         <div className="flex w-full items-center justify-between gap-4">
@@ -103,7 +87,7 @@ function FlowPhaseCard({
           <input
             type="range"
             min={0}
-            max={rangeMax}
+            max={100}
             value={pct}
             disabled={!valorTotalOk}
             onChange={(e) => onPctChange(Number(e.target.value))}
@@ -111,26 +95,15 @@ function FlowPhaseCard({
             className={`bv-flow-slider h-2 w-full appearance-none rounded-full accent-bv-green ${
               valorTotalOk ? 'cursor-pointer' : 'cursor-not-allowed opacity-45'
             }`}
-            aria-label={`Percentagem ${title} sobre o valor total do imóvel (máx. ${maxPctThisPhase}% para totalizar 100%)`}
+            aria-label={`Percentagem ${title} sobre o valor total do imóvel`}
             aria-valuemin={0}
-            aria-valuemax={rangeMax}
+            aria-valuemax={100}
             aria-valuenow={pct}
             aria-disabled={!valorTotalOk}
           />
           {!valorTotalOk ? (
             <p className="text-[10px] leading-snug text-bv-muted">
               Informe o valor total do imóvel à esquerda para o slider incidir sobre esse montante.
-            </p>
-          ) : null}
-          {valorTotalOk ? (
-            <p className="text-[10px] leading-snug text-bv-muted">
-              Máximo nesta fase: <strong className="font-semibold text-bv-text">{maxPctThisPhase.toFixed(1)}%</strong>{' '}
-              (para a soma das quatro fases ser 100%).
-            </p>
-          ) : null}
-          {showRoomHint ? (
-            <p className="text-[10px] leading-snug text-amber-400/90">
-              Pode subir até mais <strong>{roomInPhase.toFixed(1)}%</strong> nesta fase para aproximar os 100%.
             </p>
           ) : null}
         </div>
@@ -177,29 +150,12 @@ export default function FinancialCalculator() {
 
   const valorTotalOk = Number(valorTotal) > 0;
 
-  useEffect(() => {
-    setFlow((prev) => {
-      const next = clampAllPhasePercentages(prev);
-      return FLOW_PCT_KEYS.some((k) => next[k] !== prev[k]) ? next : prev;
-    });
-  }, [flow.pctEntrada, flow.pctMensais, flow.pctIntercaladas, flow.pctChaves]);
-
   const buckets = useMemo(() => {
     if (!valorTotalOk) return null;
     return computeFlowBuckets(Number(valorTotal), flow);
   }, [valorTotal, flow, valorTotalOk]);
 
   const pctConsolidado = useMemo(() => sumFlowPercentages(flow), [flow]);
-
-  const maxPctByPhase = useMemo(
-    () => ({
-      entrada: maxPctForPhaseToTotal100(flow, 'pctEntrada'),
-      mensais: maxPctForPhaseToTotal100(flow, 'pctMensais'),
-      intercaladas: maxPctForPhaseToTotal100(flow, 'pctIntercaladas'),
-      chaves: maxPctForPhaseToTotal100(flow, 'pctChaves'),
-    }),
-    [flow]
-  );
 
   const valorConsolidadoPercentuais = useMemo(
     () => (valorTotalOk ? consolidatedAmountForPercentages(Number(valorTotal), flow) : 0),
@@ -209,12 +165,8 @@ export default function FinancialCalculator() {
   const setPct = (key, raw) => {
     const v = Number(raw);
     if (!Number.isFinite(v)) return;
-    setFlow((prev) => {
-      const othersSum = sumFlowPercentages(prev) - prev[key];
-      const maxAllowed = Math.max(0, 100 - othersSum);
-      const clamped = Math.min(Math.max(0, v), maxAllowed);
-      return { ...prev, [key]: clamped };
-    });
+    const clamped = Math.min(100, Math.max(0, v));
+    setFlow((prev) => ({ ...prev, [key]: clamped }));
     setFlowConfirmed(false);
   };
 
@@ -232,10 +184,6 @@ export default function FinancialCalculator() {
     }
     if (!valorTotalOk) {
       toast.error('Indique o valor total do imóvel.');
-      return;
-    }
-    if (!sumMatches100(flow)) {
-      toast.error('A soma dos percentuais deve ser 100%. Ajuste os sliders.');
       return;
     }
     setFlowConfirmed(true);
@@ -345,7 +293,6 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasEntrada,
       onParcelasChange: (n) => setParcelas('parcelasEntrada', n),
       valorParcela: buckets?.entrada.valorParcela ?? 0,
-      maxPctThisPhase: maxPctByPhase.entrada,
     },
     mensais: {
       pct: flow.pctMensais,
@@ -353,7 +300,6 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasMensais,
       onParcelasChange: (n) => setParcelas('parcelasMensais', n),
       valorParcela: buckets?.mensais.valorParcela ?? 0,
-      maxPctThisPhase: maxPctByPhase.mensais,
     },
     intercaladas: {
       pct: flow.pctIntercaladas,
@@ -361,7 +307,6 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasIntercaladas,
       onParcelasChange: (n) => setParcelas('parcelasIntercaladas', n),
       valorParcela: buckets?.intercaladas.valorParcela ?? 0,
-      maxPctThisPhase: maxPctByPhase.intercaladas,
     },
     chaves: {
       pct: flow.pctChaves,
@@ -369,7 +314,6 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasChaves,
       onParcelasChange: (n) => setParcelas('parcelasChaves', n),
       valorParcela: buckets?.chaves.valorParcela ?? 0,
-      maxPctThisPhase: maxPctByPhase.chaves,
     },
   };
 
@@ -444,10 +388,12 @@ export default function FinancialCalculator() {
               role="note"
             >
               <p className="text-center text-xs leading-relaxed">
-                O <strong className="font-semibold text-bv-text">% do slider</strong> incide sobre o{' '}
-                <strong className="font-semibold text-bv-text">valor total do imóvel</strong> (montante da fase). O{' '}
-                <strong className="font-semibold text-bv-text">valor por parcela</strong> = montante da fase ÷ número de
-                parcelas — atualiza ao mover o slider ou alterar as parcelas.
+                Em cada cartão, o <strong className="font-semibold text-bv-text">%</strong> é{' '}
+                <strong className="font-semibold text-bv-text">independente</strong> (0–100 sobre o valor total). O{' '}
+                <strong className="font-semibold text-bv-text">valor por parcela</strong> = montante da fase ÷ parcelas. O
+                bloco <strong className="font-semibold text-bv-text">consolidado</strong> abaixo mostra só a{' '}
+                <strong className="font-semibold text-bv-text">soma</strong> dos quatro % e o montante equivalente — não
+                altera os sliders.
               </p>
               <div
                 className="rounded-xl border border-[var(--line-subtle)] bg-bv-surface-muted/30 px-3 py-2.5 text-center"
@@ -458,7 +404,7 @@ export default function FinancialCalculator() {
                 </p>
                 <p className="mt-1 text-xl font-bold tabular-nums text-bv-green">{pctConsolidado.toFixed(1)}%</p>
                 <p className="mt-1 text-[11px] leading-snug text-bv-muted">
-                  A soma das quatro fases deve ser 100%; cada % incide sobre o valor total do imóvel.
+                  Soma aritmética dos quatro percentuais; o montante usa essa soma × valor total (informativo).
                 </p>
                 {valorTotalOk ? (
                   <p className="mt-2 border-t border-[var(--line-subtle)] pt-2 text-xs text-bv-text">
@@ -471,11 +417,6 @@ export default function FinancialCalculator() {
                   <p className="mt-2 text-[11px] text-bv-muted/90">Indique o valor total para ver o montante.</p>
                 )}
               </div>
-              {valorTotalOk && !sumMatches100(flow) ? (
-                <p className="text-center text-sm leading-snug text-red-400" role="alert">
-                  A soma dos percentuais é {pctConsolidado.toFixed(1)}%. Ajuste os sliders para totalizar 100%.
-                </p>
-              ) : null}
             </div>
           </div>
         </div>
@@ -490,8 +431,6 @@ export default function FinancialCalculator() {
               parcelas={phaseProps[key].parcelas}
               onParcelasChange={phaseProps[key].onParcelasChange}
               valorParcela={phaseProps[key].valorParcela}
-              maxPctThisPhase={phaseProps[key].maxPctThisPhase}
-              totalPercent={pctConsolidado}
               valorTotalOk={valorTotalOk}
               glassBackdropStyle={glassBackdropStyle}
             />
