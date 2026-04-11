@@ -57,7 +57,7 @@ export default function Finance() {
     () => (
       <ModuleFabButton
         aria-label="Novo lançamento"
-        title="Novo Lançamento"
+        title="Novo lançamento"
         onClick={() => toast.info('Em breve')}
       >
         <Plus size={24} strokeWidth={2} />
@@ -79,7 +79,7 @@ export default function Finance() {
               <TrendingUp size={24} />
             </div>
           </div>
-          <p className="text-bv-muted text-sm font-medium">Comissão Total Bruta</p>
+          <p className="text-sm font-medium text-bv-muted">Comissão total bruta</p>
           <p className="mt-1 font-display text-3xl font-bold text-bv-text sm:text-4xl">R$ 45.320</p>
           <div className="mt-4 flex items-center gap-1 text-[10px] text-bv-green font-bold">
             <ArrowUpRight size={12} /> +18.5% em relação ao mês anterior
@@ -97,9 +97,9 @@ export default function Finance() {
               <DollarSign size={24} />
             </div>
           </div>
-          <p className="text-sm font-medium text-bv-muted">A Receber</p>
+          <p className="text-sm font-medium text-bv-muted">A receber</p>
           <p className="mt-1 font-display text-3xl font-bold text-bv-text sm:text-4xl">R$ 12.400</p>
-          <p className="mt-4 text-[10px] text-bv-muted uppercase tracking-wider font-bold">3 Pendências ativas</p>
+          <p className="mt-4 text-[10px] font-bold text-bv-muted">3 pendências ativas</p>
         </motion.div>
 
         <motion.div 
@@ -113,9 +113,9 @@ export default function Finance() {
               <Calendar size={24} />
             </div>
           </div>
-          <p className="text-sm font-medium text-bv-muted">Previsão Próximo Mês</p>
+          <p className="text-sm font-medium text-bv-muted">Previsão próximo mês</p>
           <p className="mt-1 font-display text-3xl font-bold text-bv-text sm:text-4xl">R$ 28.500</p>
-          <p className="mt-4 text-[10px] text-bv-muted uppercase tracking-wider font-bold">Baseado no Pipeline</p>
+          <p className="mt-4 text-[10px] font-bold text-bv-muted">Baseado no pipeline</p>
         </motion.div>
       </div>
 
@@ -123,7 +123,7 @@ export default function Finance() {
         <div className="rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 lg:p-8">
           <div className="mb-6 flex items-center justify-between sm:mb-8">
             <div>
-              <h3 className="text-xl font-display font-bold">Fluxo de Comissões</h3>
+              <h3 className="text-xl font-display font-bold">Fluxo de comissões</h3>
               <p className="text-sm text-bv-muted">Histórico de rendimentos mensais</p>
             </div>
           </div>
@@ -149,7 +149,7 @@ export default function Finance() {
         </div>
 
         <div className="rounded-2xl glass p-4 sm:rounded-3xl sm:p-6 lg:p-8">
-          <h3 className="mb-4 font-display text-lg font-bold sm:mb-6 sm:text-xl">Lançamentos Recentes</h3>
+          <h3 className="mb-4 font-display text-lg font-bold sm:mb-6 sm:text-xl">Lançamentos recentes</h3>
           <div className="space-y-3 sm:space-y-4">
             {commissions.map((item) => (
               <div
@@ -167,15 +167,19 @@ export default function Finance() {
                 </div>
                 <div className="shrink-0 text-left sm:text-right">
                   <p className="font-bold text-bv-text">R$ {item.value.toLocaleString()}</p>
-                  <p className={`text-[10px] font-bold uppercase tracking-widest ${
-                    item.status === 'Recebido' ? 'text-bv-green' : 'text-bv-muted'
-                  }`}>{item.status}</p>
+                  <p
+                    className={`text-[10px] font-bold ${
+                      item.status === 'Recebido' ? 'text-bv-green' : 'text-bv-muted'
+                    }`}
+                  >
+                    {item.status}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
           <button className="w-full mt-6 py-3 text-sm text-bv-muted hover:text-bv-text transition-colors">
-            Ver Extrato Completo
+            Ver extrato completo
           </button>
         </div>
       </div>

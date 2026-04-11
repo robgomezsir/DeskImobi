@@ -146,7 +146,7 @@ export function Sidebar({
               />
               <span
                 className={cn(
-                  'min-w-0 truncate font-medium uppercase tracking-[0.06em]',
+                  'min-w-0 truncate font-medium tracking-tight',
                   effectiveCollapsed && 'sr-only'
                 )}
               >
@@ -211,7 +211,7 @@ export function Sidebar({
           </div>
           <div className={cn('min-w-0 overflow-hidden', effectiveCollapsed && 'sr-only')}>
             <p className="text-sm font-medium text-bv-text truncate">{user?.email}</p>
-            <p className="text-[10px] text-bv-green uppercase tracking-wider font-bold">SOVEREIGN PRO</p>
+            <p className="text-[10px] font-bold text-bv-green">Sovereign Pro</p>
           </div>
         </div>
       </div>

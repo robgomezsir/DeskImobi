@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Mail, Phone, MessageSquare, MoreHorizontal, Loader2, Sparkles } from 'lucide-react';
+import { formatClientStatus } from './clientStatusLabel';
 
 /** Cartão de lead para telas menores que md (sem scroll horizontal). */
 export function CRMClientMobileCard({
@@ -28,9 +29,9 @@ export function CRMClientMobileCard({
           <div className="min-w-0">
             <p className="truncate font-semibold text-bv-text-soft">{client.name}</p>
             <span
-              className={`mt-1 inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase ${getStatusColor(client.status)}`}
+              className={`mt-1 inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${getStatusColor(client.status)}`}
             >
-              {String(client.status).toUpperCase()}
+              {formatClientStatus(client.status)}
             </span>
           </div>
         </div>

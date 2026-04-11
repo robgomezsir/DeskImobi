@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import AddClientModal from './AddClientModal';
 import { CRMClientMobileCard } from './CRMClientMobileCard';
+import { formatClientStatus } from './clientStatusLabel';
 import axios from 'axios';
 import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
@@ -202,10 +203,10 @@ export default function CRM() {
           <table className="w-full min-w-[640px] border-collapse text-left">
             <thead>
               <tr className="border-b border-[var(--line-subtle)] bg-bv-surface-muted">
-                <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider text-bv-text-soft">Cliente</th>
-                <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider text-bv-text-soft">Status</th>
-                <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider text-bv-text-soft">Interesse</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold uppercase tracking-wider text-bv-text-soft">
+                <th className="px-6 py-4 text-sm font-semibold text-bv-text-soft">Cliente</th>
+                <th className="px-6 py-4 text-sm font-semibold text-bv-text-soft">Status</th>
+                <th className="px-6 py-4 text-sm font-semibold text-bv-text-soft">Interesse</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-bv-text-soft">
                   Ações
                 </th>
               </tr>
@@ -222,7 +223,7 @@ export default function CRM() {
                 <tr>
                   <td colSpan="4" className="px-6 py-20 text-center text-bv-muted">
                     <Users className="mx-auto mb-4 opacity-10" size={64} />
-                    <p className="font-display text-xl font-medium text-bv-text">Vácuo de Oportunidades</p>
+                    <p className="font-display text-xl font-medium text-bv-text">Vácuo de oportunidades</p>
                     <p className="mx-auto mt-2 max-w-xs text-bv-muted">
                       Nenhum lead detectado. Adicione seu primeiro contato para iniciar a análise.
                     </p>
@@ -269,7 +270,7 @@ export default function CRM() {
                         <span
                           className={`rounded-full border px-3 py-1 text-xs font-semibold ${getStatusColor(client.status)}`}
                         >
-                          {client.status.toUpperCase()}
+                          {formatClientStatus(client.status)}
                         </span>
                       </td>
                       <td className="px-6 py-4">

@@ -71,7 +71,7 @@ export default function Insights() {
           <div className="mb-4 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <h3 className="flex flex-wrap items-center gap-2 text-lg font-display font-bold sm:text-xl">
-                Tendência de Preço m²
+                Tendência de preço m²
                 <div className="cursor-help rounded-full bg-bv-surface-muted p-1 text-bv-muted">
                   <Info size={12} />
                 </div>
@@ -80,7 +80,7 @@ export default function Insights() {
             </div>
             <div className="shrink-0 text-left sm:text-right">
               <p className="font-display text-xl font-bold text-bv-green sm:text-2xl">R$ 9.200</p>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-bv-green">+2.4% este mês</p>
+              <p className="text-[10px] font-bold text-bv-green">+2.4% este mês</p>
             </div>
           </div>
 
@@ -135,8 +135,8 @@ export default function Insights() {
           <div className="flex flex-1 flex-col space-y-4">
             <div className="group rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-5 transition-all hover:border-bv-green/30">
               <div className="mb-2 flex items-start justify-between">
-                <span className="rounded-full bg-bv-green/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-bv-green">
-                  Alta Demanda
+                <span className="rounded-full bg-bv-green/10 px-2 py-0.5 text-[10px] font-bold text-bv-green">
+                  Alta demanda
                 </span>
                 <Clock size={14} className="text-bv-muted" />
               </div>
@@ -154,8 +154,8 @@ export default function Insights() {
 
             <div className="group rounded-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-5 transition-all hover:border-bv-green/30">
               <div className="mb-2 flex items-start justify-between">
-                <span className="rounded-full bg-bv-surface-strong px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-bv-text">
-                  Preço Crítico
+                <span className="rounded-full bg-bv-surface-strong px-2 py-0.5 text-[10px] font-bold text-bv-text">
+                  Preço crítico
                 </span>
                 <MapPin size={14} className="text-bv-muted" />
               </div>
@@ -177,16 +177,16 @@ export default function Insights() {
               <Zap size={16} className="text-bv-green" />
               <span className="text-xs font-bold text-bv-text">Próximo Insight em:</span>
             </div>
-            <div className="font-display text-2xl font-bold uppercase tracking-widest text-bv-green">02:14:55</div>
+            <div className="font-display text-2xl font-bold tabular-nums tracking-tight text-bv-green">02:14:55</div>
           </div>
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {[
-          { label: 'Sentimento de Mercado', value: 'Otimista', color: 'text-bv-green' },
-          { label: 'Taxa de Vacância Avg', value: '4.2%', color: 'text-bv-text' },
-          { label: 'Lead Quality Score', value: 'A+', color: 'text-bv-green' },
+          { label: 'Sentimento de mercado', value: 'Otimista', color: 'text-bv-green' },
+          { label: 'Taxa de vacância média', value: '4.2%', color: 'text-bv-text' },
+          { label: 'Lead quality score', value: 'A+', color: 'text-bv-green' },
         ].map((stat, i) => (
           <div
             key={i}
@@ -194,7 +194,7 @@ export default function Insights() {
             style={glassBackdropStyle}
           >
             <div className="min-w-0">
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-bv-muted">{stat.label}</p>
+              <p className="mb-1 text-[10px] font-bold text-bv-muted">{stat.label}</p>
               <p className={`font-display text-xl font-bold sm:text-2xl ${stat.color}`}>{stat.value}</p>
             </div>
             <div className="rounded-lg bg-bv-surface-muted p-2 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">

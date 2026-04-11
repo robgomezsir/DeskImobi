@@ -26,7 +26,7 @@ export function PageToolbar({
     <div className={rowClass}>
       <div className="min-w-0 flex-1 text-left">
         {kicker ? <div className="mb-1 hidden md:block">{kicker}</div> : null}
-        <h1 className="max-w-full truncate text-left font-display text-base font-bold uppercase leading-tight tracking-[0.06em] text-bv-text md:text-2xl md:leading-normal lg:text-3xl">
+        <h1 className="max-w-full truncate text-left font-display text-base font-bold leading-tight tracking-tight text-bv-text md:text-2xl md:leading-normal lg:text-3xl">
           {title}
         </h1>
         {subtitle != null && subtitle !== '' ? (

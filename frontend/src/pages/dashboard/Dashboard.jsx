@@ -87,10 +87,10 @@ export default function Dashboard() {
   );
 
   const cards = [
-    { title: 'BASE DE LEADS', sub: 'Base total', value: metrics.totalClients, icon: Users },
-    { title: 'NOVOS LEADS', sub: 'Últimos 7 dias', value: metrics.newLeads, icon: Sprout },
-    { title: 'EM NEGOCIAÇÃO', sub: 'Total', value: metrics.activeNegotiations, icon: Hourglass },
-    { title: 'CONTRATOS FECHADOS', sub: 'Total', value: metrics.closedDeals, icon: CheckCircle2 },
+    { title: 'Base de leads', sub: 'Base total', value: metrics.totalClients, icon: Users },
+    { title: 'Novos leads', sub: 'Últimos 7 dias', value: metrics.newLeads, icon: Sprout },
+    { title: 'Em negociação', sub: 'Total', value: metrics.activeNegotiations, icon: Hourglass },
+    { title: 'Contratos fechados', sub: 'Total', value: metrics.closedDeals, icon: CheckCircle2 },
   ];
 
   return (
@@ -111,7 +111,7 @@ export default function Dashboard() {
             <div className="mb-3 flex items-start gap-3">
               <card.icon size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-bv-text" />
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-bv-text">{card.title}</p>
+                <p className="text-[10px] font-semibold text-bv-text">{card.title}</p>
                 <p className="text-xs text-bv-muted">{card.sub}</p>
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function Dashboard() {
         >
           <div className="mb-4 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">Desempenho em vendas</h3>
+              <h3 className="text-xs font-semibold text-bv-text">Desempenho em vendas</h3>
               <p className="mt-1 text-sm text-bv-muted">Leads captados vs vendas concluídas</p>
             </div>
             <select className="w-full shrink-0 rounded-lg border border-[var(--line)] bg-bv-surface-muted px-3 py-2 text-xs outline-none sm:w-auto sm:py-1">
@@ -186,7 +186,7 @@ export default function Dashboard() {
         >
           <div className="mb-6 flex items-center gap-3 sm:mb-8">
             <Lightbulb size={18} strokeWidth={2} className="shrink-0 text-bv-text" />
-            <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">Broker Insights</h3>
+            <h3 className="text-xs font-semibold text-bv-text">Broker Insights</h3>
           </div>
 
           <div className="flex flex-1 flex-col space-y-6">
