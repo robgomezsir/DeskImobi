@@ -2,8 +2,9 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 
-/** Fundo artístico do Dashboard — `public/dashboard-bg.png` (fonte: `logo/22.png`). */
-const DASHBOARD_BG = '/dashboard-bg.png?v=3';
+/** Fundos artísticos do Dashboard — `public/dashboard-bg*.png` (escuro: `logo/22.png`, claro: `logo/modo claro.png`). */
+const DASHBOARD_BG_DARK = '/dashboard-bg.png?v=3';
+const DASHBOARD_BG_LIGHT = '/dashboard-bg-light.png?v=1';
 
 const DEFAULT_INNER =
   'relative z-10 space-y-6 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8';
@@ -16,7 +17,7 @@ const DEFAULT_INNER =
 export function BvModuleCanvas({ children, innerClassName, showDashboardBg = false }) {
   const { theme } = useTheme();
   const isLight = theme === 'light';
-  const dashboardBgUrl = DASHBOARD_BG;
+  const dashboardBgUrl = isLight ? DASHBOARD_BG_LIGHT : DASHBOARD_BG_DARK;
   const canvasRef = useRef(null);
   const [mainViewport, setMainViewport] = useState(null);
 
