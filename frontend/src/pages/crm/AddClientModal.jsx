@@ -13,6 +13,7 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
     email: '',
     client_type: 'buyer',
     property_type: 'Apartamento',
+    location: '',
     status: 'lead'
   });
 
@@ -23,16 +24,21 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase
+      const payload = {
+        ...formData,
+        user_id: user.id,
+        location: formData.location?.trim() || null,
+      };
+      const { error } = await supabase
         .from('clients')
-        .insert([{ ...formData, user_id: user.id }])
+        .insert([payload])
         .select()
         .single();
 
       if (error) throw error;
 
       toast.success('Cliente cadastrado com sucesso!');
-      onSuccess(data);
+      onSuccess?.();
       onClose();
     } catch (error) {
       toast.error('Erro ao cadastrar: ' + error.message);
@@ -112,6 +118,16 @@ export default function AddClientModal({ isOpen, onClose, onSuccess }) {
                 <option value="Comercial">Complexo Comercial</option>
               </select>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-bv-muted ml-1">Localização</label>
+            <input
+              className="input-field"
+              placeholder="Bairro, cidade (opcional)"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            />
           </div>
 
           <div className="pt-6 flex gap-3">

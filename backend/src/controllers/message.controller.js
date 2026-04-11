@@ -12,18 +12,26 @@ export const generateMessage = async (req, res) => {
     } = req.body;
     const userId = req.user.id;
 
-    // 1. Opcional: Buscar dados do cliente se clientId for fornecido
+    // 1. Opcional: dados do cliente — obrigatório pertencer ao utilizador autenticado (service role ignora RLS)
     let clientInfo = '';
+    let resolvedClientId = null;
     if (clientId) {
       const { data: client } = await supabaseAdmin
         .from('clients')
         .select('*')
         .eq('id', clientId)
-        .single();
-      
-      if (client) {
-        clientInfo = `Cliente: ${client.name}. Perfil IA: ${client.ai_profile || 'N/A'}. Notas: ${client.notes || 'N/A'}`;
+        .eq('user_id', userId)
+        .is('deleted_at', null)
+        .maybeSingle();
+
+      if (!client) {
+        return res.status(403).json({
+          error: 'Cliente não encontrado ou sem permissão para este utilizador.',
+        });
       }
+
+      resolvedClientId = client.id;
+      clientInfo = `Cliente: ${client.name}. Perfil IA: ${client.ai_profile || 'N/A'}. Notas: ${client.notes || 'N/A'}`;
     }
 
     // 2. Preparar prompt
@@ -48,7 +56,7 @@ export const generateMessage = async (req, res) => {
       .from('messages')
       .insert([{
         user_id: userId,
-        client_id: clientId || null,
+        client_id: resolvedClientId,
         funnel_stage: funnelStage,
         tone: tone,
         property_type: propertyType,

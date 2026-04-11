@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -16,6 +17,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import AddClientModal from './AddClientModal';
+import EditClientModal from './EditClientModal';
 import { CRMClientMobileCard } from './CRMClientMobileCard';
 import { formatClientStatus } from './clientStatusLabel';
 import axios from 'axios';
@@ -27,23 +29,36 @@ import { ModuleFabButton } from '../../components/layout/ModuleFabButton';
 import { BvModuleCanvas } from '../../components/layout/BvModuleCanvas';
 import { useGlassBackdropStyle } from '../../hooks/useGlassBackdropStyle';
 
+const MotionTableRow = motion.tr;
+
 const crm = BV_MODULES.crm;
+
+const STATUS_FILTER_OPTIONS = [
+  { value: '', label: 'Todos' },
+  { value: 'lead', label: formatClientStatus('lead') },
+  { value: 'contact', label: formatClientStatus('contact') },
+  { value: 'negotiation', label: formatClientStatus('negotiation') },
+  { value: 'closed', label: formatClientStatus('closed') },
+  { value: 'lost', label: formatClientStatus('lost') },
+];
 
 export default function CRM() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editClient, setEditClient] = useState(null);
   const [classifyingId, setClassifyingId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [menuClientId, setMenuClientId] = useState(null);
+  const menuDesktopRef = useRef(null);
   const { user, session } = useAuth();
+  const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
   const glassBackdropStyle = useGlassBackdropStyle();
 
-  useEffect(() => {
-    fetchClients();
-  }, []);
-
-  const fetchClients = async () => {
+  const fetchClients = useCallback(async () => {
+    if (!user?.id) return;
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -60,19 +75,38 @@ export default function CRM() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.id]);
+
+  useEffect(() => {
+    fetchClients();
+  }, [fetchClients]);
+
+  useEffect(() => {
+    if (!menuClientId) return;
+    const close = (e) => {
+      if (menuDesktopRef.current && !menuDesktopRef.current.contains(e.target)) {
+        setMenuClientId(null);
+      }
+    };
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
+  }, [menuClientId]);
 
   const filteredClients = useMemo(() => {
+    let list = clients;
+    if (statusFilter) {
+      list = list.filter((c) => c.status === statusFilter);
+    }
     const q = searchTerm.trim().toLowerCase();
-    if (!q) return clients;
-    return clients.filter((c) => {
+    if (!q) return list;
+    return list.filter((c) => {
       const hay = [c.name, c.email, c.phone, c.property_type, c.location]
         .filter(Boolean)
         .join(' ')
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [clients, searchTerm]);
+  }, [clients, searchTerm, statusFilter]);
 
   const handleClassify = async (id) => {
     setClassifyingId(id);
@@ -90,6 +124,36 @@ export default function CRM() {
       setClassifyingId(null);
     }
   };
+
+  const handleClientMessage = useCallback(
+    (client) => {
+      const clientId = client?.id;
+      if (!clientId) return;
+      navigate('/mensagens', { state: { clientId } });
+    },
+    [navigate]
+  );
+
+  const handleDeleteClient = useCallback(
+    async (client) => {
+      if (!user?.id || !client?.id) return;
+      if (!window.confirm('Excluir este cliente? Ele será ocultado da lista.')) return;
+      try {
+        const { error } = await supabase
+          .from('clients')
+          .update({ deleted_at: new Date().toISOString() })
+          .eq('id', client.id)
+          .eq('user_id', user.id);
+        if (error) throw error;
+        toast.success('Cliente removido.');
+        setMenuClientId(null);
+        fetchClients();
+      } catch (error) {
+        toast.error('Erro ao excluir: ' + error.message);
+      }
+    },
+    [user?.id, fetchClients]
+  );
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -128,7 +192,7 @@ export default function CRM() {
     []
   );
 
-  const emptySearch = searchTerm.trim() && clients.length > 0 && filteredClients.length === 0;
+  const emptyFiltered = clients.length > 0 && filteredClients.length === 0;
 
   return (
     <BvModuleCanvas>
@@ -147,10 +211,24 @@ export default function CRM() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button type="button" className="btn btn-outline h-12 w-full shrink-0 gap-2 px-4 sm:w-auto">
-          <Filter size={18} />
-          Filtros
-        </button>
+        <div className="flex h-12 w-full shrink-0 items-center gap-2 sm:w-auto sm:min-w-[200px]">
+          <Filter size={18} className="shrink-0 text-bv-muted" aria-hidden />
+          <label className="sr-only" htmlFor="crm-status-filter">
+            Filtro por status
+          </label>
+          <select
+            id="crm-status-filter"
+            className="input-field h-12 flex-1 pr-8"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            {STATUS_FILTER_OPTIONS.map((opt) => (
+              <option key={opt.value || 'all'} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Mobile: cartões (sem scroll horizontal) */}
@@ -168,11 +246,11 @@ export default function CRM() {
               Nenhum lead detectado. Adicione seu primeiro contato para iniciar a análise.
             </p>
           </div>
-        ) : emptySearch ? (
+        ) : emptyFiltered ? (
           <div className="glass bv-card-hover rounded-3xl py-14 text-center text-bv-muted" style={glassBackdropStyle}>
             <Search className="mx-auto mb-4 opacity-20" size={40} />
             <p className="font-medium text-bv-text">Nenhum resultado</p>
-            <p className="mt-1 text-sm">Tente outro termo de busca.</p>
+            <p className="mt-1 text-sm">Ajuste a busca ou o filtro de status.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -187,6 +265,9 @@ export default function CRM() {
                   classifyingId={classifyingId}
                   onClassify={handleClassify}
                   glassBackdropStyle={glassBackdropStyle}
+                  onEdit={(c) => setEditClient(c)}
+                  onDelete={handleDeleteClient}
+                  onMessage={handleClientMessage}
                 />
               ))}
             </AnimatePresence>
@@ -229,17 +310,17 @@ export default function CRM() {
                     </p>
                   </td>
                 </tr>
-              ) : emptySearch ? (
+              ) : emptyFiltered ? (
                 <tr>
                   <td colSpan="4" className="px-6 py-16 text-center text-bv-muted">
                     <Search className="mx-auto mb-4 opacity-20" size={40} />
-                    <p className="font-medium text-bv-text">Nenhum resultado para esta busca</p>
+                    <p className="font-medium text-bv-text">Nenhum resultado para esta busca ou filtro</p>
                   </td>
                 </tr>
               ) : (
                 <AnimatePresence>
                   {filteredClients.map((client, i) => (
-                    <motion.tr
+                    <MotionTableRow
                       key={client.id}
                       initial={{ opacity: reduceMotion ? 1 : 0, x: reduceMotion ? 0 : -10 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -279,7 +360,7 @@ export default function CRM() {
                           <p className="text-xs text-bv-muted">{client.location || 'Sem localização'}</p>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="relative px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100">
                           <button
                             type="button"
@@ -296,19 +377,54 @@ export default function CRM() {
                           </button>
                           <button
                             type="button"
+                            onClick={() => handleClientMessage(client)}
                             className="flex h-8 w-8 items-center justify-center rounded-lg bg-bv-surface-muted text-bv-muted transition-all hover:bg-bv-surface-strong hover:text-bv-text"
+                            title="Mensagens"
                           >
                             <MessageSquare size={16} />
                           </button>
-                          <button
-                            type="button"
-                            className="flex h-8 w-8 items-center justify-center rounded-lg bg-bv-surface-muted text-bv-muted transition-all hover:bg-bv-surface-strong hover:text-bv-text"
-                          >
-                            <MoreHorizontal size={16} />
-                          </button>
+                          <div className="relative" ref={menuClientId === client.id ? menuDesktopRef : undefined}>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setMenuClientId((id) => (id === client.id ? null : client.id))
+                              }
+                              className="flex h-8 w-8 items-center justify-center rounded-lg bg-bv-surface-muted text-bv-muted transition-all hover:bg-bv-surface-strong hover:text-bv-text"
+                              title="Mais"
+                              aria-expanded={menuClientId === client.id}
+                            >
+                              <MoreHorizontal size={16} />
+                            </button>
+                            {menuClientId === client.id && (
+                              <div
+                                role="menu"
+                                className="absolute right-0 top-full z-20 mt-1 min-w-[140px] rounded-xl border border-[var(--line)] bg-bv-surface py-1 shadow-lg"
+                              >
+                                <button
+                                  type="button"
+                                  role="menuitem"
+                                  className="block w-full px-4 py-2 text-left text-sm text-bv-text-soft hover:bg-bv-surface-muted"
+                                  onClick={() => {
+                                    setEditClient(client);
+                                    setMenuClientId(null);
+                                  }}
+                                >
+                                  Editar
+                                </button>
+                                <button
+                                  type="button"
+                                  role="menuitem"
+                                  className="block w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-bv-surface-muted"
+                                  onClick={() => handleDeleteClient(client)}
+                                >
+                                  Excluir
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </td>
-                    </motion.tr>
+                    </MotionTableRow>
                   ))}
                 </AnimatePresence>
               )}
@@ -318,6 +434,12 @@ export default function CRM() {
       </div>
 
       <AddClientModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={fetchClients} />
+      <EditClientModal
+        client={editClient}
+        isOpen={Boolean(editClient)}
+        onClose={() => setEditClient(null)}
+        onSuccess={fetchClients}
+      />
       </div>
     </BvModuleCanvas>
   );

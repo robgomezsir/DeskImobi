@@ -1,6 +1,9 @@
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MessageSquare, MoreHorizontal, Loader2, Sparkles } from 'lucide-react';
 import { formatClientStatus } from './clientStatusLabel';
+
+const MotionArticle = motion.article;
 
 /** Cartão de lead para telas menores que md (sem scroll horizontal). */
 export function CRMClientMobileCard({
@@ -11,9 +14,26 @@ export function CRMClientMobileCard({
   classifyingId,
   onClassify,
   glassBackdropStyle,
+  onEdit,
+  onDelete,
+  onMessage,
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
+  }, [menuOpen]);
+
   return (
-    <motion.article
+    <MotionArticle
       initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: reduceMotion ? 1 : 0, scale: reduceMotion ? 1 : 0.98 }}
@@ -51,18 +71,53 @@ export function CRMClientMobileCard({
           </button>
           <button
             type="button"
+            onClick={() => onMessage?.(client)}
             className="flex h-9 w-9 items-center justify-center rounded-lg bg-bv-surface-muted text-bv-muted transition-colors hover:bg-bv-surface-strong hover:text-bv-text"
             title="Mensagem"
           >
             <MessageSquare size={16} />
           </button>
-          <button
-            type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-bv-surface-muted text-bv-muted transition-colors hover:bg-bv-surface-strong hover:text-bv-text"
-            title="Mais"
-          >
-            <MoreHorizontal size={16} />
-          </button>
+          <div className="relative" ref={menuRef}>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((o) => !o)}
+              className="flex h-9 w-9 items-center justify-center rounded-lg bg-bv-surface-muted text-bv-muted transition-colors hover:bg-bv-surface-strong hover:text-bv-text"
+              title="Mais"
+              aria-expanded={menuOpen}
+              aria-haspopup="menu"
+            >
+              <MoreHorizontal size={16} />
+            </button>
+            {menuOpen && (
+              <div
+                role="menu"
+                className="absolute right-0 top-full z-20 mt-1 min-w-[140px] rounded-xl border border-[var(--line)] bg-bv-surface py-1 shadow-lg"
+              >
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="block w-full px-4 py-2 text-left text-sm text-bv-text-soft hover:bg-bv-surface-muted"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onEdit?.(client);
+                  }}
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="block w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-bv-surface-muted"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onDelete?.(client);
+                  }}
+                >
+                  Excluir
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -81,6 +136,6 @@ export function CRMClientMobileCard({
         <p className="text-sm font-medium text-bv-text-soft">{client.property_type || 'Qualquer'}</p>
         <p className="text-xs text-bv-muted">{client.location || 'Sem localização'}</p>
       </div>
-    </motion.article>
+    </MotionArticle>
   );
 }

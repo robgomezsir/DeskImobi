@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -9,6 +10,9 @@ import {
   CheckCircle2,
   Lightbulb,
   ArrowUpRight,
+  MessageSquare,
+  X,
+  LayoutGrid,
 } from 'lucide-react';
 import {
   CartesianGrid,
@@ -39,6 +43,10 @@ const data = [
 const ACCENT = '#af9f82';
 
 export default function Dashboard() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const clientIdFromNav = location.state?.clientId;
+  const [leadContext, setLeadContext] = useState(null);
   const [metrics, setMetrics] = useState({
     totalClients: 0,
     newLeads: 0,
@@ -79,6 +87,52 @@ export default function Dashboard() {
     fetchMetrics();
   }, [user]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadLeadFromNav = async () => {
+      await Promise.resolve();
+      if (cancelled) return;
+      if (!user?.id || !clientIdFromNav) {
+        setLeadContext(null);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('clients')
+        .select('id, name, phone, status, property_type')
+        .eq('id', clientIdFromNav)
+        .eq('user_id', user.id)
+        .is('deleted_at', null)
+        .maybeSingle();
+
+      if (cancelled) return;
+      if (error || !data) {
+        setLeadContext(null);
+        return;
+      }
+      setLeadContext(data);
+    };
+
+    loadLeadFromNav();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, clientIdFromNav]);
+
+  const dismissLeadContext = () => {
+    navigate('/dashboard', { replace: true, state: {} });
+    setLeadContext(null);
+  };
+
+  const goToMessagesWithLead = () => {
+    if (!leadContext?.id) return;
+    navigate('/mensagens', { state: { clientId: leadContext.id } });
+  };
+
+  const goToCrm = () => {
+    navigate('/crm');
+  };
+
   useRegisterAppToolbar(
     () => (
       <PageToolbar title={dashboard.officialName} subtitle={dashboard.tagline} />
@@ -98,6 +152,50 @@ export default function Dashboard() {
       showDashboardBg
       innerClassName="relative z-10 space-y-8 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8"
     >
+      {leadContext && clientIdFromNav && (
+        <div
+          className="flex flex-col gap-3 rounded-3xl border border-bv-green/25 bg-bv-green/10 p-4 sm:flex-row sm:items-center sm:justify-between"
+          style={glassBackdropStyle}
+        >
+          <div className="flex min-w-0 items-start gap-3">
+            <MessageSquare className="mt-0.5 h-5 w-5 shrink-0 text-bv-green" />
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-bv-text">Lead do CRM</p>
+              <p className="truncate text-sm text-bv-muted">
+                Continuar com <span className="font-medium text-bv-text">{leadContext.name}</span>
+                {leadContext.phone ? ` · ${leadContext.phone}` : ''}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={goToMessagesWithLead}
+              className="btn btn-primary h-10 gap-2 px-4 text-xs font-bold text-black"
+            >
+              <MessageSquare size={16} />
+              Gerar mensagens
+            </button>
+            <button
+              type="button"
+              onClick={goToCrm}
+              className="btn btn-outline h-10 gap-2 px-4 text-xs"
+            >
+              <LayoutGrid size={16} />
+              Abrir CRM
+            </button>
+            <button
+              type="button"
+              onClick={dismissLeadContext}
+              className="btn-icon h-10 w-10 text-bv-muted hover:text-bv-text"
+              aria-label="Dispensar"
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {cards.map((card, i) => (
           <motion.div

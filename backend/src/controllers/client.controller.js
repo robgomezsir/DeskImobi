@@ -46,7 +46,8 @@ export const getClients = async (req, res) => {
 export const createClient = async (req, res) => {
   try {
     const userId = req.user.id;
-    const clientData = { ...req.body, user_id: userId };
+    const { user_id: _ignoreOwner, ...body } = req.body || {};
+    const clientData = { ...body, user_id: userId };
 
     const { data, error } = await supabaseAdmin
       .from('clients')
@@ -66,10 +67,11 @@ export const updateClient = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
+    const { user_id: _ignoreOwner, ...updates } = req.body || {};
 
     const { data, error } = await supabaseAdmin
       .from('clients')
-      .update(req.body)
+      .update(updates)
       .eq('id', id)
       .eq('user_id', userId)
       .select()
@@ -145,6 +147,7 @@ export const classifyClient = async (req, res) => {
         notes: `IA Insight: Urgência ${parsedResult.urgency}. ${parsedResult.approach}`
       })
       .eq('id', id)
+      .eq('user_id', userId)
       .select()
       .single();
 

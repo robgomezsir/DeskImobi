@@ -11,6 +11,7 @@ import FinancialCalculator from './pages/calculator/FinancialCalculator';
 import Insights from './pages/insights/Insights';
 import Integrations from './pages/integrations/Integrations';
 import Settings from './pages/settings/Settings';
+import MessageGenerator from './pages/messages/MessageGenerator';
 
 function PageTransition({ children }) {
   const reduceMotion = useReducedMotion();
@@ -58,7 +59,7 @@ function App() {
             <Route path="/calculadora" element={<PageTransition><FinancialCalculator /></PageTransition>} />
             <Route path="/insights" element={<PageTransition><Insights /></PageTransition>} />
             <Route path="/integracoes" element={<PageTransition><Integrations /></PageTransition>} />
-            <Route path="/mensagens" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/mensagens" element={<PageTransition><MessageGenerator /></PageTransition>} />
             <Route path="/finance" element={<Navigate to="/dashboard" replace />} />
             
             {/* Fallbacks/Aliases */}

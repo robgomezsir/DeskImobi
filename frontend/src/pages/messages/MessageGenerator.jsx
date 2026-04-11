@@ -1,33 +1,162 @@
-import { useState } from 'react';
-import { 
-  Send, 
-  Copy, 
-  RefreshCw, 
-  MessageCircle, 
-  PhoneCall, 
+import { useState, useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import {
+  Send,
+  Copy,
+  MessageCircle,
+  PhoneCall,
   AlertCircle,
   Loader2,
-  Sparkles
+  Sparkles,
+  User,
 } from 'lucide-react';
 import axios from 'axios';
+import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
 import { LEGACY_BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
+import { BvModuleCanvas } from '../../components/layout/BvModuleCanvas';
+import { useGlassBackdropStyle } from '../../hooks/useGlassBackdropStyle';
 
 const flow = LEGACY_BV_MODULES.flow;
 
+const FUNNEL_OPTIONS = [
+  'Primeiro Contato',
+  'Agendamento de Visita',
+  'Pós-Visita',
+  'Negociação',
+  'Fechamento',
+];
+
+const PROPERTY_OPTIONS = ['Apartamento', 'Casa', 'Terreno', 'Lançamento'];
+
+/** Mapeia tipo de imóvel do CRM para uma opção do select. */
+function mapPropertyTypeToOption(raw) {
+  if (!raw || typeof raw !== 'string') return 'Apartamento';
+  const r = raw.toLowerCase();
+  if (r.includes('apart')) return 'Apartamento';
+  if (r.includes('casa')) return 'Casa';
+  if (r.includes('terr')) return 'Terreno';
+  if (r.includes('lanç') || r.includes('lanc') || r.includes('lançamento')) return 'Lançamento';
+  return 'Apartamento';
+}
+
+const STATUS_TO_FUNNEL = {
+  lead: 'Primeiro Contato',
+  contact: 'Agendamento de Visita',
+  negotiation: 'Negociação',
+  closed: 'Fechamento',
+  lost: 'Negociação',
+};
+
 export default function MessageGenerator() {
-  const { session } = useAuth();
+  const location = useLocation();
+  const clientIdFromNav = location.state?.clientId;
+  const { session, user } = useAuth();
+  const glassBackdropStyle = useGlassBackdropStyle();
   const [loading, setLoading] = useState(false);
+  const [loadingClient, setLoadingClient] = useState(false);
+  const [linkedClient, setLinkedClient] = useState(null);
   const [result, setResult] = useState(null);
   const [formData, setFormData] = useState({
     funnelStage: 'Primeiro Contato',
     propertyType: 'Apartamento',
     tone: 'Profissional e Empático',
-    additionalInfo: ''
+    additionalInfo: '',
   });
+
+  const resolvedClientId = linkedClient?.id ?? clientIdFromNav ?? null;
+
+  useEffect(() => {
+    if (!clientIdFromNav || !user?.id) {
+      setLinkedClient(null);
+      return;
+    }
+    let cancelled = false;
+    setLoadingClient(true);
+    (async () => {
+      const { data, error } = await supabase
+        .from('clients')
+        .select('*')
+        .eq('id', clientIdFromNav)
+        .eq('user_id', user.id)
+        .is('deleted_at', null)
+        .maybeSingle();
+
+      if (cancelled) return;
+      setLoadingClient(false);
+
+      if (error || !data) {
+        if (error) toast.error('Não foi possível carregar o cliente.');
+        setLinkedClient(null);
+        return;
+      }
+
+      setLinkedClient(data);
+      const funnel = STATUS_TO_FUNNEL[data.status] ?? 'Primeiro Contato';
+      const property = mapPropertyTypeToOption(data.property_type);
+      const extra = [
+        data.name && `Lead: ${data.name}`,
+        data.phone && `Tel: ${data.phone}`,
+        data.location && `Região: ${data.location}`,
+        data.notes && `Notas: ${data.notes}`,
+      ]
+        .filter(Boolean)
+        .join(' · ');
+
+      setFormData((prev) => ({
+        ...prev,
+        funnelStage: funnel,
+        propertyType: property,
+        additionalInfo: extra || prev.additionalInfo,
+      }));
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [clientIdFromNav, user?.id]);
+
+  const clientBanner = useMemo(() => {
+    if (!resolvedClientId) return null;
+    if (loadingClient) {
+      return (
+        <div
+          className="mb-6 flex items-center gap-3 rounded-2xl border border-[var(--line)] px-4 py-3 text-sm text-bv-muted"
+          style={glassBackdropStyle}
+        >
+          <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+          Carregando dados do lead…
+        </div>
+      );
+    }
+    if (!linkedClient) {
+      return (
+        <div
+          className="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-bv-text"
+          style={glassBackdropStyle}
+        >
+          Lead não encontrado ou sem permissão. Ajuste os parâmetros manualmente.
+        </div>
+      );
+    }
+    return (
+      <div
+        className="mb-6 flex flex-col gap-2 rounded-2xl border border-bv-green/30 bg-bv-green/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+        style={glassBackdropStyle}
+      >
+        <div className="flex min-w-0 items-center gap-2 text-sm text-bv-text">
+          <User className="h-4 w-4 shrink-0 text-bv-green" />
+          <span className="truncate">
+            Scripts para: <strong>{linkedClient.name}</strong>
+            {linkedClient.phone ? ` · ${linkedClient.phone}` : ''}
+          </span>
+        </div>
+      </div>
+    );
+  }, [resolvedClientId, loadingClient, linkedClient, glassBackdropStyle]);
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -35,7 +164,10 @@ export default function MessageGenerator() {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/messages/generate`,
-        formData,
+        {
+          ...formData,
+          clientId: resolvedClientId || undefined,
+        },
         { headers: { Authorization: `Bearer ${session.access_token}` } }
       );
       setResult(response.data);
@@ -58,52 +190,57 @@ export default function MessageGenerator() {
   );
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+    <BvModuleCanvas>
+      <div className="mx-auto max-w-6xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        {clientBanner}
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Form Column */}
         <div className="lg:col-span-1">
           <div className="bv-scroll-root space-y-6 rounded-2xl border border-[var(--line)] glass p-4 sm:rounded-3xl sm:p-6 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto xl:top-24">
             <form onSubmit={handleGenerate} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-bv-muted">Etapa do Funil</label>
-                <select 
+                <select
                   className="input-field"
                   value={formData.funnelStage}
-                  onChange={e => setFormData({...formData, funnelStage: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, funnelStage: e.target.value })}
                 >
-                  <option>Primeiro Contato</option>
-                  <option>Agendamento de Visita</option>
-                  <option>Pós-Visita</option>
-                  <option>Negociação</option>
-                  <option>Fechamento</option>
+                  {FUNNEL_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-medium text-bv-muted">Tipo de Imóvel</label>
-                <select 
+                <select
                   className="input-field"
                   value={formData.propertyType}
-                  onChange={e => setFormData({...formData, propertyType: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
                 >
-                  <option>Apartamento</option>
-                  <option>Casa</option>
-                  <option>Terreno</option>
-                  <option>Lançamento</option>
+                  {PROPERTY_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-medium text-bv-muted">Tom de Voz</label>
-                <select 
+                <select
                   className="input-field"
                   value={formData.tone}
-                  onChange={e => setFormData({...formData, tone: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, tone: e.target.value })}
                 >
                   <option>Estratégico e Preciso</option>
                   <option>Soberano e Autoritário</option>
                   <option>Urgente e Exclusivo</option>
                   <option>Diplomático e Técnico</option>
+                  <option>Profissional e Empático</option>
                 </select>
               </div>
 
@@ -186,6 +323,7 @@ export default function MessageGenerator() {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </BvModuleCanvas>
   );
 }
