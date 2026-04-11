@@ -2,9 +2,9 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 
-/** Fundos artísticos do Dashboard — `public/dashboard-bg*.png` (escuro: `logo/22.png`, claro: `logo/modo claro.png`). */
+/** Fundos artísticos do Dashboard — `public/dashboard-bg*.png` (escuro: `logo/22.png`, claro: `logo/claro.png`). */
 const DASHBOARD_BG_DARK = '/dashboard-bg.png?v=3';
-const DASHBOARD_BG_LIGHT = '/dashboard-bg-light.png?v=1';
+const DASHBOARD_BG_LIGHT = '/dashboard-bg-light.png?v=2';
 
 const DEFAULT_INNER =
   'relative z-10 space-y-6 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8';
