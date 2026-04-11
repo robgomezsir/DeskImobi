@@ -36,6 +36,10 @@ const navItems = BV_MODULE_KEYS.map((key) => ({
   icon: navIcons[key],
 }));
 
+/** Etiqueta ao hover / foco com sidebar contraída (desktop) */
+const collapsedItemTooltipClass =
+  'pointer-events-none absolute left-full top-1/2 z-[60] ml-2 max-w-[min(12rem,calc(100vw-6rem))] -translate-y-1/2 rounded-lg border border-[var(--line-subtle)] bg-bv-surface-strong px-2.5 py-1.5 text-xs font-semibold text-bv-text shadow-lg opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100';
+
 /**
  * @param {{
  *   collapsed: boolean;
@@ -119,19 +123,26 @@ export function Sidebar({
         </button>
       </div>
 
-      <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto overflow-x-hidden pb-[env(safe-area-inset-bottom)]">
+      <nav
+        className={cn(
+          'min-h-0 flex-1 space-y-1 pb-[env(safe-area-inset-bottom)]',
+          effectiveCollapsed && !isMobileLayout
+            ? 'overflow-y-auto overflow-x-visible'
+            : 'overflow-y-auto overflow-x-hidden'
+        )}
+      >
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link
               key={item.path}
               to={item.path}
-              title={effectiveCollapsed ? item.officialName : undefined}
               aria-label={item.officialName}
               aria-current={isActive ? 'page' : undefined}
               onClick={() => isMobileLayout && onCloseMobile?.()}
               className={cn(
-                'bv-sidebar-nav-link group relative flex items-center overflow-hidden rounded-lg transition-all',
+                'bv-sidebar-nav-link group relative flex items-center rounded-lg transition-all',
+                effectiveCollapsed && !isMobileLayout ? 'overflow-visible' : 'overflow-hidden',
                 '[&>svg]:relative [&>svg]:z-[1] [&>span]:relative [&>span]:z-[1]',
                 effectiveCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2.5',
                 isActive
@@ -152,6 +163,11 @@ export function Sidebar({
               >
                 {item.officialName}
               </span>
+              {effectiveCollapsed && !isMobileLayout ? (
+                <span className={collapsedItemTooltipClass} aria-hidden="true">
+                  {item.officialName}
+                </span>
+              ) : null}
             </Link>
           );
         })}
@@ -160,12 +176,12 @@ export function Sidebar({
       <div className="mt-auto shrink-0 space-y-3 border-t border-[var(--line-subtle)] pt-4">
         <Link
           to="/settings"
-          title={effectiveCollapsed ? 'Configurações' : undefined}
           aria-label="Configurações"
           aria-current={location.pathname === '/settings' ? 'page' : undefined}
           onClick={() => isMobileLayout && onCloseMobile?.()}
           className={cn(
-            'bv-sidebar-nav-link group relative flex overflow-hidden rounded-lg text-bv-muted transition-all hover:text-bv-text',
+            'bv-sidebar-nav-link group relative flex rounded-lg text-bv-muted transition-all hover:text-bv-text',
+            effectiveCollapsed && !isMobileLayout ? 'overflow-visible' : 'overflow-hidden',
             '[&>svg]:relative [&>svg]:z-[1] [&>span]:relative [&>span]:z-[1]',
             effectiveCollapsed ? 'justify-center px-2 py-2' : 'items-center gap-3 px-3 py-2',
             location.pathname === '/settings'
@@ -184,20 +200,30 @@ export function Sidebar({
             )}
           />
           <span className={cn('font-medium', effectiveCollapsed && 'sr-only')}>Configurações</span>
+          {effectiveCollapsed && !isMobileLayout ? (
+            <span className={collapsedItemTooltipClass} aria-hidden="true">
+              Configurações
+            </span>
+          ) : null}
         </Link>
 
         <button
           type="button"
           onClick={signOut}
-          title={effectiveCollapsed ? 'Sair' : undefined}
           aria-label="Sair"
           className={cn(
-            'flex w-full rounded-lg text-left text-red-400 transition-all hover:bg-red-400/10',
+            'group relative flex w-full rounded-lg text-left text-red-400 transition-all hover:bg-red-400/10',
+            effectiveCollapsed && !isMobileLayout ? 'overflow-visible' : 'overflow-hidden',
             effectiveCollapsed ? 'justify-center px-2 py-2' : 'items-center gap-3 px-3 py-2'
           )}
         >
           <LogOut size={18} strokeWidth={2} className="shrink-0" />
           <span className={cn('font-medium', effectiveCollapsed && 'sr-only')}>Sair</span>
+          {effectiveCollapsed && !isMobileLayout ? (
+            <span className={collapsedItemTooltipClass} aria-hidden="true">
+              Sair
+            </span>
+          ) : null}
         </button>
 
         <div
