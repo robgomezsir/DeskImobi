@@ -44,42 +44,50 @@ function FlowPhaseCard({
 }) {
   return (
     <div
-      className="glass bv-card-hover flex h-full min-h-0 flex-col space-y-4 rounded-3xl p-5 sm:p-6"
+      className="glass bv-card-hover flex h-full min-h-0 flex-col items-center rounded-3xl p-5 sm:p-6"
       style={glassBackdropStyle}
     >
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">{title}</h3>
-        <span className="text-lg font-bold tabular-nums text-bv-text">{pct}%</span>
-      </div>
-      <input
-        type="range"
-        min={0}
-        max={100}
-        value={pct}
-        onChange={(e) => onPctChange(Number(e.target.value))}
-        style={{ '--bv-flow-fill': `${pct}%` }}
-        className="bv-flow-slider h-2 w-full cursor-pointer appearance-none rounded-full accent-bv-green"
-        aria-label={`Percentagem ${title}`}
-      />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-bv-muted">Parcelas</label>
-          <input
-            type="number"
-            min={1}
-            step={1}
-            className="input-field"
-            value={parcelas}
-            onChange={(e) => onParcelasChange(Math.max(1, Number(e.target.value) || 1))}
-          />
+      {/*
+        Bloco centrado no cartão: mesmas 4 linhas (título/% · slider · rótulos · campos),
+        largura máxima para não colar nas bordas em cards largos.
+      */}
+      <div className="flex w-full max-w-md flex-col justify-center gap-4">
+        <div className="flex w-full items-center justify-between gap-4">
+          <h3 className="min-w-0 text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">
+            {title}
+          </h3>
+          <span className="shrink-0 text-lg font-bold tabular-nums text-bv-text">{pct}%</span>
         </div>
-        <div className="space-y-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-bv-muted">
-            Valor por parcela
-          </label>
-          <p className="flex min-h-[42px] items-center rounded-md border border-[var(--line-subtle)] bg-bv-surface-muted/40 px-3 text-lg font-bold tabular-nums text-bv-green">
-            {valorTotalOk ? formatCurrency(valorParcela) : 'R$ 0,00'}
-          </p>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={pct}
+          onChange={(e) => onPctChange(Number(e.target.value))}
+          style={{ '--bv-flow-fill': `${pct}%` }}
+          className="bv-flow-slider h-2 w-full cursor-pointer appearance-none rounded-full accent-bv-green"
+          aria-label={`Percentagem ${title}`}
+        />
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-6">
+          <div className="flex w-full flex-col space-y-2">
+            <label className="text-xs font-medium uppercase tracking-wider text-bv-muted">Parcelas</label>
+            <input
+              type="number"
+              min={1}
+              step={1}
+              className="input-field w-full"
+              value={parcelas}
+              onChange={(e) => onParcelasChange(Math.max(1, Number(e.target.value) || 1))}
+            />
+          </div>
+          <div className="flex w-full flex-col space-y-2">
+            <label className="text-xs font-medium uppercase tracking-wider text-bv-muted">
+              Valor por parcela
+            </label>
+            <p className="flex min-h-[42px] w-full items-center justify-end rounded-md border border-[var(--line-subtle)] bg-bv-surface-muted/40 px-3 text-right text-lg font-bold tabular-nums text-bv-green">
+              {valorTotalOk ? formatCurrency(valorParcela) : 'R$ 0,00'}
+            </p>
+          </div>
         </div>
       </div>
     </div>
