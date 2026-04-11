@@ -39,7 +39,6 @@ function FlowPhaseCard({
   parcelas,
   onParcelasChange,
   valorParcela,
-  montanteFase,
   valorTotalOk,
   glassBackdropStyle,
 }) {
@@ -52,20 +51,14 @@ function FlowPhaseCard({
       {/*
         Bloco centrado no cartão: mesmas 4 linhas (título/% · slider · rótulos · campos),
         largura máxima para não colar nas bordas em cards largos.
-        % e montante da fase derivam do valor total do imóvel; valor/parcela = montante ÷ parcelas.
+        Montante da fase = valor total × %; valor/parcela = montante ÷ parcelas.
       */}
       <div className="flex w-full max-w-md flex-col justify-center gap-4">
-        <div className="flex w-full items-start justify-between gap-4">
+        <div className="flex w-full items-center justify-between gap-4">
           <h3 className="min-w-0 text-xs font-semibold uppercase tracking-[0.12em] text-bv-text">
             {title}
           </h3>
-          <div className="shrink-0 text-right">
-            <p className="text-lg font-bold tabular-nums text-bv-text">{pct}%</p>
-            <p className="mt-0.5 text-xs font-medium tabular-nums text-bv-green">
-              {valorTotalOk ? formatCurrency(montanteFase) : '—'}
-            </p>
-            <p className="mt-0.5 text-[10px] leading-tight text-bv-muted">sobre o valor total</p>
-          </div>
+          <span className="shrink-0 text-lg font-bold tabular-nums text-bv-text">{pct}%</span>
         </div>
         <div className="space-y-1.5">
           <input
@@ -252,7 +245,6 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasEntrada,
       onParcelasChange: (n) => setParcelas('parcelasEntrada', n),
       valorParcela: buckets?.entrada.valorParcela ?? 0,
-      montanteFase: buckets?.entrada.totalFase ?? 0,
     },
     mensais: {
       pct: flow.pctMensais,
@@ -260,7 +252,6 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasMensais,
       onParcelasChange: (n) => setParcelas('parcelasMensais', n),
       valorParcela: buckets?.mensais.valorParcela ?? 0,
-      montanteFase: buckets?.mensais.totalFase ?? 0,
     },
     intercaladas: {
       pct: flow.pctIntercaladas,
@@ -268,7 +259,6 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasIntercaladas,
       onParcelasChange: (n) => setParcelas('parcelasIntercaladas', n),
       valorParcela: buckets?.intercaladas.valorParcela ?? 0,
-      montanteFase: buckets?.intercaladas.totalFase ?? 0,
     },
     chaves: {
       pct: flow.pctChaves,
@@ -276,7 +266,6 @@ export default function FinancialCalculator() {
       parcelas: flow.parcelasChaves,
       onParcelasChange: (n) => setParcelas('parcelasChaves', n),
       valorParcela: buckets?.chaves.valorParcela ?? 0,
-      montanteFase: buckets?.chaves.totalFase ?? 0,
     },
   };
 
@@ -392,7 +381,6 @@ export default function FinancialCalculator() {
               parcelas={phaseProps[key].parcelas}
               onParcelasChange={phaseProps[key].onParcelasChange}
               valorParcela={phaseProps[key].valorParcela}
-              montanteFase={phaseProps[key].montanteFase}
               valorTotalOk={valorTotalOk}
               glassBackdropStyle={glassBackdropStyle}
             />
