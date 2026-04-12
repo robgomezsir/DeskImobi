@@ -1,13 +1,13 @@
-/** Percentagens e parcelas padrão alinhadas à referência Lancaster / Broker Vision. */
+/** Percentagens e parcelas padrão ao abrir a calculadora (soma = 100%). */
 
 export const DEFAULT_FLOW_PAYMENT = {
   pctEntrada: 10,
-  pctMensais: 60,
-  pctIntercaladas: 10,
-  pctChaves: 20,
+  pctMensais: 25,
+  pctIntercaladas: 25,
+  pctChaves: 40,
   parcelasEntrada: 1,
-  parcelasMensais: 120,
-  parcelasIntercaladas: 10,
+  parcelasMensais: 48,
+  parcelasIntercaladas: 8,
   parcelasChaves: 1,
 };
 
