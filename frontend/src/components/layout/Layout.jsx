@@ -45,10 +45,10 @@ export function Layout() {
       <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col bg-transparent">
         <SetAppToolbarContext.Provider value={setToolbar}>
           <SetAppFabContext.Provider value={setFab}>
-            <header className="flex shrink-0 items-center gap-3 border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:gap-4 sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
+            <header className="flex shrink-0 items-center border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
               <Link
                 to="/dashboard"
-                className="group shrink-0 rounded-lg outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-bv-green/50"
+                className="group shrink-0 rounded-lg pr-3 outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-bv-green/50 sm:pr-4"
                 aria-label="BrokerVision — ir para o Dashboard"
               >
                 <img
@@ -59,8 +59,10 @@ export function Layout() {
                   height={32}
                 />
               </Link>
-              <div className="flex min-h-11 min-w-0 flex-1 items-center gap-2 sm:gap-3">{toolbarLeading}</div>
-              <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
+              <div className="flex min-h-11 min-w-0 flex-1 items-center gap-2 border-l border-[var(--line-subtle)] pl-3 sm:gap-3 sm:pl-4">
+                {toolbarLeading}
+              </div>
+              <div className="flex min-w-0 shrink-0 items-center gap-2 pl-2 sm:gap-3 sm:pl-3">
                 {location.pathname === '/dashboard' && dashboardGreeting ? (
                   <p
                     className="max-w-[min(46vw,8.75rem)] truncate text-right text-[10px] leading-tight text-bv-muted sm:max-w-[14rem] sm:text-sm sm:leading-normal"
