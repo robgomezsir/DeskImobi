@@ -1,6 +1,39 @@
 /** Limite de caracteres numéricos (reais + centavos) para evitar valores absurdos. */
 const MAX_DIGITS = 15;
 
+/** Quantidade máxima de dígitos no buffer de centavos (entrada dígito a dígito). */
+export const MAX_CENT_DIGITS = 15;
+
+/**
+ * Converte sequência de dígitos (centavos crus) para reais.
+ * Ex.: "500" → 5,00 | "50000000" → 500.000,00
+ *
+ * @param {string} digits
+ * @returns {number}
+ */
+export function centDigitsToReais(digits) {
+  if (!digits || typeof digits !== 'string') return 0;
+  const d = digits.replace(/\D/g, '').slice(0, MAX_CENT_DIGITS);
+  if (!d) return 0;
+  const cents = Number.parseInt(d, 10);
+  if (!Number.isFinite(cents)) return 0;
+  return cents / 100;
+}
+
+/**
+ * Cola texto (formato BR ou só dígitos) → string de dígitos de centavos para o buffer.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+export function brlPasteToCentDigitString(text) {
+  const n = parseCurrencyInputToReais(text);
+  const cents = Math.round(n * 100);
+  if (!Number.isFinite(cents) || cents <= 0) return '';
+  const s = String(cents);
+  return s.length > MAX_CENT_DIGITS ? s.slice(0, MAX_CENT_DIGITS) : s;
+}
+
 /**
  * Interpreta o campo de valor total:
  * - Colar / digitar formato BR: "R$ 500.000,00", "500.000,50", "1500,50"

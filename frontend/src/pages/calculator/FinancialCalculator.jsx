@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Calculator, Check, Copy, Download, Home, Layers } from 'lucide-react';
 import { toast } from 'sonner';
 import { generateFlowPaymentPDF } from '../../services/pdf.service';
@@ -15,7 +15,12 @@ import {
   maxPctForPhaseToTotal100,
   sumFlowPercentages,
 } from './flowPaymentCalculations';
-import { formatBRL, parseCurrencyInputToReais } from './currencyBRL';
+import {
+  formatBRL,
+  brlPasteToCentDigitString,
+  centDigitsToReais,
+  MAX_CENT_DIGITS,
+} from './currencyBRL';
 
 /** Comparação para meta de 100% nos avisos (sugestões). */
 const SUM_EPS = 0.01;
@@ -166,12 +171,88 @@ export default function FinancialCalculator() {
 
   const [projectName, setProjectName] = useState('');
   const [unit, setUnit] = useState('');
-  const [valorTotal, setValorTotal] = useState(0);
+  /** Buffer só com dígitos = centavos (evita reparse de texto formatado a cada tecla). */
+  const [valorCentDigits, setValorCentDigits] = useState('');
   const [flow, setFlow] = useState(() => ({ ...DEFAULT_FLOW_PAYMENT }));
   const [flowConfirmed, setFlowConfirmed] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  const skipNextKeyDownRef = useRef(false);
+
+  const valorTotal = useMemo(() => centDigitsToReais(valorCentDigits), [valorCentDigits]);
+
   const valorTotalOk = Number(valorTotal) > 0;
+
+  const appendCentDigit = useCallback((digit) => {
+    setValorCentDigits((prev) => (prev + digit).slice(0, MAX_CENT_DIGITS));
+    setFlowConfirmed(false);
+  }, []);
+
+  const removeLastCentDigit = useCallback(() => {
+    setValorCentDigits((prev) => prev.slice(0, -1));
+    setFlowConfirmed(false);
+  }, []);
+
+  const removeFirstCentDigit = useCallback(() => {
+    setValorCentDigits((prev) => prev.slice(1));
+    setFlowConfirmed(false);
+  }, []);
+
+  const handleValorBeforeInput = useCallback(
+    (e) => {
+      const ie = e.nativeEvent;
+      if (ie.inputType === 'insertFromPaste') return;
+      if (ie.inputType === 'insertText' && ie.data !== null && /^\d$/.test(ie.data)) {
+        e.preventDefault();
+        skipNextKeyDownRef.current = true;
+        appendCentDigit(ie.data);
+        return;
+      }
+      if (ie.inputType === 'deleteContentBackward') {
+        e.preventDefault();
+        skipNextKeyDownRef.current = true;
+        removeLastCentDigit();
+        return;
+      }
+      if (ie.inputType === 'deleteContentForward') {
+        e.preventDefault();
+        skipNextKeyDownRef.current = true;
+        removeFirstCentDigit();
+      }
+    },
+    [appendCentDigit, removeLastCentDigit, removeFirstCentDigit]
+  );
+
+  const handleValorKeyDown = useCallback(
+    (e) => {
+      if (skipNextKeyDownRef.current) {
+        skipNextKeyDownRef.current = false;
+        return;
+      }
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault();
+        appendCentDigit(e.key);
+        return;
+      }
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        removeLastCentDigit();
+        return;
+      }
+      if (e.key === 'Delete') {
+        e.preventDefault();
+        removeFirstCentDigit();
+      }
+    },
+    [appendCentDigit, removeLastCentDigit, removeFirstCentDigit]
+  );
+
+  const handleValorPaste = useCallback((e) => {
+    e.preventDefault();
+    setValorCentDigits(brlPasteToCentDigitString(e.clipboardData.getData('text')));
+    setFlowConfirmed(false);
+  }, []);
 
   const buckets = useMemo(() => {
     if (!valorTotalOk) return null;
@@ -406,20 +487,18 @@ export default function FinancialCalculator() {
                 <input
                   id="valor-total-imovel"
                   type="text"
-                  inputMode="decimal"
+                  inputMode="numeric"
                   autoComplete="off"
                   autoCorrect="off"
                   enterKeyHint="done"
                   className="input-field text-right tabular-nums"
                   placeholder="R$ 0,00"
-                  value={valorTotal === 0 ? '' : formatBRL(valorTotal)}
-                  onChange={(e) => {
-                    const raw = e.target.value;
-                    const n = parseCurrencyInputToReais(raw);
-                    const rounded = Math.round(n * 100) / 100;
-                    setValorTotal(Number.isFinite(rounded) ? rounded : 0);
-                    setFlowConfirmed(false);
-                  }}
+                  aria-label="Valor total do imóvel em reais"
+                  value={valorCentDigits === '' ? '' : formatBRL(valorTotal)}
+                  onChange={() => {}}
+                  onBeforeInput={handleValorBeforeInput}
+                  onKeyDown={handleValorKeyDown}
+                  onPaste={handleValorPaste}
                 />
               </div>
             </div>
