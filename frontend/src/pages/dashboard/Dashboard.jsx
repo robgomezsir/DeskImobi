@@ -135,7 +135,7 @@ export default function Dashboard() {
 
   useRegisterAppToolbar(
     () => (
-      <PageToolbar title={dashboard.officialName} subtitle={dashboard.tagline} />
+      <PageToolbar title={dashboard.officialName} />
     ),
     []
   );

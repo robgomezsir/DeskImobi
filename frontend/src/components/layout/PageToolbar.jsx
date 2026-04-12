@@ -1,11 +1,10 @@
 /**
- * Faixa padrão de título + subtítulo + área de ações para o header do layout autenticado.
- * Em mobile (abaixo de md): só o título (uma linha, truncado); kicker e subtítulo ocultos.
+ * Faixa padrão de título + área de ações para o header do layout autenticado.
+ * Em mobile (abaixo de md): só o título (uma linha, truncado); kicker oculto.
  * Use dentro de useRegisterAppToolbar(() => <PageToolbar ... />, deps).
  */
 export function PageToolbar({
   title,
-  subtitle,
   kicker,
   actions,
   constrainWidth = false,
@@ -29,11 +28,6 @@ export function PageToolbar({
         <h1 className="max-w-full truncate text-left font-display text-base font-bold leading-tight tracking-tight text-bv-text md:text-2xl md:leading-normal lg:text-3xl">
           {title}
         </h1>
-        {subtitle != null && subtitle !== '' ? (
-          <p className="mt-0.5 hidden max-w-full text-pretty text-sm text-bv-muted md:mt-1 md:block md:truncate">
-            {subtitle}
-          </p>
-        ) : null}
       </div>
       {actions != null ? actions : null}
     </div>

@@ -174,7 +174,7 @@ export default function CRM() {
 
   useRegisterAppToolbar(
     () => (
-      <PageToolbar title={crm.officialName} subtitle={crm.tagline} />
+      <PageToolbar title={crm.officialName} />
     ),
     []
   );

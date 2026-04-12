@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { Calculator, Check, Copy, Download, Home, Layers } from 'lucide-react';
 import { toast } from 'sonner';
 import { generateFlowPaymentPDF } from '../../services/pdf.service';
-import { BV_MODULES } from '../../constants/brandModules';
 import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 import { useRegisterAppFab } from '../../contexts/AppFabContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
@@ -16,8 +15,6 @@ import {
   maxPctForPhaseToTotal100,
   sumFlowPercentages,
 } from './flowPaymentCalculations';
-
-const calc = BV_MODULES.calc;
 
 /** Comparação para meta de 100% nos avisos (sugestões). */
 const SUM_EPS = 0.01;
@@ -311,7 +308,7 @@ export default function FinancialCalculator() {
 
   useRegisterAppToolbar(
     () => (
-      <PageToolbar title="Calculadora de fluxo" subtitle={calc.tagline} />
+      <PageToolbar title="Calculadora de fluxo" />
     ),
     []
   );

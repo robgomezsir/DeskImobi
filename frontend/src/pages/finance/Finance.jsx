@@ -48,7 +48,7 @@ const commissions = [
 export default function Finance() {
   useRegisterAppToolbar(
     () => (
-      <PageToolbar title={finance.officialName} subtitle={finance.tagline} />
+      <PageToolbar title={finance.officialName} />
     ),
     []
   );

@@ -10,7 +10,7 @@ export default function Integrations() {
   const glassBackdropStyle = useGlassBackdropStyle();
 
   useRegisterAppToolbar(
-    () => <PageToolbar title={integrations.officialName} subtitle={integrations.tagline} />,
+    () => <PageToolbar title={integrations.officialName} />,
     []
   );
 

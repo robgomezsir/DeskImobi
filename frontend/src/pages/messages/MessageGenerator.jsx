@@ -185,7 +185,7 @@ export default function MessageGenerator() {
   };
 
   useRegisterAppToolbar(
-    () => <PageToolbar title={flow.officialName} subtitle={flow.tagline} />,
+    () => <PageToolbar title={flow.officialName} />,
     []
   );
 

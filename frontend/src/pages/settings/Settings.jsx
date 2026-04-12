@@ -8,7 +8,7 @@ export default function Settings() {
 
   useRegisterAppToolbar(
     () => (
-      <PageToolbar title="Configurações" subtitle="Preferências da conta e do sistema" />
+      <PageToolbar title="Configurações" />
     ),
     []
   );
