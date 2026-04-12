@@ -20,15 +20,19 @@ function displayNameFromUser(user) {
   return local || '—';
 }
 
-/** Espaço: mobile = barra inferior; desktop (lg) = rail à esquerda + margem inferior reduzida */
-const MAIN_PAD_NAV = [
-  'max-lg:pb-[max(6.25rem,calc(0.75rem+env(safe-area-inset-bottom)))]',
-  'lg:pb-4 lg:pl-[max(4.75rem,env(safe-area-inset-left))]',
-].join(' ');
+/** Desktop (lg): afastamento do rail vertical (~3,5rem) + folga antes do conteúdo */
+const RAIL_INSET_LG =
+  'lg:pl-[max(6rem,calc(1.25rem+env(safe-area-inset-left)+3.75rem))]';
+
+/** Espaço: mobile = barra inferior; desktop = rail à esquerda + margem inferior */
+const MAIN_PAD_NAV = ['max-lg:pb-[max(6.25rem,calc(0.75rem+env(safe-area-inset-bottom)))]', 'lg:pb-4', RAIL_INSET_LG].join(
+  ' '
+);
 
 const MAIN_PAD_NAV_FAB = [
   'max-lg:pb-[max(10.5rem,calc(4.75rem+env(safe-area-inset-bottom)))]',
-  'lg:pb-[max(1.25rem,env(safe-area-inset-bottom))] lg:pl-[max(4.75rem,env(safe-area-inset-left))]',
+  'lg:pb-[max(1.25rem,env(safe-area-inset-bottom))]',
+  RAIL_INSET_LG,
 ].join(' ');
 
 export function Layout() {
@@ -52,7 +56,9 @@ export function Layout() {
       <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col bg-transparent">
         <SetAppToolbarContext.Provider value={setToolbar}>
           <SetAppFabContext.Provider value={setFab}>
-            <header className="flex shrink-0 items-center border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
+            <header
+              className={`flex shrink-0 items-center border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8 ${RAIL_INSET_LG}`}
+            >
               <Link
                 to="/dashboard"
                 className="group flex shrink-0 items-center rounded-lg pr-3 outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-bv-green/50 sm:pr-4"

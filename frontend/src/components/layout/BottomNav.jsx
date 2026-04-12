@@ -54,8 +54,9 @@ export function BottomNav() {
       className={cn(
         'pointer-events-none fixed z-50',
         'inset-x-0 bottom-0 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2',
-        'lg:inset-auto lg:bottom-auto lg:left-0 lg:right-auto lg:top-1/2 lg:-translate-y-1/2',
-        'lg:px-0 lg:py-0 lg:pl-[max(0.75rem,env(safe-area-inset-left))]'
+        'lg:inset-y-0 lg:bottom-0 lg:left-0 lg:right-auto lg:top-0 lg:h-[100dvh] lg:translate-y-0',
+        'lg:flex lg:min-h-0 lg:flex-col lg:box-border lg:pt-[max(0.75rem,env(safe-area-inset-top))]',
+        'lg:pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:pl-[max(0.75rem,env(safe-area-inset-left))] lg:pr-2'
       )}
     >
       <div
@@ -64,12 +65,12 @@ export function BottomNav() {
           'bg-bv-page/95 shadow-[0_-4px_24px_rgba(0,0,0,0.12)] backdrop-blur-md',
           'dark:shadow-[0_-4px_32px_rgba(0,0,0,0.45)]',
           'px-1.5 py-2 sm:gap-2 sm:px-3',
-          'lg:mx-0 lg:max-w-none lg:flex-col lg:gap-1 lg:px-2 lg:py-2',
+          'lg:mx-0 lg:flex lg:min-h-0 lg:flex-1 lg:max-w-none lg:min-w-[3.25rem] lg:flex-col lg:justify-between lg:gap-0 lg:px-2 lg:py-3',
           'lg:shadow-[4px_0_24px_rgba(0,0,0,0.14)] lg:backdrop-blur-md',
           'dark:lg:shadow-[4px_0_32px_rgba(0,0,0,0.45)]'
         )}
       >
-        <div className="flex min-w-0 flex-1 items-stretch justify-between gap-0.5 sm:justify-evenly sm:gap-1 lg:flex-none lg:flex-col lg:justify-start lg:gap-0.5">
+        <div className="flex min-w-0 flex-1 items-stretch justify-between gap-0.5 sm:justify-evenly sm:gap-1 lg:min-h-0 lg:flex-none lg:flex-col lg:items-center lg:justify-start lg:gap-1 lg:overflow-y-auto lg:pt-0">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             const Icon = item.icon;
@@ -115,7 +116,7 @@ export function BottomNav() {
         <div
           className={cn(
             'flex shrink-0 items-center gap-0.5 border-l border-[var(--line-subtle)] pl-2 sm:gap-1 sm:pl-3',
-            'lg:flex-col lg:border-l-0 lg:border-t lg:border-[var(--line-subtle)] lg:pl-0 lg:pt-2 lg:gap-1'
+            'lg:flex-col lg:items-center lg:gap-1 lg:border-l-0 lg:border-t lg:border-[var(--line-subtle)] lg:pl-0 lg:pt-3'
           )}
         >
           <Link
