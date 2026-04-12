@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
 import { formatClientStatus } from './clientStatusLabel';
+import { CrmModalShell } from './CrmModalShell';
 
 const STATUS_OPTIONS = ['lead', 'contact', 'negotiation', 'closed', 'lost'];
 
@@ -68,20 +69,25 @@ export default function EditClientModal({ client, isOpen, onClose, onSuccess }) 
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-[#141414]/85 p-0 backdrop-blur-none animate-in fade-in duration-300 sm:items-center sm:bg-[#141414]/80 sm:p-4 sm:backdrop-blur-md">
-      <div className="glass-blur max-h-[min(90dvh,100%)] w-full max-w-lg overflow-y-auto rounded-t-card-3xl border border-[var(--line)] shadow-2xl animate-in zoom-in duration-300 sm:rounded-card-3xl">
-        <div className="flex justify-between items-center px-6 py-5 border-b border-[var(--line-subtle)] bg-bv-surface-muted">
-          <h3 className="text-xl font-display font-bold tracking-tight text-bv-text">Editar cliente</h3>
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-2 hover:bg-bv-surface-strong rounded-xl transition-colors text-bv-muted"
-          >
-            <X size={20} />
-          </button>
-        </div>
+    <CrmModalShell open={isOpen} onClose={onClose} ariaLabelledBy="edit-client-title">
+      <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--line-subtle)] bg-bv-surface-muted px-4 py-4 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6 sm:py-5 sm:pt-5">
+        <h3 id="edit-client-title" className="text-lg font-display font-bold tracking-tight text-bv-text sm:text-xl">
+          Editar cliente
+        </h3>
+        <button
+          type="button"
+          onClick={onClose}
+          className="shrink-0 rounded-xl p-2 text-bv-muted transition-colors hover:bg-bv-surface-strong"
+          aria-label="Fechar"
+        >
+          <X size={20} />
+        </button>
+      </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+      <form
+        onSubmit={handleSubmit}
+        className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-y-contain px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-6"
+      >
           <div className="space-y-2">
             <label className="text-sm font-medium text-bv-muted ml-1">Nome *</label>
             <input
@@ -162,16 +168,15 @@ export default function EditClientModal({ client, isOpen, onClose, onSuccess }) 
             />
           </div>
 
-          <div className="pt-4 flex gap-3">
-            <button type="button" onClick={onClose} className="btn btn-outline flex-1 h-12 text-bv-muted">
-              Cancelar
-            </button>
-            <button type="submit" disabled={loading} className="btn btn-primary flex-[2] h-12 text-black font-bold">
-              {loading ? <Loader2 className="animate-spin" size={20} /> : 'Salvar'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="flex gap-3 pt-4">
+          <button type="button" onClick={onClose} className="btn btn-outline h-12 flex-1 text-bv-muted">
+            Cancelar
+          </button>
+          <button type="submit" disabled={loading} className="btn btn-primary h-12 flex-[2] font-bold text-black">
+            {loading ? <Loader2 className="animate-spin" size={20} /> : 'Salvar'}
+          </button>
+        </div>
+      </form>
+    </CrmModalShell>
   );
 }
