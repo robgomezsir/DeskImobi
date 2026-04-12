@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
+import { toast } from 'sonner';
 import {
   Users,
   Sprout,
@@ -28,6 +29,10 @@ import { useRegisterAppToolbar } from '../../contexts/AppToolbarContext';
 import { PageToolbar } from '../../components/layout/PageToolbar';
 import { BvModuleCanvas } from '../../components/layout/BvModuleCanvas';
 import { useGlassBackdropStyle } from '../../hooks/useGlassBackdropStyle';
+import {
+  buildConversionStyleInsight,
+  countStagnantClients,
+} from './crmInsightsFromClients';
 
 const dashboard = BV_MODULES.dashboard;
 
@@ -53,39 +58,45 @@ export default function Dashboard() {
     activeNegotiations: 0,
     closedDeals: 0,
   });
+  const [crmClients, setCrmClients] = useState([]);
   const { user } = useAuth();
   const glassBackdropStyle = useGlassBackdropStyle({ dashboard: true });
 
   useEffect(() => {
-    const fetchMetrics = async () => {
-      const { count: total } = await supabase
+    if (!user?.id) return undefined;
+    let cancelled = false;
+
+    const loadCrm = async () => {
+      const { data, error } = await supabase
         .from('clients')
-        .select('*', { count: 'exact', head: true })
+        .select('id, status, last_contacted_at, created_at, updated_at')
         .eq('user_id', user.id)
         .is('deleted_at', null);
 
-      const { count: nego } = await supabase
-        .from('clients')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .eq('status', 'negotiation');
-
-      const { count: closed } = await supabase
-        .from('clients')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .eq('status', 'closed');
-
+      if (cancelled) return;
+      if (error) {
+        toast.error('Erro ao carregar dados do CRM: ' + error.message);
+        return;
+      }
+      const list = data ?? [];
+      setCrmClients(list);
+      const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
       setMetrics({
-        totalClients: total || 0,
-        newLeads: total ? Math.floor(total * 0.3) : 0,
-        activeNegotiations: nego || 0,
-        closedDeals: closed || 0,
+        totalClients: list.length,
+        newLeads: list.filter((c) => new Date(c.created_at).getTime() >= sevenDaysAgo).length,
+        activeNegotiations: list.filter((c) => c.status === 'negotiation').length,
+        closedDeals: list.filter((c) => c.status === 'closed').length,
       });
     };
 
-    fetchMetrics();
-  }, [user]);
+    loadCrm();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
+
+  const stagnantCount = useMemo(() => countStagnantClients(crmClients, 10), [crmClients]);
+  const conversionInsight = useMemo(() => buildConversionStyleInsight(crmClients), [crmClients]);
 
   useEffect(() => {
     let cancelled = false;
@@ -131,6 +142,10 @@ export default function Dashboard() {
 
   const goToCrm = () => {
     navigate('/crm');
+  };
+
+  const goToInsightsModule = () => {
+    navigate('/insights');
   };
 
   useRegisterAppToolbar(
@@ -290,17 +305,39 @@ export default function Dashboard() {
           <div className="flex flex-1 flex-col space-y-6">
             <div className="space-y-3 rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
               <p className="text-sm leading-relaxed text-bv-text">
-                Você tem <span className="font-bold text-bv-green">3 clientes</span> estagnados há mais de 10 dias.
+                {stagnantCount === 0 ? (
+                  crmClients.length === 0 ? (
+                    <>Cadastre clientes no CRM para acompanhar follow-up e estatísticas aqui.</>
+                  ) : (
+                    <>
+                      Nenhum cliente em pipeline (lead, contato ou negociação) está{' '}
+                      <span className="font-semibold text-bv-text">sem movimento no CRM há mais de 10 dias</span>.
+                    </>
+                  )
+                ) : stagnantCount === 1 ? (
+                  <>
+                    Você tem <span className="font-bold text-bv-green">1 cliente</span> estagnado há mais de 10 dias
+                    (última atualização ou contato no CRM).
+                  </>
+                ) : (
+                  <>
+                    Você tem <span className="font-bold text-bv-green">{stagnantCount} clientes</span> estagnados há
+                    mais de 10 dias (última atualização ou contato no CRM).
+                  </>
+                )}
               </p>
-              <button type="button" className="btn btn-primary h-10 w-full text-xs font-bold text-black">
+              <button
+                type="button"
+                onClick={goToCrm}
+                className="btn btn-primary h-10 w-full text-xs font-bold text-black"
+              >
                 Reativar follow-up
               </button>
             </div>
 
             <div className="rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
               <p className="text-sm italic leading-relaxed text-bv-muted">
-                &ldquo;Sua taxa de conversão aumentou 5% este mês após começar a usar os scripts de objeção
-                personalizados.&rdquo;
+                &ldquo;{conversionInsight.quote}&rdquo;
               </p>
             </div>
           </div>
@@ -308,6 +345,7 @@ export default function Dashboard() {
           <div className="mt-8 border-t border-[var(--line-subtle)] pt-6">
             <button
               type="button"
+              onClick={goToInsightsModule}
               className="group flex w-full items-center justify-between text-bv-muted transition-colors hover:text-bv-text"
             >
               <span className="text-sm font-medium">Ver todos os insights</span>
