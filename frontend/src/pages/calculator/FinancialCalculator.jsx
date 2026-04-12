@@ -177,7 +177,8 @@ export default function FinancialCalculator() {
   const [flowConfirmed, setFlowConfirmed] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const skipNextKeyDownRef = useRef(false);
+  /** Evita duplicar ação quando `beforeinput` e `input` disparam o mesmo gesto (desktop). */
+  const beforeInputHandledRef = useRef(false);
 
   const valorTotal = useMemo(() => centDigitsToReais(valorCentDigits), [valorCentDigits]);
 
@@ -198,50 +199,65 @@ export default function FinancialCalculator() {
     setFlowConfirmed(false);
   }, []);
 
+  const scheduleClearBeforeInputFlag = useCallback(() => {
+    queueMicrotask(() => {
+      if (beforeInputHandledRef.current) {
+        beforeInputHandledRef.current = false;
+      }
+    });
+  }, []);
+
   const handleValorBeforeInput = useCallback(
     (e) => {
       const ie = e.nativeEvent;
       if (ie.inputType === 'insertFromPaste') return;
       if (ie.inputType === 'insertText' && ie.data !== null && /^\d$/.test(ie.data)) {
         e.preventDefault();
-        skipNextKeyDownRef.current = true;
+        beforeInputHandledRef.current = true;
         appendCentDigit(ie.data);
+        scheduleClearBeforeInputFlag();
         return;
       }
       if (ie.inputType === 'deleteContentBackward') {
         e.preventDefault();
-        skipNextKeyDownRef.current = true;
+        beforeInputHandledRef.current = true;
         removeLastCentDigit();
+        scheduleClearBeforeInputFlag();
         return;
       }
       if (ie.inputType === 'deleteContentForward') {
         e.preventDefault();
-        skipNextKeyDownRef.current = true;
+        beforeInputHandledRef.current = true;
         removeFirstCentDigit();
+        scheduleClearBeforeInputFlag();
       }
     },
-    [appendCentDigit, removeLastCentDigit, removeFirstCentDigit]
+    [appendCentDigit, removeLastCentDigit, removeFirstCentDigit, scheduleClearBeforeInputFlag]
   );
 
-  const handleValorKeyDown = useCallback(
+  /**
+   * Teclados virtuais (iOS/Android) muitas vezes só disparam `input` com `inputType` — não `beforeinput`/`keydown` no apagar.
+   */
+  const handleValorInput = useCallback(
     (e) => {
-      if (skipNextKeyDownRef.current) {
-        skipNextKeyDownRef.current = false;
+      const ne = e.nativeEvent;
+      if (!ne || typeof ne.inputType !== 'string') return;
+      if (ne.inputType === 'insertFromPaste') return;
+
+      if (beforeInputHandledRef.current) {
+        beforeInputHandledRef.current = false;
         return;
       }
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
-      if (e.key >= '0' && e.key <= '9') {
-        e.preventDefault();
-        appendCentDigit(e.key);
+
+      if (ne.inputType === 'insertText' && ne.data !== null && /^\d$/.test(ne.data)) {
+        appendCentDigit(ne.data);
         return;
       }
-      if (e.key === 'Backspace') {
-        e.preventDefault();
+      if (ne.inputType === 'deleteContentBackward') {
         removeLastCentDigit();
         return;
       }
-      if (e.key === 'Delete') {
-        e.preventDefault();
+      if (ne.inputType === 'deleteContentForward') {
         removeFirstCentDigit();
       }
     },
@@ -497,7 +513,7 @@ export default function FinancialCalculator() {
                   value={valorCentDigits === '' ? '' : formatBRL(valorTotal)}
                   onChange={() => {}}
                   onBeforeInput={handleValorBeforeInput}
-                  onKeyDown={handleValorKeyDown}
+                  onInput={handleValorInput}
                   onPaste={handleValorPaste}
                 />
               </div>
