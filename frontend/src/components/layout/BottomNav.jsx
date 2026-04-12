@@ -17,7 +17,7 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-/** Rótulos curtos para caber na barra inferior em ecrãs estreitos */
+/** Rótulos curtos na barra inferior (mobile). */
 const BOTTOM_LABEL = {
   dashboard: 'Dashboard',
   crm: 'CRM',
@@ -41,7 +41,7 @@ const navItems = BV_MODULE_KEYS.map((key) => ({
 }));
 
 /**
- * Navegação principal: barra flutuante horizontal fixa na parte inferior.
+ * Navegação principal: barra inferior horizontal (mobile) ou rail vertical à esquerda (lg+), só ícones no web com etiqueta ao hover.
  */
 export function BottomNav() {
   const location = useLocation();
@@ -51,54 +51,79 @@ export function BottomNav() {
     <nav
       id="app-sidebar-nav"
       aria-label="Navegação principal"
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2"
+      className={cn(
+        'pointer-events-none fixed z-50',
+        'inset-x-0 bottom-0 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2',
+        'lg:inset-auto lg:bottom-auto lg:left-0 lg:right-auto lg:top-1/2 lg:-translate-y-1/2',
+        'lg:px-0 lg:py-0 lg:pl-[max(0.75rem,env(safe-area-inset-left))]'
+      )}
     >
       <div
         className={cn(
-          'pointer-events-auto mx-auto flex max-w-5xl items-stretch gap-1 rounded-card-3xl border border-[var(--line)]',
+          'pointer-events-auto mx-auto flex max-w-5xl flex-row items-stretch gap-1 rounded-card-3xl border border-[var(--line)]',
           'bg-bv-page/95 shadow-[0_-4px_24px_rgba(0,0,0,0.12)] backdrop-blur-md',
           'dark:shadow-[0_-4px_32px_rgba(0,0,0,0.45)]',
-          'px-1.5 py-2 sm:gap-2 sm:px-3'
+          'px-1.5 py-2 sm:gap-2 sm:px-3',
+          'lg:mx-0 lg:max-w-none lg:flex-col lg:gap-1 lg:px-2 lg:py-2',
+          'lg:shadow-[4px_0_24px_rgba(0,0,0,0.14)] lg:backdrop-blur-md',
+          'dark:lg:shadow-[4px_0_32px_rgba(0,0,0,0.45)]'
         )}
       >
-        <div className="flex min-w-0 flex-1 items-stretch justify-between gap-0.5 sm:justify-evenly sm:gap-1">
+        <div className="flex min-w-0 flex-1 items-stretch justify-between gap-0.5 sm:justify-evenly sm:gap-1 lg:flex-none lg:flex-col lg:justify-start lg:gap-0.5">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             const Icon = item.icon;
             return (
-              <Link
-                key={item.path}
-                to={item.path}
-                aria-label={item.officialName}
-                aria-current={isActive ? 'page' : undefined}
-                className={cn(
-                  'bv-sidebar-nav-link group relative flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-lg px-1 py-1.5 transition-all sm:px-2',
-                  '[&>svg]:relative [&>svg]:z-[1] [&>span]:relative [&>span]:z-[1]',
-                  isActive
-                    ? 'border border-bv-card bg-bv-card-fill text-bv-green'
-                    : 'border border-transparent text-bv-muted hover:bg-[var(--hover-surface)] hover:text-bv-text'
-                )}
-              >
-                <Icon
-                  size={20}
-                  strokeWidth={2}
-                  className={cn('shrink-0', isActive ? 'text-bv-green' : 'text-bv-muted group-hover:text-bv-text')}
-                />
-                <span className="max-w-full truncate text-center text-[9px] font-medium leading-tight tracking-tight sm:text-[10px]">
-                  {item.bottomLabel}
-                </span>
-              </Link>
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  aria-label={item.officialName}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={cn(
+                    'bv-sidebar-nav-link group relative flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 overflow-visible rounded-lg px-1 py-1.5 transition-all sm:px-2',
+                    'lg:h-11 lg:w-11 lg:flex-none lg:justify-center lg:gap-0 lg:px-0 lg:py-0',
+                    '[&>svg]:relative [&>svg]:z-[1]',
+                    isActive
+                      ? 'border border-bv-card bg-bv-card-fill text-bv-green'
+                      : 'border border-transparent text-bv-muted hover:bg-[var(--hover-surface)] hover:text-bv-text'
+                  )}
+                >
+                  <Icon
+                    size={20}
+                    strokeWidth={2}
+                    className={cn('shrink-0', isActive ? 'text-bv-green' : 'text-bv-muted group-hover:text-bv-text')}
+                  />
+                  <span className="max-w-full truncate text-center text-[9px] font-medium leading-tight tracking-tight sm:text-[10px] lg:hidden">
+                    {item.bottomLabel}
+                  </span>
+                  <span
+                    className={cn(
+                      'bv-nav-tooltip pointer-events-none absolute left-full top-1/2 z-[60] ml-2 hidden -translate-y-1/2 whitespace-nowrap rounded-lg border border-[var(--line)]',
+                      'bg-[var(--bv-card-mold-bg)] px-2.5 py-1.5 text-xs font-medium text-bv-text opacity-0 shadow-md ring-1 ring-black/5 transition-opacity duration-200',
+                      'dark:ring-white/10',
+                      'lg:block lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100'
+                    )}
+                    aria-hidden
+                  >
+                    {item.officialName}
+                  </span>
+                </Link>
             );
           })}
         </div>
 
-        <div className="flex shrink-0 items-center gap-0.5 border-l border-[var(--line-subtle)] pl-2 sm:gap-1 sm:pl-3">
+        <div
+          className={cn(
+            'flex shrink-0 items-center gap-0.5 border-l border-[var(--line-subtle)] pl-2 sm:gap-1 sm:pl-3',
+            'lg:flex-col lg:border-l-0 lg:border-t lg:border-[var(--line-subtle)] lg:pl-0 lg:pt-2 lg:gap-1'
+          )}
+        >
           <Link
             to="/settings"
             aria-label="Configurações"
             aria-current={location.pathname === '/settings' ? 'page' : undefined}
             className={cn(
-              'bv-sidebar-nav-link group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg transition-all',
+              'bv-sidebar-nav-link group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-visible rounded-lg transition-all',
               '[&>svg]:relative [&>svg]:z-[1]',
               location.pathname === '/settings'
                 ? 'border border-bv-card bg-bv-card-fill text-bv-green'
@@ -112,15 +137,37 @@ export function BottomNav() {
                 location.pathname === '/settings' ? 'text-bv-green' : 'text-bv-muted group-hover:text-bv-text'
               )}
             />
+            <span
+              className={cn(
+                'bv-nav-tooltip pointer-events-none absolute left-full top-1/2 z-[60] ml-2 hidden -translate-y-1/2 whitespace-nowrap rounded-lg border border-[var(--line)]',
+                'bg-[var(--bv-card-mold-bg)] px-2.5 py-1.5 text-xs font-medium text-bv-text opacity-0 shadow-md ring-1 ring-black/5 transition-opacity duration-200',
+                'dark:ring-white/10',
+                'lg:block lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100'
+              )}
+              aria-hidden
+            >
+              Configurações
+            </span>
           </Link>
 
           <button
             type="button"
             onClick={signOut}
             aria-label="Sair"
-            className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-red-400 transition-all hover:bg-red-400/10"
+            className="group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-visible rounded-lg text-red-400 transition-all hover:bg-red-400/10"
           >
             <LogOut size={20} strokeWidth={2} />
+            <span
+              className={cn(
+                'bv-nav-tooltip pointer-events-none absolute left-full top-1/2 z-[60] ml-2 hidden -translate-y-1/2 whitespace-nowrap rounded-lg border border-[var(--line)]',
+                'bg-[var(--bv-card-mold-bg)] px-2.5 py-1.5 text-xs font-medium text-red-300 opacity-0 shadow-md ring-1 ring-black/5 transition-opacity duration-200',
+                'dark:ring-white/10',
+                'lg:block lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100'
+              )}
+              aria-hidden
+            >
+              Sair
+            </span>
           </button>
         </div>
       </div>

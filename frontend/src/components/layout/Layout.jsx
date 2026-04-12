@@ -20,10 +20,16 @@ function displayNameFromUser(user) {
   return local || '—';
 }
 
-/** Espaço reservado para a barra inferior flutuante + safe area */
-const MAIN_PAD_BOTTOM = 'pb-[max(6.25rem,calc(0.75rem+env(safe-area-inset-bottom)))]';
-const MAIN_PAD_BOTTOM_FAB =
-  'pb-[max(10.5rem,calc(4.75rem+env(safe-area-inset-bottom)))]';
+/** Espaço: mobile = barra inferior; desktop (lg) = rail à esquerda + margem inferior reduzida */
+const MAIN_PAD_NAV = [
+  'max-lg:pb-[max(6.25rem,calc(0.75rem+env(safe-area-inset-bottom)))]',
+  'lg:pb-4 lg:pl-[max(4.75rem,env(safe-area-inset-left))]',
+].join(' ');
+
+const MAIN_PAD_NAV_FAB = [
+  'max-lg:pb-[max(10.5rem,calc(4.75rem+env(safe-area-inset-bottom)))]',
+  'lg:pb-[max(1.25rem,env(safe-area-inset-bottom))] lg:pl-[max(4.75rem,env(safe-area-inset-left))]',
+].join(' ');
 
 export function Layout() {
   const { user } = useAuth();
@@ -88,14 +94,14 @@ export function Layout() {
               data-bv-page={location.pathname}
               className={
                 fabSlot
-                  ? `bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8 ${MAIN_PAD_BOTTOM_FAB}`
-                  : `bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8 ${MAIN_PAD_BOTTOM}`
+                  ? `bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8 ${MAIN_PAD_NAV_FAB}`
+                  : `bv-scroll-root min-h-0 flex-1 touch-pan-y overflow-y-auto overflow-x-hidden px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8 ${MAIN_PAD_NAV}`
               }
             >
               <Outlet />
             </main>
             {fabSlot ? (
-              <div className="pointer-events-none fixed right-0 z-[45] p-4 pr-[max(1rem,env(safe-area-inset-right))] pl-4 pt-2 bottom-[calc(5rem+env(safe-area-inset-bottom,0px))]">
+              <div className="pointer-events-none fixed right-0 z-[45] max-lg:bottom-[calc(5rem+env(safe-area-inset-bottom,0px))] max-lg:p-4 max-lg:pr-[max(1rem,env(safe-area-inset-right))] max-lg:pl-4 max-lg:pt-2 lg:bottom-6 lg:p-6 lg:pr-[max(1.5rem,env(safe-area-inset-right))]">
                 <div className="pointer-events-auto flex flex-col items-end gap-2">{fabSlot}</div>
               </div>
             ) : null}

@@ -661,7 +661,9 @@ html.light {
   }
 
   /**
-   * Barra inferior — brilho radial no hover / rota ativa (barra horizontal, glow a partir da base).
+   * Navegação flutuante — brilho radial no hover / rota ativa:
+   * mobile: barra inferior (glow a partir da base);
+   * lg+: rail vertical à esquerda (glow a partir da esquerda).
    */
   #app-sidebar-nav a.bv-sidebar-nav-link::after {
     content: '';
@@ -672,26 +674,51 @@ html.light {
     pointer-events: none;
     opacity: 0;
     transition: opacity 350ms ease;
-    background: radial-gradient(
-      ellipse 70% 55% at 50% 100%,
-      rgba(var(--accent-rgb), 0.55) 0%,
-      rgba(var(--accent-rgb), 0.18) 45%,
-      transparent 75%
-    );
+  }
+
+  @media (max-width: 1023.98px) {
+    #app-sidebar-nav a.bv-sidebar-nav-link::after {
+      background: radial-gradient(
+        ellipse 70% 55% at 50% 100%,
+        rgba(var(--accent-rgb), 0.55) 0%,
+        rgba(var(--accent-rgb), 0.18) 45%,
+        transparent 75%
+      );
+    }
+
+    html.light #app-sidebar-nav a.bv-sidebar-nav-link::after {
+      background: radial-gradient(
+        ellipse 70% 55% at 50% 100%,
+        rgba(var(--accent-rgb), 0.32) 0%,
+        rgba(var(--accent-rgb), 0.1) 45%,
+        transparent 75%
+      );
+    }
+  }
+
+  @media (min-width: 1024px) {
+    #app-sidebar-nav a.bv-sidebar-nav-link::after {
+      background: radial-gradient(
+        ellipse 55% 70% at 0% 50%,
+        rgba(var(--accent-rgb), 0.55) 0%,
+        rgba(var(--accent-rgb), 0.18) 45%,
+        transparent 75%
+      );
+    }
+
+    html.light #app-sidebar-nav a.bv-sidebar-nav-link::after {
+      background: radial-gradient(
+        ellipse 55% 70% at 0% 50%,
+        rgba(var(--accent-rgb), 0.32) 0%,
+        rgba(var(--accent-rgb), 0.1) 45%,
+        transparent 75%
+      );
+    }
   }
 
   #app-sidebar-nav a.bv-sidebar-nav-link:hover::after,
   #app-sidebar-nav a.bv-sidebar-nav-link[aria-current='page']::after {
     opacity: 1;
-  }
-
-  html.light #app-sidebar-nav a.bv-sidebar-nav-link::after {
-    background: radial-gradient(
-      ellipse 70% 55% at 50% 100%,
-      rgba(var(--accent-rgb), 0.32) 0%,
-      rgba(var(--accent-rgb), 0.1) 45%,
-      transparent 75%
-    );
   }
 }
 
