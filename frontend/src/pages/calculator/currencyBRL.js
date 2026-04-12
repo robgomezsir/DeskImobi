@@ -14,6 +14,8 @@ export function parseCurrencyInputToReais(input) {
   if (!s) return 0;
 
   const withoutPrefix = s.replace(/R\$\s*/i, '').trim();
+  if (!withoutPrefix) return 0;
+
   const hasComma = withoutPrefix.includes(',');
 
   if (hasComma) {
@@ -33,6 +35,7 @@ export function parseCurrencyInputToReais(input) {
     return whole + frac;
   }
 
+  /** Sem vírgula decimal: só dígitos = reais inteiros (ex.: 500000 → 500000,00). */
   const digits = withoutPrefix.replace(/\D/g, '').slice(0, MAX_DIGITS);
   if (!digits) return 0;
   const n = Number.parseInt(digits, 10);

@@ -406,22 +406,21 @@ export default function FinancialCalculator() {
                 <input
                   id="valor-total-imovel"
                   type="text"
-                  inputMode="numeric"
+                  inputMode="decimal"
                   autoComplete="off"
+                  autoCorrect="off"
                   enterKeyHint="done"
-                  className="input-field"
+                  className="input-field text-right tabular-nums"
                   placeholder="R$ 0,00"
-                  aria-describedby="valor-total-imovel-hint"
-                  value={valorTotal > 0 ? formatBRL(valorTotal) : ''}
+                  value={valorTotal === 0 ? '' : formatBRL(valorTotal)}
                   onChange={(e) => {
-                    setValorTotal(parseCurrencyInputToReais(e.target.value));
+                    const raw = e.target.value;
+                    const n = parseCurrencyInputToReais(raw);
+                    const rounded = Math.round(n * 100) / 100;
+                    setValorTotal(Number.isFinite(rounded) ? rounded : 0);
                     setFlowConfirmed(false);
                   }}
                 />
-                <p id="valor-total-imovel-hint" className="text-[10px] leading-snug text-bv-muted">
-                  Digite o valor em reais; a formatação (R$, milhar e centavos) acompanha a digitação. Centavos: use vírgula
-                  (ex.: 1500,50). Pode colar valores já formatados.
-                </p>
               </div>
             </div>
 
