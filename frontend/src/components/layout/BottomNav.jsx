@@ -62,12 +62,12 @@ export function BottomNav() {
       <div
         className={cn(
           'pointer-events-auto mx-auto flex max-w-5xl flex-row items-stretch gap-1 rounded-card-3xl border border-[var(--line)]',
-          'bg-bv-page/95 shadow-[0_-4px_24px_rgba(0,0,0,0.12)] backdrop-blur-md',
-          'dark:shadow-[0_-4px_32px_rgba(0,0,0,0.45)]',
+          'bg-bv-page/95 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] backdrop-blur-sm',
+          'dark:shadow-[0_-2px_13px_rgba(0,0,0,0.18)]',
           'px-1.5 py-2 sm:gap-2 sm:px-3',
           'lg:mx-0 lg:flex lg:min-h-0 lg:flex-1 lg:max-w-none lg:min-w-[3.25rem] lg:flex-col lg:justify-between lg:gap-0 lg:overflow-visible lg:px-2 lg:py-3',
-          'lg:shadow-[4px_0_24px_rgba(0,0,0,0.14)] lg:backdrop-blur-md',
-          'dark:lg:shadow-[4px_0_32px_rgba(0,0,0,0.45)]'
+          'lg:shadow-[2px_0_10px_rgba(0,0,0,0.06)] lg:backdrop-blur-sm',
+          'dark:lg:shadow-[2px_0_13px_rgba(0,0,0,0.18)]'
         )}
       >
         <div className="flex min-w-0 flex-1 items-stretch justify-between gap-0.5 sm:justify-evenly sm:gap-1 lg:min-h-0 lg:flex-none lg:flex-col lg:items-center lg:justify-start lg:gap-1 lg:overflow-visible lg:pt-0">
