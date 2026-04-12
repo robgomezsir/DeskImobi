@@ -15,6 +15,7 @@ import {
   maxPctForPhaseToTotal100,
   sumFlowPercentages,
 } from './flowPaymentCalculations';
+import { formatBRL, parseCurrencyInputToReais } from './currencyBRL';
 
 /** Comparação para meta de 100% nos avisos (sugestões). */
 const SUM_EPS = 0.01;
@@ -31,11 +32,9 @@ const FLOW_SECTIONS = [
 ];
 
 function buildFlowClipboardText(projectName, unit, valorTotal, flow, buckets) {
-  const fmt = (n) =>
-    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
   let text = `🏢 *${projectName.trim()}*\n`;
   if (unit?.trim()) text += `📍 Unidade: ${unit.trim()}\n`;
-  text += `💰 Valor total: ${fmt(valorTotal)}\n\n`;
+  text += `💰 Valor total: ${formatBRL(valorTotal)}\n\n`;
   text += `📋 *Fluxo de pagamento:*\n\n`;
   const parts = [
     { label: 'Entrada', pct: flow.pctEntrada, b: buckets.entrada },
@@ -46,18 +45,11 @@ function buildFlowClipboardText(projectName, unit, valorTotal, flow, buckets) {
   for (const { label, pct, b } of parts) {
     if (pct <= 0) continue;
     text += `▸ *${label}*: ${pct}%\n`;
-    text += `  ${fmt(b.totalFase)}`;
-    if (b.parcelas > 1) text += ` em ${b.parcelas}x de ${fmt(b.valorParcela)}`;
+    text += `  ${formatBRL(b.totalFase)}`;
+    if (b.parcelas > 1) text += ` em ${b.parcelas}x de ${formatBRL(b.valorParcela)}`;
     text += `\n\n`;
   }
   return text.trimEnd();
-}
-
-function formatCurrency(val) {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(val);
 }
 
 function FlowPhaseCard({
@@ -155,7 +147,7 @@ function FlowPhaseCard({
               Valor por parcela
             </label>
             <p className="flex min-h-[42px] w-full items-center justify-end rounded-md border border-[var(--line-subtle)] bg-bv-surface-muted/40 px-3 text-right text-lg font-bold tabular-nums text-bv-green">
-              {valorTotalOk ? formatCurrency(valorParcela) : 'R$ 0,00'}
+              {valorTotalOk ? formatBRL(valorParcela) : 'R$ 0,00'}
             </p>
             {valorTotalOk ? (
               <p className="text-[10px] leading-snug text-bv-muted">
@@ -408,22 +400,28 @@ export default function FinancialCalculator() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-bv-muted">Valor total do imóvel</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted">R$</span>
-                  <input
-                    type="number"
-                    min={0}
-                    step={1000}
-                    className="input-field pl-12"
-                    placeholder="0"
-                    value={valorTotal || ''}
-                    onChange={(e) => {
-                      setValorTotal(Number(e.target.value));
-                      setFlowConfirmed(false);
-                    }}
-                  />
-                </div>
+                <label className="text-sm font-medium text-bv-muted" htmlFor="valor-total-imovel">
+                  Valor total do imóvel
+                </label>
+                <input
+                  id="valor-total-imovel"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  enterKeyHint="done"
+                  className="input-field"
+                  placeholder="R$ 0,00"
+                  aria-describedby="valor-total-imovel-hint"
+                  value={valorTotal > 0 ? formatBRL(valorTotal) : ''}
+                  onChange={(e) => {
+                    setValorTotal(parseCurrencyInputToReais(e.target.value));
+                    setFlowConfirmed(false);
+                  }}
+                />
+                <p id="valor-total-imovel-hint" className="text-[10px] leading-snug text-bv-muted">
+                  Digite o valor em reais; a formatação (R$, milhar e centavos) acompanha a digitação. Centavos: use vírgula
+                  (ex.: 1500,50). Pode colar valores já formatados.
+                </p>
               </div>
             </div>
 
@@ -443,7 +441,7 @@ export default function FinancialCalculator() {
                 <p className="mt-2 border-t border-[var(--line-subtle)] pt-2 text-xs text-bv-text">
                   Montante referente:{' '}
                   <span className="font-semibold tabular-nums text-bv-green">
-                    {formatCurrency(valorConsolidadoPercentuais)}
+                    {formatBRL(valorConsolidadoPercentuais)}
                   </span>
                 </p>
               ) : (
@@ -502,7 +500,7 @@ export default function FinancialCalculator() {
               <span className="text-xs text-bv-muted">soma das 4 fases</span>
             </div>
             <p className="text-center text-xs tabular-nums text-bv-text">
-              Montante: <span className="font-semibold text-bv-green">{formatCurrency(valorConsolidadoPercentuais)}</span>
+              Montante: <span className="font-semibold text-bv-green">{formatBRL(valorConsolidadoPercentuais)}</span>
             </p>
             {!sumMatches100(flow) ? (
               pctConsolidado > 100 + SUM_EPS ? (
@@ -548,30 +546,30 @@ export default function FinancialCalculator() {
               <li className="list-none rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
                 <span className="text-xs font-bold text-bv-green">Entrada</span>
                 <p className="mt-1 text-bv-text">
-                  {flow.parcelasEntrada} × {formatCurrency(buckets.entrada.valorParcela)}
+                  {flow.parcelasEntrada} × {formatBRL(buckets.entrada.valorParcela)}
                 </p>
-                <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.entrada.totalFase)}</p>
+                <p className="mt-0.5 text-xs opacity-90">Total {formatBRL(buckets.entrada.totalFase)}</p>
               </li>
               <li className="list-none rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
                 <span className="text-xs font-bold text-bv-green">Mensais</span>
                 <p className="mt-1 text-bv-text">
-                  {flow.parcelasMensais} × {formatCurrency(buckets.mensais.valorParcela)}
+                  {flow.parcelasMensais} × {formatBRL(buckets.mensais.valorParcela)}
                 </p>
-                <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.mensais.totalFase)}</p>
+                <p className="mt-0.5 text-xs opacity-90">Total {formatBRL(buckets.mensais.totalFase)}</p>
               </li>
               <li className="list-none rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
                 <span className="text-xs font-bold text-bv-green">Intercaladas</span>
                 <p className="mt-1 text-bv-text">
-                  {flow.parcelasIntercaladas} × {formatCurrency(buckets.intercaladas.valorParcela)}
+                  {flow.parcelasIntercaladas} × {formatBRL(buckets.intercaladas.valorParcela)}
                 </p>
-                <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.intercaladas.totalFase)}</p>
+                <p className="mt-0.5 text-xs opacity-90">Total {formatBRL(buckets.intercaladas.totalFase)}</p>
               </li>
               <li className="list-none rounded-card-2xl border border-[var(--line-subtle)] bg-bv-surface-muted p-card-4">
                 <span className="text-xs font-bold text-bv-green">Chaves</span>
                 <p className="mt-1 text-bv-text">
-                  {flow.parcelasChaves} × {formatCurrency(buckets.chaves.valorParcela)}
+                  {flow.parcelasChaves} × {formatBRL(buckets.chaves.valorParcela)}
                 </p>
-                <p className="mt-0.5 text-xs opacity-90">Total {formatCurrency(buckets.chaves.totalFase)}</p>
+                <p className="mt-0.5 text-xs opacity-90">Total {formatBRL(buckets.chaves.totalFase)}</p>
               </li>
             </ul>
           </div>
