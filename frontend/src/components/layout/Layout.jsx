@@ -52,13 +52,11 @@ export function Layout() {
   }, []);
 
   return (
-    <div className="flex h-[100dvh] overflow-hidden">
+    <div className="flex h-[100dvh] overflow-hidden [--bv-app-header-height:4rem]">
       <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col bg-transparent">
         <SetAppToolbarContext.Provider value={setToolbar}>
           <SetAppFabContext.Provider value={setFab}>
-            <header
-              className={`flex shrink-0 items-center border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8 ${RAIL_INSET_LG}`}
-            >
+            <header className="flex shrink-0 items-center border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
               <Link
                 to="/dashboard"
                 className="group flex shrink-0 items-center rounded-lg pr-3 outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-bv-green/50 sm:pr-4"
