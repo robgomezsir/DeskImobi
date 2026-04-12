@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { ThemeToggleButton } from '../ThemeToggleButton';
 import { BottomNav } from './BottomNav';
+import { BRAND_ICON_URLS } from '../../constants/brandIconUrls';
 import logoHorizontalBranca from '../../assets/logo-horizontal-branca.svg';
 import logonamePreta from '../../assets/logoname-preta.svg';
 
@@ -48,15 +49,23 @@ export function Layout() {
             <header className="flex shrink-0 items-center border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
               <Link
                 to="/dashboard"
-                className="group shrink-0 rounded-lg pr-3 outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-bv-green/50 sm:pr-4"
+                className="group flex shrink-0 items-center rounded-lg pr-3 outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-bv-green/50 sm:pr-4"
                 aria-label="BrokerVision — ir para o Dashboard"
               >
                 <img
+                  src={BRAND_ICON_URLS.symbolSvg}
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 shrink-0 sm:hidden"
+                  aria-hidden
+                />
+                <img
                   src={isDark ? logoHorizontalBranca : logonamePreta}
                   alt="BrokerVision"
-                  className="h-7 w-auto max-w-[140px] sm:h-8 sm:max-w-[180px]"
                   width={180}
                   height={32}
+                  className="hidden h-7 w-auto max-w-[140px] sm:block sm:h-8 sm:max-w-[180px]"
                 />
               </Link>
               <div className="flex min-h-11 min-w-0 flex-1 items-center gap-2 border-l border-[var(--line-subtle)] pl-3 sm:gap-3 sm:pl-4">
@@ -65,7 +74,7 @@ export function Layout() {
               <div className="flex min-w-0 shrink-0 items-center gap-2 pl-2 sm:gap-3 sm:pl-3">
                 {location.pathname === '/dashboard' && dashboardGreeting ? (
                   <p
-                    className="max-w-[min(46vw,8.75rem)] truncate text-right text-[10px] leading-tight text-bv-muted sm:max-w-[14rem] sm:text-sm sm:leading-normal"
+                    className="hidden max-w-[14rem] truncate text-right text-sm leading-normal text-bv-muted sm:block"
                     title={`Bem-vindo, ${dashboardGreeting}`}
                   >
                     Bem-vindo,{' '}
