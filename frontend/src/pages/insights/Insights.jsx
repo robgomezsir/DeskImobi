@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   TrendingUp,
@@ -37,29 +38,36 @@ const marketData = [
 
 export default function Insights() {
   const glassBackdropStyle = useGlassBackdropStyle();
+  const [regionQuery, setRegionQuery] = useState('');
 
   useRegisterAppToolbar(
-    () => (
-      <PageToolbar
-        stackBreakpoint="lg"
-        title={insights.officialName}
-        actions={
-          <div className="relative w-full shrink-0 lg:max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-bv-muted" size={18} />
-            <input
-              type="text"
-              placeholder="Analisar bairro ou região..."
-              className="h-11 w-full rounded-xl border border-[var(--line)] bg-bv-surface-muted pl-10 pr-4 text-sm text-bv-text outline-none transition-all placeholder:text-bv-placeholder focus:border-bv-green/50"
-            />
-          </div>
-        }
-      />
-    ),
+    () => <PageToolbar title={insights.officialName} />,
     []
   );
 
   return (
     <BvModuleCanvas innerClassName="relative z-10 space-y-8 px-4 pb-1 animate-in fade-in duration-700 sm:px-6 lg:px-8">
+      <div className="glass bv-card-hover rounded-card-3xl p-card-4 sm:p-card-6" style={glassBackdropStyle}>
+        <label className="sr-only" htmlFor="insights-region-search">
+          Analisar bairro ou região
+        </label>
+        <div className="group relative min-w-0">
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-bv-muted transition-colors group-focus-within:text-bv-green"
+            size={18}
+            aria-hidden
+          />
+          <input
+            id="insights-region-search"
+            type="text"
+            placeholder="Analisar bairro ou região..."
+            value={regionQuery}
+            onChange={(e) => setRegionQuery(e.target.value)}
+            className="input-field h-12 pl-12"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
