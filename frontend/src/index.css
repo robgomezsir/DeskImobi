@@ -179,14 +179,14 @@ html.light {
   --font-sans: "Nunito", "Inter", ui-sans-serif, system-ui;
   --font-display: "Nunito", sans-serif;
 
-  /** Padding dos cartões: valores compactos × 1,7 (+70%) */
-  --spacing-card-3: 0.3825rem;
-  --spacing-card-4: 0.51rem;
-  --spacing-card-5: 0.6375rem;
-  --spacing-card-6: 0.765rem;
-  --spacing-card-8: 1.02rem;
-  --spacing-card-10: 1.275rem;
-  --spacing-card-14: 1.785rem;
+  /** Padding dos cartões: valores anteriores × 1,2 (+20%) */
+  --spacing-card-3: 0.459rem;
+  --spacing-card-4: 0.612rem;
+  --spacing-card-5: 0.765rem;
+  --spacing-card-6: 0.918rem;
+  --spacing-card-8: 1.224rem;
+  --spacing-card-10: 1.53rem;
+  --spacing-card-14: 2.142rem;
 
   /** Cantos dos cartões: valores anteriores × 1,4 (+40%) */
   --radius-card-xl: 0.315rem;
