@@ -45,7 +45,7 @@ const navItems = BV_MODULE_KEYS.map((key) => ({
  */
 export function BottomNav() {
   const location = useLocation();
-  const { signOut, user } = useAuth();
+  const { signOut } = useAuth();
 
   return (
     <nav
@@ -122,26 +122,6 @@ export function BottomNav() {
           >
             <LogOut size={20} strokeWidth={2} />
           </button>
-
-          <div
-            className="hidden h-9 max-w-[7rem] items-center gap-2 rounded-lg border border-[var(--line-subtle)] bg-bv-surface-muted px-2 sm:flex"
-            title={user?.email ?? ''}
-          >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-bv-green text-[10px] font-bold text-black">
-              {user?.email?.[0]?.toUpperCase() ?? '—'}
-            </div>
-            <div className="min-w-0 flex-1 overflow-hidden">
-              <p className="truncate text-[10px] font-medium leading-tight text-bv-text">{user?.email}</p>
-              <p className="text-[9px] font-bold leading-tight text-bv-green">Sovereign Pro</p>
-            </div>
-          </div>
-
-          <div
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--line-subtle)] bg-bv-surface-muted sm:hidden"
-            title={user?.email ?? ''}
-          >
-            <span className="text-xs font-bold text-bv-green">{user?.email?.[0]?.toUpperCase() ?? '—'}</span>
-          </div>
         </div>
       </div>
     </nav>

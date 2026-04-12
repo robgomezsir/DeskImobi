@@ -1,10 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { SetAppToolbarContext } from '../../contexts/AppToolbarContext';
 import { SetAppFabContext } from '../../contexts/AppFabContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { ThemeToggleButton } from '../ThemeToggleButton';
 import { BottomNav } from './BottomNav';
+import logoHorizontalBranca from '../../assets/logo-horizontal-branca.svg';
+import logonamePreta from '../../assets/logoname-preta.svg';
 
 function displayNameFromUser(user) {
   if (!user) return '';
@@ -23,6 +26,8 @@ const MAIN_PAD_BOTTOM_FAB =
 
 export function Layout() {
   const { user } = useAuth();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const location = useLocation();
   const dashboardGreeting = useMemo(() => displayNameFromUser(user), [user]);
   const [toolbarLeading, setToolbarLeading] = useState(null);
@@ -40,7 +45,20 @@ export function Layout() {
       <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col bg-transparent">
         <SetAppToolbarContext.Provider value={setToolbar}>
           <SetAppFabContext.Provider value={setFab}>
-            <header className="flex shrink-0 items-center gap-2 border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:gap-3 sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
+            <header className="flex shrink-0 items-center gap-3 border-b border-[var(--line-subtle)] bg-bv-page px-4 py-3 backdrop-blur-none sm:gap-4 sm:bg-bv-page/90 sm:px-6 sm:backdrop-blur-sm lg:px-8">
+              <Link
+                to="/dashboard"
+                className="group shrink-0 rounded-lg outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-bv-green/50"
+                aria-label="BrokerVision — ir para o Dashboard"
+              >
+                <img
+                  src={isDark ? logoHorizontalBranca : logonamePreta}
+                  alt="BrokerVision"
+                  className="h-7 w-auto max-w-[140px] sm:h-8 sm:max-w-[180px]"
+                  width={180}
+                  height={32}
+                />
+              </Link>
               <div className="flex min-h-11 min-w-0 flex-1 items-center gap-2 sm:gap-3">{toolbarLeading}</div>
               <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
                 {location.pathname === '/dashboard' && dashboardGreeting ? (
