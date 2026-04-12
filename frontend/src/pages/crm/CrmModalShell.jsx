@@ -5,8 +5,8 @@ import { createPortal } from 'react-dom';
  * Modal CRM em portal (`document.body`): no mobile, `main.bv-scroll-root` usa `translateZ(0)` e
  * quebra `position:fixed` relativo ao viewport — o portal evita o painel cortado ou fora do ecrã.
  *
- * Mobile: painel a `100dvh`, conteúdo com scroll interno e respeito a safe-area.
- * Desktop (`sm:`): cartão centrado com altura máxima.
+ * Mobile e desktop: cartão flutuante (margem ao ecrã), cantos arredondados, fundo ~90% opaco
+ * (sem liquid glass). Conteúdo com scroll interno e safe-area.
  */
 export function CrmModalShell({ open, onClose, children, ariaLabelledBy }) {
   useEffect(() => {
@@ -22,12 +22,12 @@ export function CrmModalShell({ open, onClose, children, ariaLabelledBy }) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[120] flex flex-col sm:items-center sm:justify-center sm:p-4 sm:pt-[max(1rem,env(safe-area-inset-top))] sm:pb-[max(1rem,env(safe-area-inset-bottom))]"
+      className="fixed inset-0 z-[120] flex items-center justify-center p-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))] pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))] sm:p-4"
       role="presentation"
     >
       <button
         type="button"
-        className="absolute inset-0 bg-[#141414]/88 backdrop-blur-[2px] animate-in fade-in duration-200 sm:bg-[#141414]/80 sm:backdrop-blur-md"
+        className="absolute inset-0 bg-[#141414]/80 backdrop-blur-[3px] animate-in fade-in duration-200 sm:bg-[#141414]/75 sm:backdrop-blur-md"
         aria-label="Fechar"
         onClick={onClose}
       />
@@ -35,10 +35,11 @@ export function CrmModalShell({ open, onClose, children, ariaLabelledBy }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby={ariaLabelledBy}
-        className="relative z-[1] flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden rounded-none border border-[var(--line)] border-x-0 border-b-0 shadow-2xl animate-in slide-in-from-bottom duration-300 sm:h-auto sm:max-h-[min(90dvh,800px)] sm:rounded-card-3xl sm:border sm:shadow-2xl sm:zoom-in-95"
+        className="relative z-[1] flex h-auto max-h-[min(calc(100dvh-1.5rem),800px)] w-full max-w-lg flex-col overflow-hidden rounded-card-3xl border border-[var(--line)] shadow-2xl ring-1 ring-black/10 animate-in slide-in-from-bottom-4 zoom-in-95 duration-300 dark:ring-white/10"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="glass-blur flex min-h-0 flex-1 flex-col overflow-hidden sm:max-h-[min(90dvh,800px)] sm:rounded-card-3xl">
+        {/* Fundo ~90% opaco (sem liquid glass) — cartão flutuante com margem ao ecrã */}
+        <div className="flex min-h-0 max-h-[inherit] flex-1 flex-col overflow-hidden rounded-card-3xl bg-[color-mix(in_srgb,var(--bv-card-mold-bg)_90%,transparent)]">
           {children}
         </div>
       </div>
