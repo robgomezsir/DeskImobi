@@ -85,14 +85,14 @@ export function BottomNav() {
                     'lg:h-11 lg:w-11 lg:flex-none lg:justify-center lg:gap-0 lg:px-0 lg:py-0',
                     '[&>svg]:relative [&>svg]:z-[1]',
                     isActive
-                      ? 'border-0 border-transparent text-bv-green'
+                      ? 'border-0 border-transparent bg-[var(--hover-surface)] text-bv-text'
                       : 'border-0 border-transparent text-bv-muted hover:bg-[var(--hover-surface)] hover:text-bv-text'
                   )}
                 >
                   <Icon
                     size={20}
                     strokeWidth={2}
-                    className={cn('shrink-0', isActive ? 'text-bv-green' : 'text-bv-muted group-hover:text-bv-text')}
+                    className={cn('shrink-0', isActive ? 'text-bv-text' : 'text-bv-muted group-hover:text-bv-text')}
                   />
                   <span className="max-w-full truncate text-center text-[9px] font-medium leading-tight tracking-tight sm:text-[10px] lg:hidden">
                     {item.bottomLabel}
@@ -128,7 +128,7 @@ export function BottomNav() {
               'bv-sidebar-nav-link group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-visible rounded-lg transition-all',
               '[&>svg]:relative [&>svg]:z-[1]',
               location.pathname === '/settings'
-                ? 'border-0 border-transparent text-bv-green'
+                ? 'border-0 border-transparent bg-[var(--hover-surface)] text-bv-text'
                 : 'border-0 border-transparent text-bv-muted hover:bg-[var(--hover-surface)] hover:text-bv-text'
             )}
           >
@@ -136,7 +136,7 @@ export function BottomNav() {
               size={20}
               strokeWidth={2}
               className={cn(
-                location.pathname === '/settings' ? 'text-bv-green' : 'text-bv-muted group-hover:text-bv-text'
+                location.pathname === '/settings' ? 'text-bv-text' : 'text-bv-muted group-hover:text-bv-text'
               )}
             />
             <span
